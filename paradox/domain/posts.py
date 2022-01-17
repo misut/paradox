@@ -1,5 +1,3 @@
-from typing import Optional
-
 from postoffice import Post
 from pygame.event import Event
 import pygame
@@ -7,7 +5,7 @@ import pygame
 from paradox.domain.enums import MouseButton
 
 
-def propagate_event_to_post(event: Event) -> Optional[Post]:
+def propagate_event_to_post(event: Event) -> Post | None:
     match event.type:
         case pygame.KEYDOWN:
             post = KeyDownPost(code=event.scancode)

@@ -14,3 +14,17 @@ class MouseButton(int, Enum):
     BUTTON8: int = 8
     BUTTON9: int = 9
     BUTTON10: int = 10
+
+
+@unique
+class HorizontalAlignment(str, Enum):
+    CENTER: str = "center"
+    LEFT: str = "left"
+    RIGHT: str = "right"
+
+
+@unique
+class VerticalAlignment(str, Enum):
+    BOTTOM: str = "bottom"
+    MIDDLE: str = "middle"
+    TOP: str = "top"

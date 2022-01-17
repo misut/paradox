@@ -1,5 +1,4 @@
-from paradox.engine import Engine
-from paradox.settings import Settings
+from paradox.interface import Engine, Settings
 
 
 def load_settings() -> Settings:

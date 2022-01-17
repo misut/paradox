@@ -1,6 +1,6 @@
 from postoffice import Postoffice
 
-from paradox.applications.delivery_protocols import chief_postman
+from paradox.application.delivery_protocols import chief_postman
 
 
 class ParadoxPostoffice(Postoffice):

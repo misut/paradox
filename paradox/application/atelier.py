@@ -1,6 +1,6 @@
 from atelier import Atelier
 
-from paradox.applications.rendering_methods import root_portrayer
+from paradox.application.portraying_methods import root_portrayer
 
 
 class ParadoxAtelier(Atelier):

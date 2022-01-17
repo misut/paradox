@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import Callable, Optional
+from collections.abc import Callable
+from typing import Concatenate, ParamSpec
 
 from pydantic import BaseModel, Field
 
@@ -8,13 +9,14 @@ from postoffice.errors import PostNotSubscribedError
 from postoffice.post import Post
 
 
-DeliveryProtocol = Callable[[Post], Optional[Post]]
+Params = ParamSpec("Params")
+DeliveryProtocol = Callable[Concatenate[Post, Params], Post | None]
 
 
 class Postman(BaseModel):
     mapping: dict[type[Post], DeliveryProtocol] = Field(default={})
 
-    def deliver(self, post: Post) -> Optional[Post]:
+    def deliver(self, post: Post) -> Post | None:
         post_type = type(post)
         if post_type not in self.mapping:
             raise PostNotSubscribedError(f"Not subscribed type of a post: {post_type.__name__}")

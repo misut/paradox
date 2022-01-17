@@ -1,5 +1,4 @@
 from multiprocessing import Queue
-from typing import Optional
 
 from postoffice.post import Post
 from postoffice.postbus import Postbus
@@ -17,7 +16,7 @@ class Postoffice:
     def hire(self, postman: Postman) -> None:
         self.chief_postman.invite(postman)
 
-    def deliver(self, post: Post) -> Optional[Post]:
+    def deliver(self, post: Post) -> Post | None:
         return self.chief_postman.deliver(post)
 
     def request(self, post: Post) -> None:

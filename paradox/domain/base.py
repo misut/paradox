@@ -12,3 +12,4 @@ class ValueObject(BaseModel):
 
 class Entity(BaseModel):
     id: UUID = Field(default_factory=generate_uuid)
+    name: str = Field(default="")

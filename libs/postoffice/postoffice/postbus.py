@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
+from collections.abc import Generator
 from multiprocessing import Queue
-from typing import Generator
 
 from postoffice import Post
 
