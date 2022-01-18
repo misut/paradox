@@ -1,6 +1,6 @@
 from multiprocessing import Queue
+from typing import Any
 
-from postoffice.post import Post
 from postoffice.postbus import Postbus
 from postoffice.postman import Postman
 
@@ -16,10 +16,10 @@ class Postoffice:
     def hire(self, postman: Postman) -> None:
         self.chief_postman.invite(postman)
 
-    def deliver(self, post: Post) -> Post | None:
+    def deliver(self, post: Any) -> Any | None:
         return self.chief_postman.deliver(post)
 
-    def request(self, post: Post) -> None:
+    def request(self, post: Any) -> None:
         self.warehouse.put(post)
 
     def transport(self, postbus: Postbus) -> None:
@@ -28,7 +28,5 @@ class Postoffice:
 
         for post in postbus.unload():
             request_post = self.deliver(post)
-            if request_post is None:
-                continue
-
-            self.request(request_post)
+            if request_post is not None:
+                self.request(request_post)

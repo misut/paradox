@@ -1,19 +1,20 @@
 from typing import Generator
 
+from pydantic import BaseModel
 from pytest import fixture, raises
 
-from postoffice import Post, Postman, PostNotSubscribedError
+from postoffice import Postman, PostNotSubscribedError
 
 
-class NotSubscribedPost(Post):
+class NotSubscribedPost(BaseModel):
     ...
 
 
-class ThisPost(Post):
+class ThisPost(BaseModel):
     ...
 
 
-class ThatPost(Post):
+class ThatPost(BaseModel):
     ...
 
 
@@ -22,7 +23,7 @@ def create_not_subscribed_post() -> Generator[NotSubscribedPost, None, None]:
     yield NotSubscribedPost()
 
 
-def test_fresh_postman(not_subscribed_post: Post) -> None:
+def test_fresh_postman(not_subscribed_post: NotSubscribedPost) -> None:
     postman = Postman()
 
     with raises(PostNotSubscribedError):

@@ -1,17 +1,18 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+from typing import Any, Concatenate, ParamSpec
 
 from pydantic import BaseModel, Field
-from pygame import Surface
 
-from atelier.palette import Palette
+from atelier.errors import PaletteNotOccupiedError
 
-PortrayingMethod = Callable[[Palette, Surface, int], None]
+Params = ParamSpec("Params")
+PortrayingMethod = Callable[Concatenate[Any, Params], None]
 
 
 class Portrayer(BaseModel):
-    mapping: dict[type[Palette], PortrayingMethod] = Field(default={})
+    mapping: dict[type[Any], PortrayingMethod] = Field(default={})
 
     def invite(self, portrayer: Portrayer) -> None:
         self.mapping.update(portrayer.mapping)
@@ -24,10 +25,10 @@ class Portrayer(BaseModel):
             return portraying_method
         return decorator
 
-    def portray(self, palette: Palette, portrait: Surface, special_flags: int = 0) -> None:
+    def portray(self, palette: Any) -> None:
         palette_type = type(palette)
         if palette_type not in self.mapping:
-            raise Exception(f"Not supported type of a palette: {palette_type.__name__}")
+            raise PaletteNotOccupiedError(f"{palette}")
 
         portraying_method = self.mapping[palette_type]
-        portraying_method(palette, portrait, special_flags)
+        portraying_method(palette)

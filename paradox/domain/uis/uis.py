@@ -2,20 +2,18 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
-from postoffice import Post
 from pydantic import Field
 from pygame import Surface
 from pygame.font import Font, SysFont
 
 from paradox.domain.enums import HorizontalAlignment, VerticalAlignment
-from paradox.domain.uis.base import UI, align_pos
-
-Listener = Callable[[], Post | None]
+from paradox.domain.posts import Post
+from paradox.domain.uis.base import Actor, UI, fit_pos, fit_rect
 
 
 class LayoutUI(UI):
     def can_allocate(self, ui: UI) -> bool:
-        if not self.embrace(ui):
+        if not self.embracing(ui):
             return False
         return super().can_allocate(ui)
 
@@ -36,19 +34,12 @@ class TextUI(UI):
     def font(self) -> Font:
         return SysFont(self.font_face, self.font_size, self.bold, self.italic)
 
-    def draw(self, render_screen: Surface) -> None:
-        super().draw(render_screen)
+    def render(self, render_screen: Surface, special_flags: int = 0) -> None:
+        super().render(render_screen, special_flags)
 
         text_surface = self.font.render(self.text, False, (0, 0, 0, 255))
         text_size = text_surface.get_size()
 
-        aligned_pos = align_pos(text_size, self.pos, self.size, self.text_horizontal_alignment, self.text_vertical_alignment)
-        render_screen.blit(text_surface, aligned_pos)
-
-
-class ButtonUI(TextUI):
-    on_click_listener: Listener = Field(default=lambda: None)
-
-    def on_click(self, listener: Listener) -> Listener:
-        self.on_click_listener = listener
-        return listener
+        dest = fit_pos(text_size, self.pos, self.size, self.text_horizontal_alignment, self.text_vertical_alignment)
+        rect = fit_rect(text_size, self.pos, self.size, self.text_horizontal_alignment, self.text_vertical_alignment)
+        render_screen.blit(text_surface, dest, rect, special_flags)

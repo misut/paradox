@@ -1,2 +1,6 @@
 class AtelierError(Exception):
     ...
+
+
+class PaletteNotOccupiedError(AtelierError):
+    ...

@@ -1,7 +1,12 @@
-from atelier import Palette
+from pydantic import Field
+import pygame
 
-from paradox.domain.uis import LayoutUI
+from paradox.domain.base import ValueObject
+
+
+class Palette(ValueObject):
+    special_flags: int = Field(default=pygame.BLEND_ALPHA_SDL2)
 
 
 class IntroPalette(Palette):
-    ui: LayoutUI
+    ...

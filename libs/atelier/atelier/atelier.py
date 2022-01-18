@@ -1,4 +1,5 @@
-from atelier.palette import Palette
+from typing import Any
+
 from atelier.portrayer import Portrayer
 
 from pygame import Surface
@@ -13,5 +14,5 @@ class Atelier:
     def recruit(self, portrayer: Portrayer) -> None:
         self.root_portrayer.invite(portrayer)
 
-    def portray(self, palette: Palette, portrait: Surface, special_flags: int = 0) -> None:
-        self.root_portrayer.portray(palette, portrait, special_flags)
+    def portray(self, palette: Any) -> None:
+        self.root_portrayer.portray(palette)

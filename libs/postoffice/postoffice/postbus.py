@@ -1,8 +1,7 @@
 from abc import ABC, abstractmethod
 from collections.abc import Generator
 from multiprocessing import Queue
-
-from postoffice import Post
+from typing import Any
 
 
 class Postbus(ABC):
@@ -11,11 +10,11 @@ class Postbus(ABC):
         ...
     
     @abstractmethod
-    def load(self, post: Post) -> None:
+    def load(self, post: Any) -> None:
         ...
 
     @abstractmethod
-    def unload(self) -> Generator[Post, None, None]:
+    def unload(self) -> Generator[Any, None, None]:
         ...
 
 
@@ -28,9 +27,9 @@ class InMemoryPostbus(Postbus):
     def empty(self) -> bool:
         return self.trunk.empty()
 
-    def load(self, post: Post) -> None:
+    def load(self, post: Any) -> None:
         self.trunk.put(post)
 
-    def unload(self) -> Generator[Post, None, None]:
+    def unload(self) -> Generator[Any, None, None]:
         while not self.empty():
             yield self.trunk.get()

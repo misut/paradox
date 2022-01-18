@@ -1,9 +1,9 @@
-from pytest import fixture
+from pydantic import BaseModel
 
-from postoffice import InMemoryPostbus, Post, Postbus
+from postoffice import Postbus
     
 
-class SequencePost(Post):
+class SequencePost(BaseModel):
     idx: int
 
 

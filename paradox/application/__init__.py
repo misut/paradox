@@ -1,7 +1,5 @@
-from paradox.application.atelier import ParadoxAtelier
-from paradox.application.postoffice import ParadoxPostoffice
+from paradox.application.ui_manager import UIManager
 
 __all__ = [
-    "ParadoxAtelier",
-    "ParadoxPostoffice",
+    "UIManager",
 ]

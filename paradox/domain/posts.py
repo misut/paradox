@@ -1,8 +1,12 @@
-from postoffice import Post
 from pygame.event import Event
 import pygame
 
+from paradox.domain.base import ValueObject
 from paradox.domain.enums import MouseButton
+
+
+class Post(ValueObject):
+    ...
 
 
 def propagate_event_to_post(event: Event) -> Post | None:

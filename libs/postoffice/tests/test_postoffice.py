@@ -1,13 +1,13 @@
-import pytest
+from pydantic import BaseModel
 
-from postoffice import Post, Postbus, Postman, Postoffice
+from postoffice import Postbus, Postman, Postoffice
 
 
-class RequestPost(Post):
+class RequestPost(BaseModel):
     ...
 
 
-class ResultPost(Post):
+class ResultPost(BaseModel):
     ...
 
 

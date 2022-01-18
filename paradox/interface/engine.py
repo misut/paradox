@@ -1,25 +1,31 @@
-from atelier import Palette
-from postoffice import Postbus
+import sys
+
+from atelier import Atelier
+from loguru import logger
+from postoffice import Postbus, Postoffice
 from pygame import Surface
 from pygame.transform import scale
 import pygame
 
-from paradox.application import ParadoxAtelier, ParadoxPostoffice
 from paradox.domain import (
-    IntroPalette,
-    propagate_event_to_post,
+    Palette,
     LayoutUI,
     TextUI,
 )
+from paradox.interface import delivery_protocols, portraying_methods
 from paradox.interface.container import Container
+from paradox.interface.delivery_protocols import propagate_event_to_post
 from paradox.interface.settings import Settings
 import paradox
 
 
 class Engine:
     container: Container
-    screen: Surface
     settings: Settings
+
+    atelier: Atelier
+    postoffice: Postoffice
+    screen: Surface
 
     def __init__(self, settings: Settings) -> None:
         self.settings = settings
@@ -32,58 +38,69 @@ class Engine:
 
         self.start()
 
-    def initialize_palette(
-        self,
-        settings: Settings,
-    ) -> None:
+    def initialize_palette(self, settings: Settings) -> None:
         self.container.intro_palette.reset()
+
+    def initialize_ui(self, settings: Settings) -> None:
+        self.container.ui_manager.reset()
+        ui_manager = self.container.ui_manager()
 
         intro_ui = LayoutUI(pos=(0, 0), size=settings.RENDER_SIZE)
 
         sample_text = TextUI(pos=(100, 100), size=(200, 50), text="Hello, world!")
+        @sample_text.on_hover()
+        def hover_actor() -> None:
+            logger.info("wow")
         intro_ui.allocate(sample_text)
 
-        self.container.intro_palette(ui=intro_ui)
+        ui_manager.allocate(intro_ui)
+
 
     def initialize(self, settings: Settings) -> None:
         pygame.init()
         pygame.display.set_caption("Hello, world!")
+
+        logger.remove()
+        logger.add(sys.stderr, level="INFO")
+
+        self.atelier = Atelier()
+        self.atelier.recruit(portraying_methods.root_portrayer)
+
+        self.postoffice = Postoffice()
+        self.postoffice.hire(delivery_protocols.chief_postman)
+
         self.screen = pygame.display.set_mode(
             size=settings.SCREEN_SIZE,
         )
 
         self.initialize_palette(settings)
-
-    def update_palettes(self, intro_palatte: IntroPalette) -> None:
-        intro_palatte.ui.update()
+        self.initialize_ui(settings)
     
-    def update_posts(self, postbus: Postbus, postoffice: ParadoxPostoffice) -> None:
+    def update_posts(self, postbus: Postbus, postoffice: Postoffice) -> None:
         for event in pygame.event.get():
-            post = propagate_event_to_post(event)
+            post = propagate_event_to_post(
+                event,
+                self.settings.RENDER_SIZE,
+                self.settings.SCREEN_SIZE
+            )
             if post is not None:
                 postoffice.request(post)
 
         postoffice.transport(postbus)
 
     def update(self) -> None:
-        intro_palette = self.container.intro_palette()
         postbus = self.container.postbus()
-        postoffice = self.container.postoffice()
 
-        self.update_palettes(intro_palette)
-        self.update_posts(postbus, postoffice)
+        self.update_posts(postbus, self.postoffice)
 
-    def render_portrait(self, atelier: ParadoxAtelier, palette: Palette, render_screen: Surface) -> None:
-        atelier.portray(palette, render_screen, pygame.BLEND_ALPHA_SDL2)
+    def render_portrait(self, atelier: Atelier, palette: Palette) -> None:
+        atelier.portray(palette)
 
     def render(self) -> None:
-        atelier = self.container.atelier()
-        render_screen = self.container.render_screen()
-
         intro_palette = self.container.intro_palette()
+        self.render_portrait(self.atelier, intro_palette)
 
-        self.render_portrait(atelier, intro_palette, render_screen)
-
+        render_screen = self.container.render_screen()
         scaled_screen = scale(render_screen, self.settings.SCREEN_SIZE)
         self.screen.blit(scaled_screen, (0, 0))
         pygame.display.flip()

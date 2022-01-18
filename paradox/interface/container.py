@@ -1,9 +1,9 @@
 from dependency_injector import containers, providers
 from postoffice import InMemoryPostbus
 from pygame import Surface
-from pygame.constants import *
+import pygame
 
-from paradox.application import ParadoxAtelier, ParadoxPostoffice
+from paradox.application import UIManager
 from paradox.domain import IntroPalette
 
 
@@ -11,13 +11,16 @@ class Container(containers.DeclarativeContainer):
     config = providers.Configuration()
 
     postbus = providers.Singleton(InMemoryPostbus)
-    postoffice = providers.Singleton(ParadoxPostoffice)
 
-    atelier = providers.Singleton(ParadoxAtelier)
     render_screen = providers.Singleton(
         Surface,
         size=config.RENDER_SIZE,
-        flags=SRCALPHA,
+        flags=pygame.SRCALPHA,
+    )
+
+    ui_manager = providers.Singleton(
+        UIManager,
+        size=config.RENDER_SIZE,
     )
 
     intro_palette = providers.Singleton(IntroPalette)
