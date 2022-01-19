@@ -7,7 +7,7 @@ import pygame
 from pydantic import Field
 from pygame import Rect, Surface
 
-from paradox.domain.base import Entity
+from paradox.domain.base import Entity, Renderable
 from paradox.domain.enums import HorizontalAlignment, VerticalAlignment
 from paradox.domain.errors import UIAllocateError
 from paradox.domain.posts import Post
@@ -86,16 +86,13 @@ def fit_rect(
         0 if aligned_pos[0] >= parent_pos[0] else parent_pos[0] - aligned_pos[0],
         0 if aligned_pos[1] >= parent_pos[1] else parent_pos[1] - aligned_pos[1],
         parent_size[0],
-        parent_size[1],
+        parent_size[1], 
     )
 
     return fit_rect
 
 
-class UI(Entity):
-    pos: tuple[int, int] = Field(default=(0, 0))
-    size: tuple[int, int]
-
+class UI(Entity, Renderable):
     childs: list[UI] = Field(default=[])
     parent: UI | None
     priority: int = Field(default=0)
@@ -121,30 +118,6 @@ class UI(Entity):
 
     def __lt__(self, other: UI) -> bool:
         return self.priority < other.priority
-
-    @property
-    def left(self) -> int:
-        return self.pos[0]
-
-    @property
-    def right(self) -> int:
-        return self.pos[0] + self.size[0] - 1
-
-    @property
-    def top(self) -> int:
-        return self.pos[1]
-
-    @property
-    def bottom(self) -> int:
-        return self.pos[1] + self.size[1] - 1
-
-    @property
-    def width(self) -> int:
-        return self.size[0]
-
-    @property
-    def height(self) -> int:
-        return self.size[1]
 
     @property
     def background(self) -> Surface:
@@ -237,6 +210,7 @@ class UI(Entity):
         ...
 
     def render(self, render_screen: Surface, special_flags: int = 0) -> None:
+        super().render(render_screen, special_flags)
         render_screen.blit(
             source=self.background, dest=self.pos, special_flags=special_flags
         )

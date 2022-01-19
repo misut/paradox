@@ -8,6 +8,12 @@ from paradox.domain.posts import (
     MouseMotionPost,
     Post,
     QuitPost,
+    TickPost,
+)
+from paradox.domain.sprite import (
+    Sprite,
+    SpriteTag,
+    SpriteRepository,
 )
 from paradox.domain.uis import UI, LayoutUI, TextUI
 
@@ -24,6 +30,10 @@ __all__ = [
     "MouseMotionPost",
     "Post",
     "QuitPost",
+    "TickPost",
+    "Sprite",
+    "SpriteTag",
+    "SpriteRepository",
     "LayoutUI",
     "TextUI",
     "UI",

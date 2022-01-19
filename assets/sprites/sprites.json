@@ -1,0 +1,17 @@
+[
+    {
+        "tag": "lwall:test",
+        "path": "lwall_test.png",
+        "size": [29, 50]
+    },
+    {
+        "tag": "rwall:test",
+        "path": "rwall_test.png",
+        "size": [29, 50]
+    },
+    {
+        "tag": "slate:test",
+        "path": "slate_test.png",
+        "size": [58, 33]
+    }
+]

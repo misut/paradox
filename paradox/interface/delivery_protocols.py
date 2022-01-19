@@ -15,6 +15,7 @@ from paradox.domain import (
     MouseMotionPost,
     Post,
     QuitPost,
+    TickPost,
 )
 from paradox.interface.container import Container
 
@@ -80,9 +81,9 @@ def deliver_key_up_post(post: KeyUpPost) -> None:
 def deliver_mouse_button_down_post(
     post: MouseButtonDownPost,
     ui_manager: UIManager = Provide[Container.ui_manager],
-) -> None:
-    logger.debug(f"{post.button} is pressed at {post.pos} {post.touch}")
-    ui_manager.click(post.pos)
+) -> Post | None:
+    #logger.debug(f"{post.button} is pressed at {post.pos} {post.touch}")
+    return ui_manager.click(post.pos)
 
 
 @chief_postman.subscribe()
@@ -96,5 +97,14 @@ def deliver_mouse_motion_post(
     post: MouseMotionPost,
     ui_manager: UIManager = Provide[Container.ui_manager],
 ) -> None:
-    logger.debug(f"Mouse moved to {post.pos}. {post.rel} {post.buttons} {post.touch}")
+    #logger.debug(f"Mouse moved to {post.pos}. {post.rel} {post.buttons} {post.touch}")
     ui_manager.hover(post.pos)
+
+
+@chief_postman.subscribe()
+@inject
+def deliver_tick_post(
+    post: TickPost,
+    ui_manager: UIManager = Provide[Container.ui_manager],
+) -> None:
+    logger.debug(f"{post}")

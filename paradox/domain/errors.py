@@ -2,6 +2,10 @@ class ParadoxError(Exception):
     ...
 
 
+class SpriteLoadError(ParadoxError):
+    ...
+
+
 class UIError(ParadoxError):
     ...
 

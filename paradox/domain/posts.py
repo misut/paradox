@@ -55,3 +55,11 @@ class MouseMotionPost(Post):
         return (
             f"Mouse moved to {self.pos} {self.rel} with buttons pressed{self.buttons}"
         )
+
+
+class TickPost(Post):
+    fps: float
+    ticks: int
+
+    def __str__(self) -> str:
+        return f"Rendering previous frame has taken {self.ticks} msecs."
