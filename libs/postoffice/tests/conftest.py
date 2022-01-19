@@ -1,6 +1,5 @@
-from pytest import fixture
-
 from postoffice import InMemoryPostbus, Postbus, Postoffice
+from pytest import fixture
 
 
 @fixture(name="postbus", scope="package")

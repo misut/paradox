@@ -8,7 +8,7 @@ from pygame.font import Font, SysFont
 
 from paradox.domain.enums import HorizontalAlignment, VerticalAlignment
 from paradox.domain.posts import Post
-from paradox.domain.uis.base import Actor, UI, fit_pos, fit_rect
+from paradox.domain.uis.base import UI, Actor, fit_pos, fit_rect
 
 
 class LayoutUI(UI):
@@ -40,6 +40,18 @@ class TextUI(UI):
         text_surface = self.font.render(self.text, False, (0, 0, 0, 255))
         text_size = text_surface.get_size()
 
-        dest = fit_pos(text_size, self.pos, self.size, self.text_horizontal_alignment, self.text_vertical_alignment)
-        rect = fit_rect(text_size, self.pos, self.size, self.text_horizontal_alignment, self.text_vertical_alignment)
+        dest = fit_pos(
+            text_size,
+            self.pos,
+            self.size,
+            self.text_horizontal_alignment,
+            self.text_vertical_alignment,
+        )
+        rect = fit_rect(
+            text_size,
+            self.pos,
+            self.size,
+            self.text_horizontal_alignment,
+            self.text_vertical_alignment,
+        )
         render_screen.blit(text_surface, dest, rect, special_flags)

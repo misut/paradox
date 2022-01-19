@@ -1,22 +1,18 @@
 import sys
 
+import pygame
 from atelier import Atelier
 from loguru import logger
 from postoffice import Postbus, Postoffice
 from pygame import Surface
 from pygame.transform import scale
-import pygame
 
-from paradox.domain import (
-    Palette,
-    LayoutUI,
-    TextUI,
-)
+import paradox
+from paradox.domain import LayoutUI, Palette, TextUI
 from paradox.interface import delivery_protocols, portraying_methods
 from paradox.interface.container import Container
 from paradox.interface.delivery_protocols import propagate_event_to_post
 from paradox.interface.settings import Settings
-import paradox
 
 
 class Engine:
@@ -48,13 +44,14 @@ class Engine:
         intro_ui = LayoutUI(pos=(0, 0), size=settings.RENDER_SIZE)
 
         sample_text = TextUI(pos=(100, 100), size=(200, 50), text="Hello, world!")
+
         @sample_text.on_hover()
         def hover_actor() -> None:
             logger.info("wow")
+
         intro_ui.allocate(sample_text)
 
         ui_manager.allocate(intro_ui)
-
 
     def initialize(self, settings: Settings) -> None:
         pygame.init()
@@ -75,13 +72,11 @@ class Engine:
 
         self.initialize_palette(settings)
         self.initialize_ui(settings)
-    
+
     def update_posts(self, postbus: Postbus, postoffice: Postoffice) -> None:
         for event in pygame.event.get():
             post = propagate_event_to_post(
-                event,
-                self.settings.RENDER_SIZE,
-                self.settings.SCREEN_SIZE
+                event, self.settings.RENDER_SIZE, self.settings.SCREEN_SIZE
             )
             if post is not None:
                 postoffice.request(post)

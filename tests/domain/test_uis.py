@@ -1,8 +1,6 @@
 from pytest import raises
 
-from paradox.domain.errors import UIAllocateError
-from paradox.domain.posts import Post
-from paradox.domain.uis.base import UI
+from paradox.domain import UI, Post, UIAllocateError
 
 
 class ThisPost(Post):
@@ -24,7 +22,7 @@ def test_allocate() -> None:
 
     bastard = UI(pos=(10, 10), size=(10, 10))
     parent.allocate(bastard)
-    
+
     assert len(parent.childs) == 2
     assert parent.childs[0] == bastard
     assert parent.childs[1] == child
@@ -36,7 +34,7 @@ def test_at() -> None:
     ui_one = UI(pos=(0, 0), size=(60, 60))
     ui.allocate(ui_one)
     assert ui.at((30, 30)) == ui_one
-    
+
     ui_two = UI(pos=(40, 40), size=(60, 60))
     ui.allocate(ui_two)
     assert ui.at((70, 70)) == ui_two
@@ -86,9 +84,11 @@ def test_actor() -> None:
     @ui.on_click()
     def click() -> ThisPost:
         return ThisPost()
+
     assert isinstance(ui.click(), ThisPost)
 
     @ui.on_hover()
     def hover() -> ThatPost:
         return ThatPost()
+
     assert isinstance(ui.hover(), ThatPost)

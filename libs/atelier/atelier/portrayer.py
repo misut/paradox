@@ -3,9 +3,8 @@ from __future__ import annotations
 from collections.abc import Callable
 from typing import Any, Concatenate, ParamSpec
 
-from pydantic import BaseModel, Field
-
 from atelier.errors import PaletteNotOccupiedError
+from pydantic import BaseModel, Field
 
 Params = ParamSpec("Params")
 PortrayingMethod = Callable[Concatenate[Any, Params], None]
@@ -23,6 +22,7 @@ class Portrayer(BaseModel):
             scene_type = portraying_method.__annotations__[params[0]]
             self.mapping[scene_type] = portraying_method
             return portraying_method
+
         return decorator
 
     def portray(self, palette: Any) -> None:

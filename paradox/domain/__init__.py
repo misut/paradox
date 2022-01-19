@@ -1,12 +1,5 @@
-from paradox.domain.errors import (
-    ParadoxError,
-    UIAllocateError,
-    UIError,
-)
-from paradox.domain.palettes import (
-    IntroPalette,
-    Palette,
-)
+from paradox.domain.errors import ParadoxError, UIAllocateError, UIError
+from paradox.domain.palettes import IntroPalette, Palette
 from paradox.domain.posts import (
     KeyDownPost,
     KeyUpPost,
@@ -16,20 +9,14 @@ from paradox.domain.posts import (
     Post,
     QuitPost,
 )
-from paradox.domain.uis import (
-    LayoutUI,
-    TextUI,
-    UI,
-)
+from paradox.domain.uis import UI, LayoutUI, TextUI
 
 __all__ = [
     "ParadoxError",
     "UIAllocateError",
     "UIError",
-
     "IntroPalette",
     "Palette",
-
     "KeyDownPost",
     "KeyUpPost",
     "MouseButtonDownPost",
@@ -37,7 +24,6 @@ __all__ = [
     "MouseMotionPost",
     "Post",
     "QuitPost",
-
     "LayoutUI",
     "TextUI",
     "UI",

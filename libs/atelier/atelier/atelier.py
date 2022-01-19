@@ -1,7 +1,6 @@
 from typing import Any
 
 from atelier.portrayer import Portrayer
-
 from pygame import Surface
 
 

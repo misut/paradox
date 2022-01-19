@@ -1,5 +1,5 @@
-from pygame.event import Event
 import pygame
+from pygame.event import Event
 
 from paradox.domain.base import ValueObject
 from paradox.domain.enums import MouseButton
@@ -52,4 +52,6 @@ class MouseMotionPost(Post):
     touch: bool
 
     def __str__(self) -> str:
-        return f"Mouse moved to {self.pos} {self.rel} with buttons pressed{self.buttons}"
+        return (
+            f"Mouse moved to {self.pos} {self.rel} with buttons pressed{self.buttons}"
+        )

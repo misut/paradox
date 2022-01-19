@@ -11,6 +11,7 @@ generate_uuid = uuid4
 def _dist(num1: Number, num2: Number) -> float:
     return (num1 ** 2 - num2 ** 2) ** (1 / 2)
 
+
 def dist(pos1: Sequence[Number], pos2: Sequence[Number]) -> float:
     return sum(map(_dist, zip(pos1, pos2)))
 

@@ -1,7 +1,7 @@
+import pygame
 from dependency_injector import containers, providers
 from postoffice import InMemoryPostbus
 from pygame import Surface
-import pygame
 
 from paradox.application import UIManager
 from paradox.domain import IntroPalette

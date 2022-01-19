@@ -1,9 +1,8 @@
 from typing import Generator
 
+from postoffice import Postman, PostNotSubscribedError
 from pydantic import BaseModel
 from pytest import fixture, raises
-
-from postoffice import Postman, PostNotSubscribedError
 
 
 class NotSubscribedPost(BaseModel):

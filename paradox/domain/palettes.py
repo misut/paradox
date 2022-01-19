@@ -1,5 +1,5 @@
-from pydantic import Field
 import pygame
+from pydantic import Field
 
 from paradox.domain.base import ValueObject
 

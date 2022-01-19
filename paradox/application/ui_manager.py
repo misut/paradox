@@ -22,7 +22,7 @@ class UIManager(BaseModel):
         clicked_ui = self.root_ui.at(pos)
         if clicked_ui is None:
             return None
-        
+
         logger.info(f"Clicked UI: {clicked_ui}")
         return clicked_ui.click()
 
@@ -32,7 +32,7 @@ class UIManager(BaseModel):
             return None
         if hovering_ui.id == self.hovering_ui.id:
             return None
-        
+
         self.hovering_ui = hovering_ui
         logger.info(f"Hovering over UI: {self.hovering_ui}")
         return self.hovering_ui.hover()

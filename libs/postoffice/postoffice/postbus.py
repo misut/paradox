@@ -8,7 +8,7 @@ class Postbus(ABC):
     @abstractmethod
     def empty(self) -> bool:
         ...
-    
+
     @abstractmethod
     def load(self, post: Any) -> None:
         ...

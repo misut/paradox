@@ -1,10 +1,10 @@
 import sys
 
+import pygame
 from dependency_injector.wiring import Provide, inject
 from loguru import logger
 from postoffice import Postman
 from pygame.event import Event
-import pygame
 
 from paradox.application import UIManager
 from paradox.domain import (
@@ -28,14 +28,12 @@ def screen_pos_to_render_pos(
 ) -> tuple[int, int]:
     return (
         int(pos[0] * (render_size[0] / screen_size[0])),
-        int(pos[1] * (render_size[1] / screen_size[1]))
+        int(pos[1] * (render_size[1] / screen_size[1])),
     )
 
 
 def propagate_event_to_post(
-    event: Event,
-    render_size: tuple[int, int],
-    screen_size: tuple[int, int]
+    event: Event, render_size: tuple[int, int], screen_size: tuple[int, int]
 ) -> Post | None:
     match event.type:
         case pygame.KEYDOWN:
@@ -50,12 +48,14 @@ def propagate_event_to_post(
             post = MouseButtonUpPost(pos=pos, button=event.button, touch=event.touch)
         case pygame.MOUSEMOTION:
             pos = screen_pos_to_render_pos(event.pos, render_size, screen_size)
-            post = MouseMotionPost(pos=pos, rel=event.rel, buttons=event.buttons, touch=event.touch)
+            post = MouseMotionPost(
+                pos=pos, rel=event.rel, buttons=event.buttons, touch=event.touch
+            )
         case pygame.QUIT:
             post = QuitPost()
         case _:
             return None
-    
+
     return post
 
 

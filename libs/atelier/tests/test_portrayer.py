@@ -1,9 +1,8 @@
 from typing import Generator
 
+from atelier import PaletteNotOccupiedError, Portrayer
 from pydantic import BaseModel
 from pytest import fixture, raises
-
-from atelier import PaletteNotOccupiedError, Portrayer
 
 
 class NotOccupiedPalette(BaseModel):

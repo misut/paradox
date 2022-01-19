@@ -1,6 +1,5 @@
-from pydantic import BaseModel
-
 from postoffice import Postbus, Postman, Postoffice
+from pydantic import BaseModel
 
 
 class RequestPost(BaseModel):
