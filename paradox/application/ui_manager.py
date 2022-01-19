@@ -26,7 +26,7 @@ class UIManager(BaseModel):
         logger.info(f"Clicked UI: {clicked_ui}")
         return clicked_ui.click()
 
-    def hover(self, pos: tuple[int, int]) -> None:
+    def hover(self, pos: tuple[int, int]) -> Post | None:
         hovering_ui = self.root_ui.at(pos)
         if hovering_ui is None:
             return None

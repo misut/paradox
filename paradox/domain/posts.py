@@ -9,26 +9,6 @@ class Post(ValueObject):
     ...
 
 
-def propagate_event_to_post(event: Event) -> Post | None:
-    match event.type:
-        case pygame.KEYDOWN:
-            post = KeyDownPost(code=event.scancode)
-        case pygame.KEYUP:
-            post = KeyUpPost(code=event.scancode)
-        case pygame.MOUSEBUTTONDOWN:
-            post = MouseButtonDownPost(pos=event.pos, button=event.button, touch=event.touch)
-        case pygame.MOUSEBUTTONUP:
-            post = MouseButtonUpPost(pos=event.pos, button=event.button, touch=event.touch)
-        case pygame.MOUSEMOTION:
-            post = MouseMotionPost(pos=event.pos, rel=event.rel, buttons=event.buttons, touch=event.touch)
-        case pygame.QUIT:
-            post = QuitPost()
-        case _:
-            return None
-    
-    return post
-
-
 class QuitPost(Post):
     ...
 

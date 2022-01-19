@@ -9,6 +9,7 @@ import pygame
 
 from paradox.domain.base import Entity
 from paradox.domain.enums import HorizontalAlignment, VerticalAlignment
+from paradox.domain.errors import UIAllocateError
 from paradox.domain.posts import Post
 
 Params = ParamSpec("Params")
@@ -111,6 +112,9 @@ class UI(Entity):
     class Config:
         arbitrary_types_allowed = True
 
+    def __eq__(self, other: UI) -> bool:
+        return self.id == other.id
+
     def __lt__(self, other: UI) -> bool:
         return self.priority < other.priority
 
@@ -149,14 +153,13 @@ class UI(Entity):
     
     def allocate(self, ui: UI) -> None:
         if not self.can_allocate(ui):
-            raise Exception(f"Failed to allocate UI({ui.__str__()}).")
+            raise UIAllocateError(f"Parent{self.size} at {self.pos}, Child{ui.size} at {ui.pos}")
 
-        overlapping_uis = [child for child in self.childs if child.overlapping(ui)]
-        if not overlapping_uis:
-            ui.priority = self.priority
-        else:
-            ui.priority = max(oui.priority for oui in overlapping_uis)
-        self.childs.append(ui)
+        overlapping_ui = self.at(ui.pos)
+        ui.priority = overlapping_ui.priority
+        
+        ui.parent = self
+        self.childs.insert(0, ui)
         self.childs.sort(reverse=True)
 
     def at(self, pos: tuple[int, int]) -> UI | None:
