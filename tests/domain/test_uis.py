@@ -82,13 +82,13 @@ def test_actor() -> None:
     assert ui.click() == ui.hover() == None
 
     @ui.on_click()
-    def click() -> ThisPost:
-        return ThisPost()
+    def click(self_ui: UI) -> list[Post]:
+        return [ThisPost()]
 
-    assert isinstance(ui.click(), ThisPost)
+    assert isinstance(ui.click()[0], ThisPost)
 
     @ui.on_hover()
-    def hover() -> ThatPost:
-        return ThatPost()
+    def hover(self_ui: UI) -> list[Post]:
+        return [ThatPost()]
 
-    assert isinstance(ui.hover(), ThatPost)
+    assert isinstance(ui.hover()[0], ThatPost)

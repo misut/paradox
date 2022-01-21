@@ -9,8 +9,7 @@ from pygame.time import Clock
 from pygame.transform import scale
 
 import paradox
-from paradox.domain import LayoutUI, Palette, QuitPost, TextUI, TickPost
-from paradox.domain.sprite import SpriteTag
+from paradox.domain import LayoutUI, Palette, Post, QuitPost, SpriteTag, TextUI, TickPost
 from paradox.infrastructure import FileSpriteRepository
 from paradox.interface import delivery_protocols, portraying_methods
 from paradox.interface.container import Container
@@ -51,18 +50,26 @@ class Engine:
         sample_text = TextUI(pos=(100, 100), size=(200, 50), text="Quit")
 
         @sample_text.on_click()
-        def click_sample_text() -> None:
-            return QuitPost()
+        def click_sample_text(self_ui: TextUI) -> list[Post]:
+            logger.info(f"Pressed {self_ui.text}")
+            return [QuitPost()]
 
         intro_ui.allocate(sample_text)
+
+        fps_count = TextUI(
+            name="fps_count",
+            pos=(0, 0),
+            size=(30, 20),
+            background_color=(0, 0, 0, 0),
+            font_size=23,
+        )
+        intro_ui.allocate(fps_count)
 
         ui_manager.allocate(intro_ui)
 
     def initialize(self, settings: Settings) -> None:
         pygame.init()
         pygame.display.set_caption("Hello, world!")
-
-        self.sprite_repo = FileSpriteRepository(settings.SPRITES_PATH)
 
         logger.remove()
         logger.add(sys.stderr, level="INFO")
@@ -89,13 +96,6 @@ class Engine:
         self.render_portrait(self.atelier, intro_palette)
 
         render_screen = self.container.render_screen()
-        sprite_slate = self.sprite_repo.get(SpriteTag.SLATE_TEST)
-        sprite_lwall = self.sprite_repo.get(SpriteTag.LWALL_TEST)
-        sprite_lwall.pos = (0, 16)
-        sprite_rwall = self.sprite_repo.get(SpriteTag.RWALL_TEST)
-        sprite_rwall.pos = (29, 16)
-        for sprite in [sprite_slate, sprite_lwall, sprite_rwall]:
-            sprite.render(render_screen, pygame.BLEND_ALPHA_SDL2)
         scaled_screen = scale(render_screen, self.settings.SCREEN_SIZE)
         self.screen.blit(scaled_screen, (0, 0))
         pygame.display.flip()

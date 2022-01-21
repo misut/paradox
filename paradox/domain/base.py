@@ -21,20 +21,14 @@ class ValueObject(BaseModel):
     class Config:
         allow_mutation = False
 
-    def __init__(self, **data: Any) -> None:
-        super().__init__(**data)
-
 
 class Entity(BaseModel):
     id: UUID = Field(default_factory=generate_uuid)
     name: str = Field(default="")
 
-    def __init__(self, **data: Any) -> None:
-        super().__init__(**data)
-
 
 class Renderable(BaseModel):
-    pos: tuple[int, int] = Field(default=(0, 0))
+    pos: tuple[int, int] = (0, 0)
     size: tuple[int, int]
 
     @property

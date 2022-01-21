@@ -7,4 +7,4 @@ from paradox.application import UIManager
 @fixture(name="ui_manager", scope="package")
 def create_ui_manager() -> UIManager:
     logger.remove()
-    yield UIManager(size=(100, 100))
+    yield UIManager(pos=(0, 0), size=(100, 100))

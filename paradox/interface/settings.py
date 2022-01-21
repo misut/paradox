@@ -11,6 +11,7 @@ class Settings(BaseSettings):
 
     ASSETS_PATH: Path
     SPRITES_PATH: Path
+    UNIVERSES_PATH: Path
 
     class Config:
         env_file = ".env"

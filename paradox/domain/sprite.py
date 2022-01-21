@@ -2,7 +2,7 @@ from abc import ABC
 from enum import Enum, unique
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import Field, validator
 from pygame import Surface
 
 from paradox.domain.base import Renderable, Updatable
@@ -25,11 +25,11 @@ class Sprite(Renderable, Updatable):
     class Config:
         arbitrary_types_allowed = True
 
-    def __init__(self, **data: Any) -> None:
-        super().__init__(**data)
-
-        if not self.surfaces:
+    @validator("surfaces")
+    def validate_surfaces(cls, surfaces: list[Surface]) -> list[Surface]:
+        if not surfaces:
             raise SpriteLoadError("Sprite must have at least a surface.")
+        return surfaces
 
     @property
     def surface(self) -> Surface:

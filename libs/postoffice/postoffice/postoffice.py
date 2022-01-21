@@ -16,7 +16,7 @@ class Postoffice:
     def hire(self, postman: Postman) -> None:
         self.chief_postman.invite(postman)
 
-    def deliver(self, post: Any) -> Any | None:
+    def deliver(self, post: Any) -> list | None:
         return self.chief_postman.deliver(post)
 
     def request(self, post: Any) -> None:
@@ -27,6 +27,9 @@ class Postoffice:
             postbus.load(self.warehouse.get())
 
         for post in postbus.unload():
-            request_post = self.deliver(post)
-            if request_post is not None:
+            request_posts = self.deliver(post)
+            if request_posts == None:
+                continue
+
+            for request_post in request_posts:
                 self.request(request_post)

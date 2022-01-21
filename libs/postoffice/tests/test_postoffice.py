@@ -14,8 +14,8 @@ def test_request_and_transport(postbus: Postbus, postoffice: Postoffice) -> None
     postman = Postman()
 
     @postman.subscribe()
-    def test_protocol(post: RequestPost) -> ResultPost:
-        return ResultPost()
+    def test_protocol(post: RequestPost) -> list[ResultPost]:
+        return [ResultPost()]
 
     postoffice.hire(postman)
     postoffice.request(RequestPost())

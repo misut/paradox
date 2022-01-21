@@ -7,13 +7,13 @@ from postoffice.errors import PostNotSubscribedError
 from pydantic import BaseModel, Field
 
 Params = ParamSpec("Params")
-DeliveryProtocol = Callable[Concatenate[Any, Params], Any | None]
+DeliveryProtocol = Callable[Concatenate[Any, Params], list | None]
 
 
 class Postman(BaseModel):
     mapping: dict[Any, DeliveryProtocol] = Field(default={})
 
-    def deliver(self, post: Any) -> Any | None:
+    def deliver(self, post: Any) -> list | None:
         post_type = type(post)
         if post_type not in self.mapping:
             raise PostNotSubscribedError(

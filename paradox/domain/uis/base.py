@@ -7,13 +7,13 @@ import pygame
 from pydantic import Field
 from pygame import Rect, Surface
 
-from paradox.domain.base import Entity, Renderable
+from paradox.domain.base import Entity, Renderable, UUID
 from paradox.domain.enums import HorizontalAlignment, VerticalAlignment
 from paradox.domain.errors import UIAllocateError
 from paradox.domain.posts import Post
 
 Params = ParamSpec("Params")
-Actor = Callable[Params, Post | None]
+Actor = Callable[["UI"], list[Post] | None]
 
 
 def align_pos(
@@ -86,7 +86,7 @@ def fit_rect(
         0 if aligned_pos[0] >= parent_pos[0] else parent_pos[0] - aligned_pos[0],
         0 if aligned_pos[1] >= parent_pos[1] else parent_pos[1] - aligned_pos[1],
         parent_size[0],
-        parent_size[1], 
+        parent_size[1],
     )
 
     return fit_rect
@@ -100,20 +100,24 @@ class UI(Entity, Renderable):
     background_color: tuple[int, int, int, int] = Field(default=(0, 0, 0, 0))
     background_image: Surface | None
 
+    # TODO: Not used
     horizontal_alignment: HorizontalAlignment = Field(
         default=HorizontalAlignment.LEFT
-    )  # TODO: Not used
+    )
+    # TODO: Not used
     vertical_alignment: VerticalAlignment = Field(
         default=VerticalAlignment.TOP
-    )  # TODO: Not used
+    )
 
-    click_action: Actor = Field(default=lambda: None)
-    hover_action: Actor = Field(default=lambda: None)
+    click_action: Actor = Field(default=lambda _: None)
+    hover_action: Actor = Field(default=lambda _: None)
 
     class Config:
         arbitrary_types_allowed = True
 
     def __eq__(self, other: UI) -> bool:
+        if not isinstance(other, UI):
+            return False
         return self.id == other.id
 
     def __lt__(self, other: UI) -> bool:
@@ -186,6 +190,27 @@ class UI(Entity, Renderable):
             return True
         return False
 
+    def get_ui_by_id(self, id: UUID) -> UI | None:
+        if self.id == id:
+            return self
+        
+        for child in self.childs:
+            ui = child.get_ui_by_id(id)
+            if ui.id == id:
+                return ui
+        
+        return None
+
+    def get_uis_by_name(self, name: str) -> list[UI]:
+        uis = []
+        if self.name == name:
+            uis.append(self)
+        
+        for child in self.childs:
+            uis.extend(child.get_uis_by_name(name))
+        
+        return uis
+
     def on_click(self) -> Callable[[Actor], Actor]:
         def decorator(listener: Actor) -> Actor:
             self.click_action = listener
@@ -200,14 +225,11 @@ class UI(Entity, Renderable):
 
         return decorator
 
-    def click(self) -> Post | None:
-        return self.click_action()
+    def click(self) -> list[Post] | None:
+        return self.click_action(self)
 
-    def hover(self) -> Post | None:
-        return self.hover_action()
-
-    def update(self) -> None:
-        ...
+    def hover(self) -> list[Post] | None:
+        return self.hover_action(self)
 
     def render(self, render_screen: Surface, special_flags: int = 0) -> None:
         super().render(render_screen, special_flags)

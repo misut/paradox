@@ -81,8 +81,8 @@ def deliver_key_up_post(post: KeyUpPost) -> None:
 def deliver_mouse_button_down_post(
     post: MouseButtonDownPost,
     ui_manager: UIManager = Provide[Container.ui_manager],
-) -> Post | None:
-    #logger.debug(f"{post.button} is pressed at {post.pos} {post.touch}")
+) -> list[Post]:
+    logger.debug(f"{post.button} is pressed at {post.pos} {post.touch}")
     return ui_manager.click(post.pos)
 
 
@@ -97,7 +97,7 @@ def deliver_mouse_motion_post(
     post: MouseMotionPost,
     ui_manager: UIManager = Provide[Container.ui_manager],
 ) -> None:
-    #logger.debug(f"Mouse moved to {post.pos}. {post.rel} {post.buttons} {post.touch}")
+    logger.debug(f"Mouse moved to {post.pos}. {post.rel} {post.buttons} {post.touch}")
     ui_manager.hover(post.pos)
 
 
@@ -108,3 +108,5 @@ def deliver_tick_post(
     ui_manager: UIManager = Provide[Container.ui_manager],
 ) -> None:
     logger.debug(f"{post}")
+    fps_count = ui_manager.get_uis_by_name("fps_count")[0]
+    fps_count.text = str(int(post.fps))
