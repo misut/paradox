@@ -1,29 +1,27 @@
 from abc import ABC
 
 from pydantic import Field
-from pygame import Surface
 
-from paradox.domain.base import Entity, Renderable, ValueObject
+from paradox.domain.base import Entity, ValueObject
 from paradox.domain.camera import Camera
 from paradox.domain.sprite import SpriteTag
 
 
 class Tile(ValueObject):
-    coo: tuple[float, float, float]
+    coo: tuple[int, int, int]
 
     lwall: SpriteTag | None
     rwall: SpriteTag | None
     slate: SpriteTag | None
 
 
-class Universe(Entity, Renderable):
-    camera: Camera = Field(default=Camera(coo=(0.0, 0.0, 0.0)))
+class Universe(Entity):
+    camera: Camera = Field(default=Camera(coo=(0.0, 0.0, 0.0), viewport=(640, 360)))
+    mapping: dict[tuple[int, int, int], Tile]
 
     def at(self, coo: tuple[float, float, float]) -> Tile:
-        raise NotImplementedError
-
-    def render(self, render_screen: Surface, special_flags: int = 0, sight: tuple[int, int, int] = (10, 10, 10)) -> None:
-        pass
+        _coo = tuple(map(int, coo))
+        return self.mapping.get(_coo, Tile(coo=_coo))
 
 
 class UniverseRepository(ABC):

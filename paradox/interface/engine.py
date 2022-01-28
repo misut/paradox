@@ -67,6 +67,15 @@ class Engine:
 
         ui_manager.allocate(intro_ui)
 
+    def initialize_universe(self, settings: Settings) -> None:
+        self.container.universes.reset()
+        self.container.universe_simulator.reset()
+
+        universes = self.container.universes()
+        universe_simulator = self.container.universe_simulator(
+            universe=universes.get("Hello, world!")
+        )
+
     def initialize(self, settings: Settings) -> None:
         pygame.init()
         pygame.display.set_caption("Hello, world!")
@@ -87,6 +96,7 @@ class Engine:
 
         self.initialize_palette(settings)
         self.initialize_ui(settings)
+        self.initialize_universe(settings)
 
     def render_portrait(self, atelier: Atelier, palette: Palette) -> None:
         atelier.portray(palette)

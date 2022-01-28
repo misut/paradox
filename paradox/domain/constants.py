@@ -1,0 +1,3 @@
+TILE_SIZE = (58, 66)
+SLATE_SIZE = (58, 33)
+WALL_SIZE = (29, 50)

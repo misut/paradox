@@ -51,5 +51,5 @@ class Sprite(Renderable, Updatable):
 
 
 class SpriteRepository(ABC):
-    def get(self, tag: SpriteTag) -> Sprite:
+    def get(self, tag: SpriteTag) -> Sprite | None:
         ...

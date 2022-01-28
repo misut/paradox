@@ -1,0 +1,29 @@
+[
+    {
+        "name": "Hello, world!",
+        "camera": {
+            "coo": [0, 0, 0],
+            "viewport": [640, 360]
+        },
+        "tiles": [
+            {
+                "coo": [0, 0, 0],
+                "lwall": "lwall:test",
+                "rwall": "rwall:test",
+                "slate": "slate:test"
+            },
+            {
+                "coo": [1, 0, 0],
+                "lwall": "lwall:test",
+                "rwall": "rwall:test",
+                "slate": "slate:test"
+            },
+            {
+                "coo": [1, 1, -1],
+                "lwall": "lwall:test",
+                "rwall": "rwall:test",
+                "slate": "slate:test"
+            }
+        ]
+    }
+]
