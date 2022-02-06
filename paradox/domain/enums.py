@@ -17,6 +17,14 @@ class MouseButton(int, Enum):
 
 
 @unique
+class Action(int, Enum):
+    LEFT = 0
+    RIGHT = 1
+    UP = 2
+    DOWN = 3
+
+
+@unique
 class HorizontalAlignment(str, Enum):
     CENTER: str = "center"
     LEFT: str = "left"

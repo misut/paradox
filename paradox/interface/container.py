@@ -3,8 +3,7 @@ from dependency_injector import containers, providers
 from postoffice import InMemoryPostbus
 from pygame import Surface
 
-from paradox.application import UIManager, UniverseSimulator
-from paradox.domain import IntroPalette
+from paradox.application import Gamepad, UIManager, UniverseSimulator
 from paradox.infrastructure import FileSpriteRepository, FileUniverseRepository
 
 
@@ -27,6 +26,9 @@ class Container(containers.DeclarativeContainer):
         config.UNIVERSES_PATH,
     )
 
+    gamepad = providers.Singleton(
+        Gamepad,
+    )
     ui_manager = providers.Singleton(
         UIManager,
         pos=(0, 0),
@@ -36,5 +38,3 @@ class Container(containers.DeclarativeContainer):
         UniverseSimulator,
         sprites=sprites.provided,
     )
-
-    intro_palette = providers.Singleton(IntroPalette)

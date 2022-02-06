@@ -4,9 +4,10 @@ import pygame
 from dependency_injector.wiring import Provide, inject
 from loguru import logger
 from postoffice import Postman
+from pygame import Surface
 from pygame.event import Event
 
-from paradox.application import UIManager
+from paradox.application import Gamepad, UIManager, UniverseSimulator
 from paradox.domain import (
     KeyDownPost,
     KeyUpPost,
@@ -67,7 +68,11 @@ def deliver_quit_post(post: QuitPost) -> None:
 
 
 @chief_postman.subscribe()
-def deliver_key_down_post(post: KeyDownPost) -> None:
+@inject
+def deliver_key_down_post(
+    post: KeyDownPost,
+    universe_simulator: UniverseSimulator = Provide[Container.universe_simulator],
+) -> None:
     logger.debug(f"{post.code} is pressed")
 
 
@@ -105,8 +110,19 @@ def deliver_mouse_motion_post(
 @inject
 def deliver_tick_post(
     post: TickPost,
+    render_screen: Surface = Provide[Container.render_screen],
+    gamepad: Gamepad = Provide[Container.gamepad],
     ui_manager: UIManager = Provide[Container.ui_manager],
+    universe_simulator: UniverseSimulator = Provide[Container.universe_simulator],
 ) -> None:
     logger.debug(f"{post}")
+
+    gamepad.poll(post.ticks)
+    universe_simulator.update(post.ticks)
+    ui_manager.update(post.ticks)
+
     fps_count = ui_manager.get_uis_by_name("fps_count")[0]
     fps_count.text = str(int(post.fps))
+
+    universe_simulator.render(render_screen, post.special_flags)
+    ui_manager.render(render_screen, post.special_flags)

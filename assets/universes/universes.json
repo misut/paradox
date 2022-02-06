@@ -23,6 +23,12 @@
                 "lwall": "lwall:test",
                 "rwall": "rwall:test",
                 "slate": "slate:test"
+            },
+            {
+                "coo": [0, 1, -1],
+                "lwall": "lwall:test",
+                "rwall": "rwall:test",
+                "slate": "slate:test"
             }
         ]
     }

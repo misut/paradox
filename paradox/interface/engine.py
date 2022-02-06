@@ -1,7 +1,6 @@
 import sys
 
 import pygame
-from atelier import Atelier
 from loguru import logger
 from postoffice import Postbus, Postoffice
 from pygame import Surface
@@ -9,9 +8,8 @@ from pygame.time import Clock
 from pygame.transform import scale
 
 import paradox
-from paradox.domain import LayoutUI, Palette, Post, QuitPost, SpriteTag, TextUI, TickPost
-from paradox.infrastructure import FileSpriteRepository
-from paradox.interface import delivery_protocols, portraying_methods
+from paradox.domain import LayoutUI, Post, QuitPost, TextUI, TickPost
+from paradox.interface import delivery_protocols
 from paradox.interface.container import Container
 from paradox.interface.delivery_protocols import propagate_event_to_post
 from paradox.interface.settings import Settings
@@ -21,7 +19,6 @@ class Engine:
     container: Container
     settings: Settings
 
-    atelier: Atelier
     postoffice: Postoffice
 
     clock: Clock
@@ -37,9 +34,6 @@ class Engine:
         self.initialize(settings)
 
         self.start()
-
-    def initialize_palette(self, settings: Settings) -> None:
-        self.container.intro_palette.reset()
 
     def initialize_ui(self, settings: Settings) -> None:
         self.container.ui_manager.reset()
@@ -83,9 +77,6 @@ class Engine:
         logger.remove()
         logger.add(sys.stderr, level="INFO")
 
-        self.atelier = Atelier()
-        self.atelier.recruit(portraying_methods.root_portrayer)
-
         self.postoffice = Postoffice()
         self.postoffice.hire(delivery_protocols.chief_postman)
 
@@ -94,17 +85,10 @@ class Engine:
             size=settings.SCREEN_SIZE,
         )
 
-        self.initialize_palette(settings)
         self.initialize_ui(settings)
         self.initialize_universe(settings)
 
-    def render_portrait(self, atelier: Atelier, palette: Palette) -> None:
-        atelier.portray(palette)
-
     def render(self) -> None:
-        intro_palette = self.container.intro_palette()
-        self.render_portrait(self.atelier, intro_palette)
-
         render_screen = self.container.render_screen()
         scaled_screen = scale(render_screen, self.settings.SCREEN_SIZE)
         self.screen.blit(scaled_screen, (0, 0))

@@ -1,18 +1,19 @@
 from itertools import product
 
 import pygame
+from pydantic import BaseModel
 from pygame import Surface
 
-from paradox.domain import Post, SpriteRepository, Universe
+from paradox.domain import SpriteRepository, Universe
+from paradox.domain.constants import *
 
 
-class UniverseSimulator:
+class UniverseSimulator(BaseModel):
     sprites: SpriteRepository
     universe: Universe
 
-    def __init__(self, sprites: SpriteRepository, universe: Universe) -> None:
-        self.sprites = sprites
-        self.universe = universe
+    class Config:
+        arbitrary_types_allowed = True
 
     def look_at(self, coo:tuple[float, float, float], zoom: float = 1.0) -> None:
         self.universe.camera.look_at(coo, zoom)
@@ -28,17 +29,17 @@ class UniverseSimulator:
             tile = self.universe.at((x, y, z))
             pixel = self.universe.camera.pixel((x, y, z))
 
-            lwall_pixel = (pixel[0] - 29, pixel[1] - 16)
+            lwall_pixel = (pixel[0] - WALL_WIDTH, pixel[1] - (TILE_HEIGHT - WALL_HEIGHT))
             lwall_sprite = self.sprites.get(tile.lwall)
             if lwall_sprite:
                 render_screen.blit(lwall_sprite.surface, lwall_pixel, None, special_flags)
 
-            rwall_pixel = (pixel[0], pixel[1] - 16)
+            rwall_pixel = (pixel[0], pixel[1] - (TILE_HEIGHT - WALL_HEIGHT))
             rwall_sprite = self.sprites.get(tile.rwall)
             if rwall_sprite:
                 render_screen.blit(rwall_sprite.surface, rwall_pixel, None, special_flags)
 
-            slate_pixel = (pixel[0] - 29, pixel[1] - 33)
+            slate_pixel = (pixel[0] - WALL_WIDTH, pixel[1] - SLATE_HEIGHT)
             slate_sprite = self.sprites.get(tile.slate)
             if slate_sprite:
                 render_screen.blit(slate_sprite.surface, slate_pixel, None, special_flags)
@@ -51,9 +52,6 @@ class UniverseSimulator:
         render_screen.blit(background, (0, 0), None, special_flags)
 
         self.render_universe(render_screen, special_flags)
-
-    def simulate(self, post: Post) -> None:
-        ...
 
     def update(self, ticks: int) -> None:
         ...
