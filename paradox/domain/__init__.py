@@ -4,14 +4,19 @@ from paradox.domain.constants import *
 from paradox.domain.enums import HorizontalAlignment, MouseButton, VerticalAlignment
 from paradox.domain.errors import ParadoxError, UIAllocateError, UIError
 from paradox.domain.posts import (
-    KeyDownPost,
-    KeyUpPost,
-    MouseButtonDownPost,
-    MouseButtonUpPost,
+    Action,
+    ActionPost,
+    ActionType,
+    EventPost,
+    EventType,
+    KeyEventPost,
+    MouseButton,
+    MouseEventPost,
     MouseMotionPost,
     Post,
     QuitPost,
     TickPost,
+    __all__ as all_posts,
 )
 from paradox.domain.sprite import Sprite, SpriteRepository, SpriteTag
 from paradox.domain.uis import UI, LayoutUI, TextUI
@@ -26,19 +31,10 @@ __all__ = [
     "generate_uuid",
     "Camera",
     "HorizontalAlignment",
-    "MouseButton",
     "VerticalAlignment",
     "ParadoxError",
     "UIAllocateError",
     "UIError",
-    "KeyDownPost",
-    "KeyUpPost",
-    "MouseButtonDownPost",
-    "MouseButtonUpPost",
-    "MouseMotionPost",
-    "Post",
-    "QuitPost",
-    "TickPost",
     "Sprite",
     "SpriteTag",
     "SpriteRepository",
@@ -49,3 +45,5 @@ __all__ = [
     "Universe",
     "UniverseRepository",
 ]
+
+__all__.extend(all_posts)

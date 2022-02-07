@@ -1,11 +1,9 @@
-from paradox.interface import Engine, Settings
-
-
-def load_settings() -> Settings:
-    return Settings()
+from paradox.interface import Engine, BaseSettings, GamepadSettings, GraphicSettings
 
 
 if __name__ == "__main__":
-    settings = load_settings()
-
-    engine = Engine(settings=settings)
+    engine = Engine(
+        base_settings=BaseSettings(),
+        gamepad_settings=GamepadSettings(),
+        graphic_settings=GraphicSettings(),
+    )

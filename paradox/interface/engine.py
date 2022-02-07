@@ -11,35 +11,47 @@ import paradox
 from paradox.domain import LayoutUI, Post, QuitPost, TextUI, TickPost
 from paradox.interface import delivery_protocols
 from paradox.interface.container import Container
-from paradox.interface.delivery_protocols import propagate_event_to_post
-from paradox.interface.settings import Settings
+from paradox.interface.gamepad import Gamepad
+from paradox.interface.settings import BaseSettings, GamepadSettings, GraphicSettings
 
 
 class Engine:
     container: Container
-    settings: Settings
+    base_settings: BaseSettings
+    gamepad_settings: GamepadSettings
+    graphic_settings: GraphicSettings
 
+    gamepad: Gamepad
     postoffice: Postoffice
 
     clock: Clock
     screen: Surface
 
-    def __init__(self, settings: Settings) -> None:
-        self.settings = settings
+    def __init__(
+        self,
+        base_settings: BaseSettings,
+        gamepad_settings: GamepadSettings,
+        graphic_settings: GraphicSettings,
+    ) -> None:
+        self.base_settings = base_settings
+        self.gamepad_settings = gamepad_settings
+        self.graphic_settings = graphic_settings
 
         self.container = Container()
-        self.container.config.from_pydantic(settings)
+        self.container.base_config.from_pydantic(base_settings)
+        self.container.gamepad_config.from_pydantic(gamepad_settings)
+        self.container.graphic_config.from_pydantic(graphic_settings)
         self.container.wire(packages=[paradox])
 
-        self.initialize(settings)
+        self.initialize()
 
         self.start()
 
-    def initialize_ui(self, settings: Settings) -> None:
+    def initialize_ui(self) -> None:
         self.container.ui_manager.reset()
         ui_manager = self.container.ui_manager()
 
-        intro_ui = LayoutUI(pos=(0, 0), size=settings.RENDER_SIZE)
+        intro_ui = LayoutUI(pos=(0, 0), size=self.graphic_settings.RENDER_SIZE)
 
         sample_text = TextUI(pos=(100, 100), size=(200, 50), text="Quit")
 
@@ -61,7 +73,7 @@ class Engine:
 
         ui_manager.allocate(intro_ui)
 
-    def initialize_universe(self, settings: Settings) -> None:
+    def initialize_universe(self) -> None:
         self.container.universes.reset()
         self.container.universe_simulator.reset()
 
@@ -70,50 +82,48 @@ class Engine:
             universe=universes.get("Hello, world!")
         )
 
-    def initialize(self, settings: Settings) -> None:
+    def initialize(self) -> None:
         pygame.init()
         pygame.display.set_caption("Hello, world!")
 
         logger.remove()
         logger.add(sys.stderr, level="INFO")
 
+        self.gamepad = Gamepad(self.gamepad_settings, self.graphic_settings)
+
         self.postoffice = Postoffice()
         self.postoffice.hire(delivery_protocols.chief_postman)
 
         self.clock = Clock()
         self.screen = pygame.display.set_mode(
-            size=settings.SCREEN_SIZE,
+            size=self.graphic_settings.SCREEN_SIZE,
         )
 
-        self.initialize_ui(settings)
-        self.initialize_universe(settings)
+        self.initialize_ui()
+        self.initialize_universe()
 
     def render(self) -> None:
         render_screen = self.container.render_screen()
-        scaled_screen = scale(render_screen, self.settings.SCREEN_SIZE)
+        scaled_screen = scale(render_screen, self.graphic_settings.SCREEN_SIZE)
         self.screen.blit(scaled_screen, (0, 0))
         pygame.display.flip()
 
-    def update_posts(self, postbus: Postbus, postoffice: Postoffice) -> None:
-        for event in pygame.event.get():
-            post = propagate_event_to_post(
-                event, self.settings.RENDER_SIZE, self.settings.SCREEN_SIZE
-            )
-            if post is not None:
-                postoffice.request(post)
-
-        post = TickPost(
+    def update_posts(self, postbus: Postbus) -> None:
+        tick_post = TickPost(
             fps=self.clock.get_fps(),
             ticks=self.clock.get_time(),
         )
-        postoffice.request(post)
+        self.postoffice.request(tick_post)
 
-        postoffice.transport(postbus)
+        for action_post in self.gamepad.update(tick_post.ticks):
+            self.postoffice.request(action_post)
+
+        self.postoffice.transport(postbus)
 
     def update(self) -> None:
         postbus = self.container.postbus()
 
-        self.update_posts(postbus, self.postoffice)
+        self.update_posts(postbus)
 
     def start(self) -> None:
         while True:
