@@ -284,7 +284,6 @@ class UI(Entity, Renderable, Updatable):
         return self.hover_off_action(self)
 
     def render(self, render_screen: Surface, special_flags: int = 0) -> None:
-        super().render(render_screen, special_flags)
         render_screen.blit(
             source=self.background, dest=self.pos, special_flags=special_flags
         )

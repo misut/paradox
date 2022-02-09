@@ -17,6 +17,7 @@ from paradox.domain.posts import (
     TickPost,
     __all__ as all_posts,
 )
+from paradox.domain.scene_no import SceneNo
 from paradox.domain.sprite import Sprite, SpriteRepository, SpriteTag
 from paradox.domain.uis import UI, LayoutUI, TextUI
 from paradox.domain.universe import Tile, Universe, UniverseRepository
@@ -32,6 +33,7 @@ __all__ = [
     "ParadoxError",
     "UIAllocateError",
     "UIError",
+    "SceneNo",
     "Sprite",
     "SpriteTag",
     "SpriteRepository",

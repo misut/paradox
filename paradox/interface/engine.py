@@ -8,7 +8,8 @@ from pygame.time import Clock
 from pygame.transform import scale
 
 import paradox
-from paradox.domain import LayoutUI, Post, QuitPost, TextUI, TickPost
+from paradox.application import film_director, paradox_director
+from paradox.domain import SceneNo, TextUI, TickPost
 from paradox.interface import delivery_protocols
 from paradox.interface.container import Container
 from paradox.interface.gamepad import Gamepad
@@ -47,37 +48,13 @@ class Engine:
 
         self.start()
 
-    def initialize_ui(self) -> None:
-        self.container.ui_manager.reset()
+    def initialize_film_director(self) -> None:
+        film_director = self.container.film_director()
         ui_manager = self.container.ui_manager()
+        universe_simulator = self.container.universe_simulator()
 
-        intro_ui = LayoutUI(pos=(0, 0), size=self.graphic_settings.RENDER_SIZE)
-
-        quit_button = TextUI(
-            name="quit_button",
-            pos=(0, 320),
-            size=(100, 40),
-            background_color=(255, 255, 255, 0),
-            font_size=31,
-            text="Quit",
-        )
-
-        @quit_button.off_click()
-        def click_off_quit_button(self_ui: TextUI) -> list[Post]:
-            logger.info(f"Clicked {self_ui.text}")
-            return [QuitPost()]
-
-        @quit_button.on_hover()
-        def hover_on_quit_button(self_ui: TextUI) -> list[Post]:
-            self_ui.background_color = (255, 255, 255, 32)
-            return []
-
-        @quit_button.off_hover()
-        def hover_off_quit_button(self_ui: TextUI) -> list[Post]:
-            self_ui.background_color = (255, 255, 255, 0)
-            return []
-
-        intro_ui.allocate(quit_button)
+        film_director.collaborate(paradox_director)
+        film_director.shoot(SceneNo.INTRO, ui_manager, universe_simulator)
 
         fps_count = TextUI(
             name="fps_count",
@@ -92,9 +69,10 @@ class Engine:
         def cycle_fps_count(self_ui: TextUI) -> None:
             self_ui.text = str(int(self.clock.get_fps()))
 
-        intro_ui.allocate(fps_count)
+        ui_manager.allocate(fps_count)
 
-        ui_manager.allocate(intro_ui)
+    def initialize_ui(self) -> None:
+        pass
 
     def initialize_universe(self) -> None:
         self.container.universes.reset()
@@ -124,6 +102,7 @@ class Engine:
 
         self.initialize_ui()
         self.initialize_universe()
+        self.initialize_film_director()
 
     def render(self) -> None:
         render_screen = self.container.render_screen()
