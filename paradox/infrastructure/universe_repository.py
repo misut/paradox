@@ -1,7 +1,6 @@
 import json
 from pathlib import Path
 
-from loguru import logger
 from pydantic import BaseModel, Field
 
 from paradox.domain import Camera, Tile, Universe, UniverseRepository
@@ -28,9 +27,7 @@ class FileUniverseRepository(UniverseRepository):
             mapping[tile.coo] = tile
 
         return Universe(
-            name=universe_file.name,
-            camera=universe_file.camera,
-            mapping=mapping
+            name=universe_file.name, camera=universe_file.camera, mapping=mapping
         )
 
     def load_universes(self) -> None:
@@ -41,6 +38,6 @@ class FileUniverseRepository(UniverseRepository):
         for universe_file_dict in universe_file_dicts:
             universe_file = UniverseFile.parse_obj(universe_file_dict)
             self.universes[universe_file.name] = self.from_file(universe_file)
-    
+
     def get(self, name: str) -> Universe | None:
         return self.universes.get(name, None)

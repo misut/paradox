@@ -8,7 +8,7 @@ import pygame
 from pydantic import Field
 from pygame import Rect, Surface
 
-from paradox.domain.base import Entity, Renderable, Updatable, UUID
+from paradox.domain.base import UUID, Entity, Renderable, Updatable
 from paradox.domain.errors import UIAllocateError
 from paradox.domain.posts import Post
 
@@ -115,13 +115,9 @@ class UI(Entity, Renderable, Updatable):
     background_image: Surface | None
 
     # TODO: Not used
-    horizontal_alignment: HorizontalAlignment = Field(
-        default=HorizontalAlignment.LEFT
-    )
+    horizontal_alignment: HorizontalAlignment = Field(default=HorizontalAlignment.LEFT)
     # TODO: Not used
-    vertical_alignment: VerticalAlignment = Field(
-        default=VerticalAlignment.TOP
-    )
+    vertical_alignment: VerticalAlignment = Field(default=VerticalAlignment.TOP)
 
     click_on_action: Actor = Field(default=lambda _: [])
     click_off_action: Actor = Field(default=lambda _: [])
@@ -215,22 +211,22 @@ class UI(Entity, Renderable, Updatable):
     def get_ui_by_id(self, id: UUID) -> UI | None:
         if self.id == id:
             return self
-        
+
         for child in self.childs:
             ui = child.get_ui_by_id(id)
             if ui.id == id:
                 return ui
-        
+
         return None
 
     def get_uis_by_name(self, name: str) -> list[UI]:
         uis = []
         if self.name == name:
             uis.append(self)
-        
+
         for child in self.childs:
             uis.extend(child.get_uis_by_name(name))
-        
+
         return uis
 
     def on_click(self) -> Callable[[Actor], Actor]:
@@ -251,7 +247,7 @@ class UI(Entity, Renderable, Updatable):
         def decorator(listener: Actor) -> Actor:
             self.cycle_action = listener
             return listener
-        
+
         return decorator
 
     def on_hover(self) -> Callable[[Actor], Actor]:

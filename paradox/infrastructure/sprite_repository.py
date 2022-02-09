@@ -2,7 +2,6 @@ import json
 from pathlib import Path
 
 import pygame
-from loguru import logger
 from pydantic import BaseModel
 from pygame import Rect, Surface
 

@@ -1,4 +1,11 @@
-from paradox.domain.base import Entity, Renderable, Updatable, UUID, ValueObject, generate_uuid
+from paradox.domain.base import (
+    UUID,
+    Entity,
+    Renderable,
+    Updatable,
+    ValueObject,
+    generate_uuid,
+)
 from paradox.domain.camera import Camera
 from paradox.domain.constants import *
 from paradox.domain.errors import ParadoxError, UIAllocateError, UIError
@@ -15,8 +22,8 @@ from paradox.domain.posts import (
     Post,
     QuitPost,
     TickPost,
-    __all__ as all_posts,
 )
+from paradox.domain.posts import __all__ as all_posts
 from paradox.domain.scene_no import SceneNo
 from paradox.domain.sprite import Sprite, SpriteRepository, SpriteTag
 from paradox.domain.uis import UI, LayoutUI, TextUI

@@ -24,7 +24,12 @@ class FilmDirector(BaseModel):
 
         return decorator
 
-    def shoot(self, scene_no: SceneNo, ui_manager: UIManager, universe_simulator: UniverseSimulator) -> list[Post]:
+    def shoot(
+        self,
+        scene_no: SceneNo,
+        ui_manager: UIManager,
+        universe_simulator: UniverseSimulator,
+    ) -> list[Post]:
         scene = self.reel.get(scene_no, None)
         if scene == None:
             return []

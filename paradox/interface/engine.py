@@ -8,7 +8,7 @@ from pygame.time import Clock
 from pygame.transform import scale
 
 import paradox
-from paradox.application import film_director, paradox_director
+from paradox.application import paradox_director
 from paradox.domain import SceneNo, TextUI, TickPost
 from paradox.interface import delivery_protocols
 from paradox.interface.container import Container

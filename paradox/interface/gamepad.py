@@ -1,9 +1,16 @@
 import pygame
-from loguru import logger
 from pydantic import BaseModel, Field
 from pygame.event import Event as PygameEvent
 
-from paradox.domain.posts import Action, ActionPost, ActionType, EventType, MouseEventPost, MouseMotionPost, QuitPost
+from paradox.domain.posts import (
+    Action,
+    ActionPost,
+    ActionType,
+    EventType,
+    MouseEventPost,
+    MouseMotionPost,
+    QuitPost,
+)
 from paradox.interface.settings import GamepadSettings, GraphicSettings
 
 
@@ -25,8 +32,12 @@ class Gamepad(BaseModel):
     mapping: dict[int, Action] = Field(default={})
     scanning: dict[Action, int] = Field(default={})
 
-    def __init__(self, gamepad_settings: GamepadSettings, graphic_settings: GraphicSettings) -> None:
-        super().__init__(gamepad_settings=gamepad_settings, graphic_settings=graphic_settings)
+    def __init__(
+        self, gamepad_settings: GamepadSettings, graphic_settings: GraphicSettings
+    ) -> None:
+        super().__init__(
+            gamepad_settings=gamepad_settings, graphic_settings=graphic_settings
+        )
 
         for action_str, code in gamepad_settings:
             action = Action[action_str]
@@ -35,8 +46,20 @@ class Gamepad(BaseModel):
 
     def fit_screen_pos_into_render_pos(self, pos: tuple[int, int]) -> tuple[int, int]:
         return (
-            int(pos[0] * (self.graphic_settings.RENDER_SIZE[0] / self.graphic_settings.SCREEN_SIZE[0])),
-            int(pos[1] * (self.graphic_settings.RENDER_SIZE[1] / self.graphic_settings.SCREEN_SIZE[1])),
+            int(
+                pos[0]
+                * (
+                    self.graphic_settings.RENDER_SIZE[0]
+                    / self.graphic_settings.SCREEN_SIZE[0]
+                )
+            ),
+            int(
+                pos[1]
+                * (
+                    self.graphic_settings.RENDER_SIZE[1]
+                    / self.graphic_settings.SCREEN_SIZE[1]
+                )
+            ),
         )
 
     def _propagate(self, event: PygameEvent) -> ActionPost | None:
@@ -63,9 +86,8 @@ class Gamepad(BaseModel):
                 post = QuitPost()
             case _:
                 return None
-        
-        return post
 
+        return post
 
     def propagate(self) -> list[ActionPost]:
         action_posts = []
@@ -76,9 +98,8 @@ class Gamepad(BaseModel):
                 continue
 
             action_posts.append(action_post)
-        
+
         return action_posts
-    
 
     def poll(self, ticks: int) -> list[ActionPost]:
         action_posts = []
@@ -111,7 +132,7 @@ class Gamepad(BaseModel):
                 )
                 action_posts.append(action_post)
                 continue
-            
+
             action_post = ActionPost(
                 action=action,
                 type=ActionType.RELEASED,
@@ -119,7 +140,7 @@ class Gamepad(BaseModel):
             )
             action_posts.append(action_post)
             self.scanning[action] = 0
-        
+
         return action_posts
 
     def update(self, ticks: int) -> list[ActionPost]:

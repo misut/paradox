@@ -1,6 +1,5 @@
 from collections.abc import Sequence
 from numbers import Number
-from typing import Any
 from uuid import UUID, uuid4
 
 from pydantic import BaseModel, Field
@@ -69,10 +68,10 @@ class Updatable(BaseModel):
     def update(self, ticks: int) -> None:
         if self.cycletime == 0:
             return
-        
+
         self.hourglass += ticks
         if self.hourglass < self.cycletime:
             return
-        
+
         self.hourglass -= self.cycletime
         self.cycle()

@@ -1,5 +1,4 @@
-from paradox.interface import Engine, BaseSettings, GamepadSettings, GraphicSettings
-
+from paradox.interface import BaseSettings, Engine, GamepadSettings, GraphicSettings
 
 if __name__ == "__main__":
     engine = Engine(

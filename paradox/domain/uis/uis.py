@@ -4,7 +4,13 @@ from pydantic import Field
 from pygame import Surface
 from pygame.font import Font, SysFont
 
-from paradox.domain.uis.base import UI, fit_pos, fit_rect, HorizontalAlignment, VerticalAlignment
+from paradox.domain.uis.base import (
+    UI,
+    HorizontalAlignment,
+    VerticalAlignment,
+    fit_pos,
+    fit_rect,
+)
 
 
 class LayoutUI(UI):

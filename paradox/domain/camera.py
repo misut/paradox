@@ -27,10 +27,10 @@ class Camera(Entity):
     def look_at(self, coo: tuple[float, float, float], zoom: float = 1.0) -> None:
         self.coo = coo
         self.zoom = zoom
-    
+
     def pixel(self, coo: tuple[float, float, float]) -> tuple[int, int]:
         diff = (coo[0] - self.coo[0], coo[1] - self.coo[1], coo[2] - self.coo[2])
         return (
             self.viewport[0] // 2 + 29 * (diff[0] - diff[1]),
-            self.viewport[1] // 2 + 16 * (diff[0] + diff[1]) - 33 * diff[2]
+            self.viewport[1] // 2 + 16 * (diff[0] + diff[1]) - 33 * diff[2],
         )

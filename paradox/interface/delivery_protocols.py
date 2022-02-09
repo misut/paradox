@@ -10,7 +10,6 @@ from paradox.application import UIManager, UniverseSimulator
 from paradox.domain import (
     ActionPost,
     EventType,
-    MouseButton,
     MouseEventPost,
     MouseMotionPost,
     Post,
@@ -29,9 +28,7 @@ def deliver_quit_post(post: QuitPost) -> None:
 
 
 @chief_postman.subscribe()
-def deliver_action_post(
-    post: ActionPost
-) -> list[Post]:
+def deliver_action_post(post: ActionPost) -> list[Post]:
     logger.info(post)
 
 

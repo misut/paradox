@@ -1,10 +1,8 @@
-from typing import Any
-
 from loguru import logger
 from pydantic import BaseModel
 from pygame import Surface
 
-from paradox.domain import Post, UI, UUID
+from paradox.domain import UI, UUID, Post
 
 
 class UIManager(BaseModel):
@@ -60,12 +58,12 @@ class UIManager(BaseModel):
         if self.hovering_ui:
             posts.extend(self.hovering_ui.hover_off())
             logger.info(f"Hovering out of UI: {hovering_ui.name}({hovering_ui.id})")
-        
+
         self.hovering_ui = hovering_ui
         if self.hovering_ui:
             posts.extend(self.hovering_ui.hover_on())
             logger.info(f"Hovering over UI: {hovering_ui.name}({hovering_ui.id})")
-        
+
         return posts
 
     def render(self, render_screen: Surface, special_flags: int = 0) -> None:
