@@ -1,7 +1,6 @@
 from paradox.domain.base import Entity, Renderable, Updatable, UUID, ValueObject, generate_uuid
 from paradox.domain.camera import Camera
 from paradox.domain.constants import *
-from paradox.domain.enums import HorizontalAlignment, MouseButton, VerticalAlignment
 from paradox.domain.errors import ParadoxError, UIAllocateError, UIError
 from paradox.domain.posts import (
     Action,
@@ -30,8 +29,6 @@ __all__ = [
     "ValueObject",
     "generate_uuid",
     "Camera",
-    "HorizontalAlignment",
-    "VerticalAlignment",
     "ParadoxError",
     "UIAllocateError",
     "UIError",

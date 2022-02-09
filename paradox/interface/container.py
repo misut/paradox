@@ -3,7 +3,7 @@ from dependency_injector import containers, providers
 from postoffice import InMemoryPostbus
 from pygame import Surface
 
-from paradox.application import FilmMaker, UIManager, UniverseSimulator
+from paradox.application import FilmDirector, UIManager, UniverseSimulator, film_director
 from paradox.infrastructure import FileSpriteRepository, FileUniverseRepository
 
 
@@ -36,4 +36,10 @@ class Container(containers.DeclarativeContainer):
     universe_simulator = providers.Singleton(
         UniverseSimulator,
         sprites=sprites.provided,
+    )
+
+    film_director = providers.Singleton(
+        FilmDirector,
+        ui_manager=ui_manager.provided,
+        universe_simulator=universe_simulator.provided,
     )

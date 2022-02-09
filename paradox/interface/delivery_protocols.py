@@ -43,8 +43,9 @@ def deliver_mouse_event_post(
 ) -> list[Post]:
     if post.type == EventType.UP:
         logger.debug(f"{post.button} is released at {post.pos}")
-        return []
-    return ui_manager.click(post.pos)
+        return ui_manager.click_off(post.pos)
+    logger.debug(f"{post.button} is pressed at {post.pos}")
+    return ui_manager.click_on(post.pos)
 
 
 @chief_postman.subscribe()
@@ -69,9 +70,6 @@ def deliver_tick_post(
 
     universe_simulator.update(post.ticks)
     ui_manager.update(post.ticks)
-
-    fps_count = ui_manager.get_uis_by_name("fps_count")[0]
-    fps_count.text = str(int(post.fps))
 
     universe_simulator.render(render_screen, post.special_flags)
     ui_manager.render(render_screen, post.special_flags)

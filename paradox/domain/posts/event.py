@@ -1,9 +1,5 @@
 from enum import Enum, unique
 
-import pygame
-from pydantic import Field
-
-from paradox.domain.enums import MouseButton
 from paradox.domain.posts.base import Post
 
 

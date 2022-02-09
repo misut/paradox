@@ -1,14 +1,10 @@
 from __future__ import annotations
 
-from collections.abc import Callable
-
 from pydantic import Field
 from pygame import Surface
 from pygame.font import Font, SysFont
 
-from paradox.domain.enums import HorizontalAlignment, VerticalAlignment
-from paradox.domain.posts import Post
-from paradox.domain.uis.base import UI, Actor, fit_pos, fit_rect
+from paradox.domain.uis.base import UI, fit_pos, fit_rect, HorizontalAlignment, VerticalAlignment
 
 
 class LayoutUI(UI):

@@ -47,6 +47,12 @@ class Gamepad(BaseModel):
                     pos=self.fit_screen_pos_into_render_pos(event.pos),
                     button=event.button,
                 )
+            case pygame.MOUSEBUTTONUP:
+                post = MouseEventPost(
+                    type=EventType.UP,
+                    pos=self.fit_screen_pos_into_render_pos(event.pos),
+                    button=event.button,
+                )
             case pygame.MOUSEMOTION:
                 post = MouseMotionPost(
                     pos=self.fit_screen_pos_into_render_pos(event.pos),

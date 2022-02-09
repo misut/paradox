@@ -60,7 +60,19 @@ class Renderable(BaseModel):
 
 
 class Updatable(BaseModel):
+    cycletime: int = Field(default=0)  # in millisecond
     hourglass: int = Field(default=0)  # in millisecond
 
+    def cycle(self) -> None:
+        pass
+
     def update(self, ticks: int) -> None:
+        if self.cycletime == 0:
+            return
+        
         self.hourglass += ticks
+        if self.hourglass < self.cycletime:
+            return
+        
+        self.hourglass -= self.cycletime
+        self.cycle()

@@ -53,22 +53,45 @@ class Engine:
 
         intro_ui = LayoutUI(pos=(0, 0), size=self.graphic_settings.RENDER_SIZE)
 
-        sample_text = TextUI(pos=(100, 100), size=(200, 50), text="Quit")
+        quit_button = TextUI(
+            name="quit_button",
+            pos=(0, 320),
+            size=(100, 40),
+            background_color=(255, 255, 255, 0),
+            font_size=31,
+            text="Quit",
+        )
 
-        @sample_text.on_click()
-        def click_sample_text(self_ui: TextUI) -> list[Post]:
-            logger.info(f"Pressed {self_ui.text}")
+        @quit_button.off_click()
+        def click_off_quit_button(self_ui: TextUI) -> list[Post]:
+            logger.info(f"Clicked {self_ui.text}")
             return [QuitPost()]
 
-        intro_ui.allocate(sample_text)
+        @quit_button.on_hover()
+        def hover_on_quit_button(self_ui: TextUI) -> list[Post]:
+            self_ui.background_color = (255, 255, 255, 32)
+            return []
+
+        @quit_button.off_hover()
+        def hover_off_quit_button(self_ui: TextUI) -> list[Post]:
+            self_ui.background_color = (255, 255, 255, 0)
+            return []
+
+        intro_ui.allocate(quit_button)
 
         fps_count = TextUI(
             name="fps_count",
             pos=(0, 0),
             size=(30, 20),
+            cycletime=100,
             background_color=(0, 0, 0, 0),
             font_size=23,
         )
+
+        @fps_count.on_cycle()
+        def cycle_fps_count(self_ui: TextUI) -> None:
+            self_ui.text = str(int(self.clock.get_fps()))
+
         intro_ui.allocate(fps_count)
 
         ui_manager.allocate(intro_ui)
@@ -115,7 +138,7 @@ class Engine:
         )
         self.postoffice.request(tick_post)
 
-        for action_post in self.gamepad.update(tick_post.ticks):
+        for action_post in self.gamepad.update(self.clock.get_time()):
             self.postoffice.request(action_post)
 
         self.postoffice.transport(postbus)

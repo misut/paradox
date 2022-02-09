@@ -1,19 +1,19 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+from enum import Enum, unique
 from typing import ParamSpec
 
 import pygame
 from pydantic import Field
 from pygame import Rect, Surface
 
-from paradox.domain.base import Entity, Renderable, UUID
-from paradox.domain.enums import HorizontalAlignment, VerticalAlignment
+from paradox.domain.base import Entity, Renderable, Updatable, UUID
 from paradox.domain.errors import UIAllocateError
 from paradox.domain.posts import Post
 
 Params = ParamSpec("Params")
-Actor = Callable[["UI"], list[Post] | None]
+Actor = Callable[["UI"], list[Post]]
 
 
 def align_pos(
@@ -92,7 +92,21 @@ def fit_rect(
     return fit_rect
 
 
-class UI(Entity, Renderable):
+@unique
+class HorizontalAlignment(str, Enum):
+    CENTER: str = "center"
+    LEFT: str = "left"
+    RIGHT: str = "right"
+
+
+@unique
+class VerticalAlignment(str, Enum):
+    BOTTOM: str = "bottom"
+    MIDDLE: str = "middle"
+    TOP: str = "top"
+
+
+class UI(Entity, Renderable, Updatable):
     childs: list[UI] = Field(default=[])
     parent: UI | None
     priority: int = Field(default=0)
@@ -109,8 +123,11 @@ class UI(Entity, Renderable):
         default=VerticalAlignment.TOP
     )
 
-    click_action: Actor = Field(default=lambda _: None)
-    hover_action: Actor = Field(default=lambda _: None)
+    click_on_action: Actor = Field(default=lambda _: [])
+    click_off_action: Actor = Field(default=lambda _: [])
+    cycle_action: Actor = Field(default=lambda _: [])
+    hover_on_action: Actor = Field(default=lambda _: [])
+    hover_off_action: Actor = Field(default=lambda _: [])
 
     class Config:
         arbitrary_types_allowed = True
@@ -160,6 +177,11 @@ class UI(Entity, Renderable):
             return False
 
         return True
+
+    def clear(self) -> None:
+        for child in self.childs:
+            child.clear()
+        self.childs.clear()
 
     def embracing(self, ui: UI) -> bool:
         if ui.left < self.left:
@@ -213,23 +235,53 @@ class UI(Entity, Renderable):
 
     def on_click(self) -> Callable[[Actor], Actor]:
         def decorator(listener: Actor) -> Actor:
-            self.click_action = listener
+            self.click_on_action = listener
             return listener
 
+        return decorator
+
+    def off_click(self) -> Callable[[Actor], Actor]:
+        def decorator(listener: Actor) -> Actor:
+            self.click_off_action = listener
+            return listener
+
+        return decorator
+
+    def on_cycle(self) -> Callable[[Actor], Actor]:
+        def decorator(listener: Actor) -> Actor:
+            self.cycle_action = listener
+            return listener
+        
         return decorator
 
     def on_hover(self) -> Callable[[Actor], Actor]:
         def decorator(listener: Actor) -> Actor:
-            self.hover_action = listener
+            self.hover_on_action = listener
             return listener
 
         return decorator
 
-    def click(self) -> list[Post] | None:
-        return self.click_action(self)
+    def off_hover(self) -> Callable[[Actor], Actor]:
+        def decorator(listener: Actor) -> Actor:
+            self.hover_off_action = listener
+            return listener
 
-    def hover(self) -> list[Post] | None:
-        return self.hover_action(self)
+        return decorator
+
+    def click_on(self) -> list[Post]:
+        return self.click_on_action(self)
+
+    def click_off(self) -> list[Post]:
+        return self.click_off_action(self)
+
+    def cycle(self) -> None:
+        self.cycle_action(self)
+
+    def hover_on(self) -> list[Post]:
+        return self.hover_on_action(self)
+
+    def hover_off(self) -> list[Post]:
+        return self.hover_off_action(self)
 
     def render(self, render_screen: Surface, special_flags: int = 0) -> None:
         super().render(render_screen, special_flags)
@@ -239,3 +291,8 @@ class UI(Entity, Renderable):
 
         for child in self.childs:
             child.render(render_screen, special_flags)
+
+    def update(self, ticks: int) -> None:
+        for child in self.childs:
+            child.update(ticks)
+        super().update(ticks)
