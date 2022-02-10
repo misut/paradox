@@ -27,6 +27,7 @@ class TextUI(UI):
     text_horizontal_alignment: HorizontalAlignment = Field(default="center")
     text_vertical_alignment: VerticalAlignment = Field(default="middle")
 
+    font_color: tuple[int, int, int, int] = Field(default=(0, 0, 0, 255))
     font_face: str = Field(default="")
     font_size: int = Field(default=40)
     bold: bool = Field(default=False)
@@ -39,7 +40,7 @@ class TextUI(UI):
     def render(self, render_screen: Surface, special_flags: int = 0) -> None:
         super().render(render_screen, special_flags)
 
-        text_surface = self.font.render(self.text, False, (0, 0, 0, 255))
+        text_surface = self.font.render(self.text, False, self.font_color)
         text_size = text_surface.get_size()
 
         dest = fit_pos(

@@ -5,10 +5,10 @@ from paradox.application.ui_manager import UIManager
 from paradox.application.universe_simulator import UniverseSimulator
 from paradox.domain import LayoutUI, Post, QuitPost, SceneNo, TextUI
 
-paradox_director = FilmDirector()
+intro_director = FilmDirector()
 
 
-@paradox_director.take(SceneNo.INTRO)
+@intro_director.take(SceneNo.INTRO)
 def intro_scene(ui_manager: UIManager, universe_simulator: UniverseSimulator) -> Post:
     ui_manager.clear()
     universe_simulator.pause()

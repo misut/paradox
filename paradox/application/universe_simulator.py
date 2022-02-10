@@ -1,7 +1,7 @@
 from itertools import product
 
 import pygame
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from pygame import Surface
 
 from paradox.domain import SpriteRepository, Universe
@@ -12,11 +12,19 @@ class UniverseSimulator(BaseModel):
     sprites: SpriteRepository
     universe: Universe
 
+    paused: bool = Field(default=False)
+
     class Config:
         arbitrary_types_allowed = True
 
     def look_at(self, coo: tuple[float, float, float], zoom: float = 1.0) -> None:
         self.universe.camera.look_at(coo, zoom)
+
+    def pause(self) -> None:
+        self.paused = True
+    
+    def resume(self) -> None:
+        self.paused = False
 
     def render_universe(self, render_screen: Surface, special_flags: int = 0) -> None:
         cur = self.universe.camera.at
@@ -63,4 +71,5 @@ class UniverseSimulator(BaseModel):
         self.render_universe(render_screen, special_flags)
 
     def update(self, ticks: int) -> None:
-        ...
+        if self.paused:
+            return
