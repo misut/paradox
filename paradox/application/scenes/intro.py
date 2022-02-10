@@ -3,13 +3,13 @@ from loguru import logger
 from paradox.application.film_director import FilmDirector
 from paradox.application.ui_manager import UIManager
 from paradox.application.universe_simulator import UniverseSimulator
-from paradox.domain import LayoutUI, Post, QuitPost, SceneNo, TextUI
+from paradox.domain import LayoutUI, Post, QuitPost, SceneNo, ShootScenePost, TextUI
 
 intro_director = FilmDirector()
 
 
 @intro_director.take(SceneNo.INTRO)
-def intro_scene(ui_manager: UIManager, universe_simulator: UniverseSimulator) -> Post:
+def intro_scene(ui_manager: UIManager, universe_simulator: UniverseSimulator) -> list[Post]:
     ui_manager.clear()
     universe_simulator.pause()
 
@@ -56,6 +56,7 @@ def intro_scene(ui_manager: UIManager, universe_simulator: UniverseSimulator) ->
     @setting_button.off_click()
     def click_off_setting_button(self_ui: TextUI) -> list[Post]:
         self_ui.background_color = (255, 255, 255, 0)
+        return [ShootScenePost(scene_no=SceneNo.SETTING)]
 
     @quit_button.off_click()
     def click_off_quit_button(self_ui: TextUI) -> list[Post]:
@@ -82,3 +83,5 @@ def intro_scene(ui_manager: UIManager, universe_simulator: UniverseSimulator) ->
     intro_ui.allocate(quit_button)
 
     ui_manager.allocate(intro_ui)
+
+    return []

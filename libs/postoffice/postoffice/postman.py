@@ -23,8 +23,9 @@ class Postman(BaseModel):
         delivery_protocol = self.mapping[post_type]
         return delivery_protocol(post)
 
-    def invite(self, postman: Postman) -> None:
-        self.mapping.update(postman.mapping)
+    def invite(self, *postmen: Postman) -> None:
+        for postman in postmen:
+            self.mapping.update(postman.mapping)
 
     def subscribe(self) -> Callable[[DeliveryProtocol], DeliveryProtocol]:
         def decorator(delivery_protocol: DeliveryProtocol) -> DeliveryProtocol:

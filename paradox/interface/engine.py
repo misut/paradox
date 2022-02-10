@@ -10,7 +10,7 @@ from pygame.transform import scale
 import paradox
 from paradox.application import paradox_director
 from paradox.domain import SceneNo, TextUI, TickPost
-from paradox.interface import delivery_protocols
+from paradox.interface import protocols
 from paradox.interface.container import Container
 from paradox.interface.gamepad import Gamepad
 from paradox.interface.settings import BaseSettings, GamepadSettings, GraphicSettings
@@ -53,7 +53,7 @@ class Engine:
         ui_manager = self.container.ui_manager()
         universe_simulator = self.container.universe_simulator()
 
-        film_director.collaborate(paradox_director)
+        film_director.invite(paradox_director)
         film_director.shoot(SceneNo.INTRO, ui_manager, universe_simulator)
 
         fps_count = TextUI(
@@ -93,7 +93,7 @@ class Engine:
         self.gamepad = Gamepad(self.gamepad_settings, self.graphic_settings)
 
         self.postoffice = Postoffice()
-        self.postoffice.hire(delivery_protocols.chief_postman)
+        self.postoffice.hire(protocols.chief_postman)
 
         self.clock = Clock()
         self.screen = pygame.display.set_mode(

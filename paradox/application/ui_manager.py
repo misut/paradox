@@ -19,6 +19,7 @@ class UIManager(BaseModel):
 
     def clear(self) -> None:
         self.root_ui.clear()
+        self.clicking_ui = None
         self.hovering_ui = None
 
     def get_ui_by_id(self, id: UUID) -> UI | None:
