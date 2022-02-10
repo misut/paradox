@@ -22,7 +22,7 @@ class UniverseSimulator(BaseModel):
 
     def pause(self) -> None:
         self.paused = True
-    
+
     def resume(self) -> None:
         self.paused = False
 

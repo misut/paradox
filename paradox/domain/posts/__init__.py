@@ -8,10 +8,7 @@ from paradox.domain.posts.event import (
     MouseEventPost,
     MouseMotionPost,
 )
-from paradox.domain.posts.scene import (
-    SceneNo,
-    ShootScenePost,
-)
+from paradox.domain.posts.scene import SceneNo, ShootScenePost
 
 __all__ = [
     "Action",

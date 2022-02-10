@@ -7,7 +7,7 @@ from postoffice import Postman
 from pygame import Surface
 
 from paradox.application import UIManager, UniverseSimulator
-from paradox.domain import TickPost, QuitPost
+from paradox.domain import QuitPost, TickPost
 from paradox.interface import Container
 
 base_postman = Postman()

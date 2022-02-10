@@ -9,7 +9,9 @@ setting_director = FilmDirector()
 
 
 @setting_director.take(SceneNo.SETTING)
-def setting_scene(ui_manager: UIManager, universe_simulator: UniverseSimulator) -> list[Post]:
+def setting_scene(
+    ui_manager: UIManager, universe_simulator: UniverseSimulator
+) -> list[Post]:
     ui_manager.clear()
     universe_simulator.pause()
 

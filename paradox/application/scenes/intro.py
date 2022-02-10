@@ -9,7 +9,9 @@ intro_director = FilmDirector()
 
 
 @intro_director.take(SceneNo.INTRO)
-def intro_scene(ui_manager: UIManager, universe_simulator: UniverseSimulator) -> list[Post]:
+def intro_scene(
+    ui_manager: UIManager, universe_simulator: UniverseSimulator
+) -> list[Post]:
     ui_manager.clear()
     universe_simulator.pause()
 
@@ -21,7 +23,7 @@ def intro_scene(ui_manager: UIManager, universe_simulator: UniverseSimulator) ->
         size=(100, 40),
         background_color=(255, 255, 255, 0),
         font_size=31,
-        text="Start"
+        text="Start",
     )
 
     setting_button = TextUI(
@@ -30,7 +32,7 @@ def intro_scene(ui_manager: UIManager, universe_simulator: UniverseSimulator) ->
         size=(100, 40),
         background_color=(255, 255, 255, 0),
         font_size=31,
-        text="Setting"
+        text="Setting",
     )
 
     quit_button = TextUI(
