@@ -10,7 +10,7 @@ class ThatPost(Post):
     ...
 
 
-def test_click(ui_manager: UIManager) -> None:
+def test_click_on(ui_manager: UIManager) -> None:
     layout = LayoutUI(pos=(0, 0), size=(100, 100))
 
     text_topleft = TextUI(pos=(0, 0), size=(20, 20))
@@ -34,10 +34,10 @@ def test_click(ui_manager: UIManager) -> None:
 
     ui_manager.allocate(layout)
 
-    assert ui_manager.click((90, 10)) == None
-    assert isinstance(ui_manager.click((0, 0))[0], ThisPost)
-    assert isinstance(ui_manager.click((99, 99))[0], ThatPost)
-    assert ui_manager.click((10, 10)) == ui_manager.click((89, 89)) == None
+    assert ui_manager.click_on((90, 10)) == []
+    assert isinstance(ui_manager.click_on((0, 0))[0], ThisPost)
+    assert isinstance(ui_manager.click_on((99, 99))[0], ThatPost)
+    assert ui_manager.click_on((10, 10)) == ui_manager.click_on((89, 89)) == []
 
 
 def test_hover(ui_manager: UIManager) -> None:
@@ -64,14 +64,14 @@ def test_hover(ui_manager: UIManager) -> None:
 
     ui_manager.allocate(layout)
 
-    assert ui_manager.hover((90, 10)) == None
+    assert ui_manager.hover((90, 10)) == []
 
     assert isinstance(ui_manager.hover((0, 0))[0], ThisPost)
     for idx in range(0, 10):
-        assert ui_manager.hover((idx, idx)) == None
+        assert ui_manager.hover((idx, idx)) == []
 
     assert isinstance(ui_manager.hover((99, 99))[0], ThatPost)
     for idx in range(90, 100):
-        assert ui_manager.hover((idx, idx)) == None
+        assert ui_manager.hover((idx, idx)) == []
 
-    assert ui_manager.hover((10, 10)) == ui_manager.hover((89, 89)) == None
+    assert ui_manager.hover((10, 10)) == ui_manager.hover((89, 89)) == []

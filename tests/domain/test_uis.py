@@ -79,16 +79,16 @@ def test_overlapping() -> None:
 
 def test_actor() -> None:
     ui = UI(pos=(0, 0), size=(100, 100))
-    assert ui.click() == ui.hover() == None
+    assert ui.click_on() == ui.hover_on() == []
 
     @ui.on_click()
     def click(self_ui: UI) -> list[Post]:
         return [ThisPost()]
 
-    assert isinstance(ui.click()[0], ThisPost)
+    assert isinstance(ui.click_on()[0], ThisPost)
 
     @ui.on_hover()
     def hover(self_ui: UI) -> list[Post]:
         return [ThatPost()]
 
-    assert isinstance(ui.hover()[0], ThatPost)
+    assert isinstance(ui.hover_on()[0], ThatPost)
