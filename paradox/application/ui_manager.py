@@ -2,7 +2,7 @@ from loguru import logger
 from pydantic import BaseModel
 from pygame import Surface
 
-from paradox.domain import UI, UUID, Post
+from paradox.domain import ID, UI, Post
 
 
 class UIManager(BaseModel):
@@ -22,7 +22,7 @@ class UIManager(BaseModel):
         self.clicking_ui = None
         self.hovering_ui = None
 
-    def get_ui_by_id(self, id: UUID) -> UI | None:
+    def get_ui_by_id(self, id: ID) -> UI | None:
         return self.root_ui.get_ui_by_id(id)
 
     def get_uis_by_name(self, name: str) -> list[UI]:

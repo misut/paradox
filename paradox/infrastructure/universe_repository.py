@@ -1,15 +1,22 @@
 import json
 from pathlib import Path
 
-from pydantic import BaseModel, Field
+from pydantic import Field
 
-from paradox.domain import Camera, Tile, Universe, UniverseRepository
+from paradox.domain import Camera, SpriteTag, Tile, Universe, UniverseRepository, ValueObject
 
 
-class UniverseFile(BaseModel):
+class TileFile(ValueObject):
+    coo: tuple[int, int]
+    lwall: str
+    rwall: str
+    slate: str
+
+
+class UniverseFile(ValueObject):
     name: str = Field(default="New world")
     camera: Camera
-    tiles: list[Tile]
+    tiles: list[TileFile]
 
 
 class FileUniverseRepository(UniverseRepository):
@@ -23,8 +30,14 @@ class FileUniverseRepository(UniverseRepository):
 
     def from_file(self, universe_file: UniverseFile) -> Universe:
         mapping = {}
-        for tile in universe_file.tiles:
-            mapping[tile.coo] = tile
+        for tile_file in universe_file.tiles:
+            tile = Tile(
+                coo=tile_file.coo,
+                lwall=SpriteTag[tile_file.lwall],
+                rwall=SpriteTag[tile_file.rwall],
+                slate=SpriteTag[tile_file.slate],
+            )
+            mapping[tile_file.coo] = tile
 
         return Universe(
             name=universe_file.name, camera=universe_file.camera, mapping=mapping

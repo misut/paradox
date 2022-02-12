@@ -2,33 +2,39 @@
     {
         "name": "Hello, world!",
         "camera": {
-            "coo": [0, 0, 0],
+            "coo": [0, 0],
             "viewport": [640, 360]
         },
         "tiles": [
             {
-                "coo": [0, 0, 0],
-                "lwall": "lwall:test",
-                "rwall": "rwall:test",
-                "slate": "slate:test"
+                "coo": [0, 0],
+                "lwall": "LWALL_TEST",
+                "rwall": "RWALL_TEST",
+                "slate": "SLATE_TEST"
             },
             {
-                "coo": [1, 0, 0],
-                "lwall": "lwall:test",
-                "rwall": "rwall:test",
-                "slate": "slate:test"
+                "coo": [-1, -2],
+                "lwall": "LWALL_TEST",
+                "rwall": "RWALL_TEST",
+                "slate": "SLATE_TEST"
             },
             {
-                "coo": [1, 1, -1],
-                "lwall": "lwall:test",
-                "rwall": "rwall:test",
-                "slate": "slate:test"
+                "coo": [1, 0],
+                "lwall": "LWALL_TEST",
+                "rwall": "RWALL_TEST",
+                "slate": "SLATE_TEST"
             },
             {
-                "coo": [0, 1, -1],
-                "lwall": "lwall:test",
-                "rwall": "rwall:test",
-                "slate": "slate:test"
+                "coo": [2, 0],
+                "lwall": "LWALL_TEST",
+                "rwall": "RWALL_TEST",
+                "slate": "SLATE_TEST"
+            },
+            {
+                "coo": [3, 0],
+                "lwall": "LWALL_TEST",
+                "rwall": "RWALL_TEST",
+                "slate": "SLATE_TEST"
             }
         ]
     }

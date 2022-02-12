@@ -6,7 +6,7 @@ from paradox.domain.posts.base import Post
 @unique
 class SceneNo(int, Enum):
     INTRO: int = 0
-    INGAME: int = 1
+    PLAYING: int = 1
     SETTING: int = 2
 
 

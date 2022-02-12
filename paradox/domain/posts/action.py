@@ -7,10 +7,10 @@ from paradox.domain.posts.base import Post
 
 @unique
 class Action(str, Enum):
-    LEFT: str = "left"
-    RIGHT: str = "right"
     UP: str = "up"
     DOWN: str = "down"
+    LEFT: str = "left"
+    RIGHT: str = "right"
 
 
 @unique

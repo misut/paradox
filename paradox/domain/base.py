@@ -1,11 +1,13 @@
 from collections.abc import Sequence
+from enum import Enum, unique
 from numbers import Number
 from uuid import UUID, uuid4
 
 from pydantic import BaseModel, Field
 from pygame import Surface
 
-generate_uuid = uuid4
+ID = UUID
+generate_id = uuid4
 
 
 def _dist(num1: Number, num2: Number) -> float:
@@ -16,13 +18,25 @@ def dist(pos1: Sequence[Number], pos2: Sequence[Number]) -> float:
     return sum(map(_dist, zip(pos1, pos2)))
 
 
+@unique
+class Direction(tuple[float, float], Enum):
+    NORTH: tuple[float, float] = (-(1 / 2) ** (1 / 2), -(1 / 2) ** (1 / 2))
+    SOUTH: tuple[float, float] = ((1 / 2) ** (1 / 2), (1 / 2) ** (1 / 2))
+    EAST: tuple[float, float] = ((1 / 2) ** (1 / 2), -(1 / 2) ** (1 / 2))
+    WEST: tuple[float, float] = (-(1 / 2) ** (1 / 2), (1 / 2) ** (1 / 2))
+    NORTHEAST: tuple[float, float] = (0.0, -1.0)
+    NORTHWEST: tuple[float, float] = (-1.0, 0.0)
+    SOUTHEAST: tuple[float, float] = (1.0, 0.0)
+    SOUTHWEST: tuple[float, float] = (0.0, 1.0)
+
+
 class ValueObject(BaseModel):
     class Config:
         allow_mutation = False
 
 
 class Entity(BaseModel):
-    id: UUID = Field(default_factory=generate_uuid)
+    id: ID = Field(default_factory=generate_id)
     name: str = Field(default="")
 
 

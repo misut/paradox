@@ -1,14 +1,19 @@
 from abc import ABC
+from array import array
+from collections.abc import MutableSequence
 
 from pydantic import Field
 
+from paradox.domain.apparition import Apparition
 from paradox.domain.base import Entity, ValueObject
 from paradox.domain.camera import Camera
 from paradox.domain.sprite import SpriteTag
 
+EMPTY_ARRAY = [0 for _ in range(128)]
+
 
 class Tile(ValueObject):
-    coo: tuple[int, int, int]
+    coo: tuple[int, int]
 
     lwall: SpriteTag | None
     rwall: SpriteTag | None
@@ -16,12 +21,16 @@ class Tile(ValueObject):
 
 
 class Universe(Entity):
-    camera: Camera = Field(default=Camera(coo=(0.0, 0.0, 0.0), viewport=(640, 360)))
-    mapping: dict[tuple[int, int, int], Tile]
+    apparitions: list[Apparition] = Field(default=[])
+    camera: Camera = Field(default=Camera(coo=(0.0, 0.0), viewport=(640, 360)))
+    mapping: dict[tuple[int, int], Tile] = Field(default={})
 
-    def at(self, coo: tuple[float, float, float]) -> Tile:
-        _coo = tuple(map(int, coo))
-        return self.mapping.get(_coo, Tile(coo=_coo))
+    def at(self, coo: tuple[float, float]) -> Tile:
+        x, y = map(int, coo)
+        return self.mapping.get((x, y), Tile(coo=(x, y)))
+
+    def place(self, apprition: Apparition) -> None:
+        self.apparitions.append(apprition)
 
 
 class UniverseRepository(ABC):

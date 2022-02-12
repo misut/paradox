@@ -54,6 +54,7 @@ def intro_scene(
     @start_button.off_click()
     def click_off_start_button(self_ui: TextUI) -> list[Post]:
         self_ui.background_color = (255, 255, 255, 0)
+        return [ShootScenePost(scene_no=SceneNo.PLAYING)]
 
     @setting_button.off_click()
     def click_off_setting_button(self_ui: TextUI) -> list[Post]:

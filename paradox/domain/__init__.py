@@ -1,10 +1,14 @@
+from paradox.domain.apparition import (
+    Apparition,
+    ApparitionTag,
+)
 from paradox.domain.base import (
-    UUID,
     Entity,
+    ID,
     Renderable,
     Updatable,
     ValueObject,
-    generate_uuid,
+    generate_id,
 )
 from paradox.domain.camera import Camera
 from paradox.domain.constants import *
@@ -31,12 +35,14 @@ from paradox.domain.uis import UI, LayoutUI, TextUI
 from paradox.domain.universe import Tile, Universe, UniverseRepository
 
 __all__ = [
+    "Apparition",
+    "ApparitionTag",
     "Entity",
+    "ID",
     "Renderable",
     "Updatable",
-    "UUID",
     "ValueObject",
-    "generate_uuid",
+    "generate_id",
     "Camera",
     "ParadoxError",
     "UIAllocateError",

@@ -8,7 +8,7 @@ import pygame
 from pydantic import Field
 from pygame import Rect, Surface
 
-from paradox.domain.base import UUID, Entity, Renderable, Updatable
+from paradox.domain.base import Entity, ID, Renderable, Updatable
 from paradox.domain.errors import UIAllocateError
 from paradox.domain.posts import Post
 
@@ -208,7 +208,7 @@ class UI(Entity, Renderable, Updatable):
             return True
         return False
 
-    def get_ui_by_id(self, id: UUID) -> UI | None:
+    def get_ui_by_id(self, id: ID) -> UI | None:
         if self.id == id:
             return self
 

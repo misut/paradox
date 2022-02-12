@@ -1,5 +1,5 @@
-from abc import ABC
-from enum import Enum, unique
+from abc import ABC, abstractmethod
+from enum import Enum, auto, unique
 from typing import Any
 
 from pydantic import Field, validator
@@ -10,16 +10,20 @@ from paradox.domain.errors import SpriteLoadError
 
 
 @unique
-class SpriteTag(str, Enum):
-    LWALL_TEST: str = "lwall:test"
-    RWALL_TEST: str = "rwall:test"
-    SLATE_TEST: str = "slate:test"
+class SpriteTag(int, Enum):
+    NONE: int = 0
+    APPARITION_TEST: int = auto()
+    LWALL_TEST: int = auto()
+    RWALL_TEST: int = auto()
+    SLATE_TEST: int = auto()
 
 
 class Sprite(Renderable, Updatable):
     tag: SpriteTag
     surfaces: list[Surface]
     surface_index: int = Field(default=0)
+
+    cycletime: int = Field(default=100)
 
     class Config:
         arbitrary_types_allowed = True
@@ -44,5 +48,10 @@ class Sprite(Renderable, Updatable):
 
 
 class SpriteRepository(ABC):
+    @abstractmethod
     def get(self, tag: SpriteTag) -> Sprite | None:
+        ...
+
+    @abstractmethod
+    def update(self, ticks: int) -> None:
         ...
