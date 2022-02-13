@@ -6,17 +6,10 @@ from pydantic import Field
 from paradox.domain import Camera, SpriteTag, Tile, Universe, UniverseRepository, ValueObject
 
 
-class TileFile(ValueObject):
-    coo: tuple[int, int]
-    lwall: str
-    rwall: str
-    slate: str
-
-
 class UniverseFile(ValueObject):
     name: str = Field(default="New world")
     camera: Camera
-    tiles: list[TileFile]
+    tiles: list[Tile]
 
 
 class FileUniverseRepository(UniverseRepository):
@@ -30,14 +23,8 @@ class FileUniverseRepository(UniverseRepository):
 
     def from_file(self, universe_file: UniverseFile) -> Universe:
         mapping = {}
-        for tile_file in universe_file.tiles:
-            tile = Tile(
-                coo=tile_file.coo,
-                lwall=SpriteTag[tile_file.lwall],
-                rwall=SpriteTag[tile_file.rwall],
-                slate=SpriteTag[tile_file.slate],
-            )
-            mapping[tile_file.coo] = tile
+        for tile in universe_file.tiles:
+            mapping[tile.coo] = tile
 
         return Universe(
             name=universe_file.name, camera=universe_file.camera, mapping=mapping

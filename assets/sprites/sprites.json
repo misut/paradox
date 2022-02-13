@@ -1,21 +1,21 @@
 [
     {
-        "tag_name": "APPARITION_TEST",
+        "tag": "apparition:test",
         "path": "apparition_test.png",
-        "size": [48, 64]
+        "size": [32, 32]
     },
     {
-        "tag_name": "LWALL_TEST",
+        "tag": "lwall:test",
         "path": "lwall_test.png",
         "size": [29, 49]
     },
     {
-        "tag_name": "RWALL_TEST",
+        "tag": "rwall:test",
         "path": "rwall_test.png",
         "size": [29, 49]
     },
     {
-        "tag_name": "SLATE_TEST",
+        "tag": "slate:test",
         "path": "slate_test.png",
         "size": [57, 33]
     }

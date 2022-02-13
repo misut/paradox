@@ -15,6 +15,7 @@ from paradox.domain.constants import *
 from paradox.domain.errors import ParadoxError, UIAllocateError, UIError
 from paradox.domain.posts import (
     Action,
+    ActionInfo,
     ActionPost,
     ActionType,
     EventPost,

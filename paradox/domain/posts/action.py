@@ -2,6 +2,7 @@ from enum import Enum, unique
 
 from pydantic import Field
 
+from paradox.domain.base import ValueObject
 from paradox.domain.posts.base import Post
 
 
@@ -20,8 +21,11 @@ class ActionType(str, Enum):
     RELEASED: str = "released"
 
 
-class ActionPost(Post):
+class ActionInfo(ValueObject):
     action: Action
     type: ActionType
+    duration: int
 
-    duration: int = Field(default=0)
+
+class ActionPost(Post):
+    infos: dict[Action, ActionInfo]

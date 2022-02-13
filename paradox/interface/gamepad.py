@@ -1,9 +1,11 @@
 import pygame
+from loguru import logger
 from pydantic import BaseModel, Field
 from pygame.event import Event as PygameEvent
 
 from paradox.domain.posts import (
     Action,
+    ActionInfo,
     ActionPost,
     ActionType,
     EventType,
@@ -29,7 +31,7 @@ class Gamepad(BaseModel):
     gamepad_settings: GamepadSettings
     graphic_settings: GraphicSettings
 
-    mapping: dict[int, Action] = Field(default={})
+    mapping: dict[Action, int] = Field(default={})
     scanning: dict[Action, int] = Field(default={})
 
     def __init__(
@@ -41,7 +43,7 @@ class Gamepad(BaseModel):
 
         for action_str, code in gamepad_settings:
             action = Action[action_str]
-            self.mapping[code] = action
+            self.mapping[action] = code
             self.scanning[action] = 0
 
     def fit_screen_pos_into_render_pos(self, pos: tuple[int, int]) -> tuple[int, int]:
@@ -90,58 +92,56 @@ class Gamepad(BaseModel):
         return post
 
     def propagate(self) -> list[ActionPost]:
-        action_posts = []
+        event_posts = []
 
         for event in pygame.event.get():
-            action_post = self._propagate(event)
-            if action_post == None:
+            event_post = self._propagate(event)
+            if event_post == None:
                 continue
 
-            action_posts.append(action_post)
+            event_posts.append(event_post)
 
-        return action_posts
+        return event_posts
 
     def poll(self, ticks: int) -> list[ActionPost]:
-        action_posts = []
+        action_infos = {}
 
-        scancodes = pygame.key.get_pressed()
-        for code, pressed in enumerate(scancodes):
-            action = self.mapping.get(code, None)
-            if action == None:
-                continue
-
+        scancodes = list(pygame.key.get_pressed())
+        for action, code in self.mapping.items():
+            pressed = scancodes[code]
             duration = self.scanning[action]
             if not pressed and duration == 0:
                 continue
-
             self.scanning[action] += ticks
             if pressed and duration == 0:
-                action_post = ActionPost(
+                action_info = ActionInfo(
                     action=action,
                     type=ActionType.PRESSED,
                     duration=self.scanning[action],
                 )
-                action_posts.append(action_post)
+                action_infos[action] = action_info
                 continue
 
             if pressed and duration > 0:
-                action_post = ActionPost(
+                action_info = ActionInfo(
                     action=action,
                     type=ActionType.PRESSING,
                     duration=self.scanning[action],
                 )
-                action_posts.append(action_post)
+                action_infos[action] = action_info
                 continue
 
-            action_post = ActionPost(
+            action_info = ActionInfo(
                 action=action,
                 type=ActionType.RELEASED,
                 duration=self.scanning[action],
             )
-            action_posts.append(action_post)
+            action_infos[action] = (action_info)
             self.scanning[action] = 0
 
-        return action_posts
+        if not action_infos:
+            return []
+        return [ActionPost(infos=action_infos)]
 
     def update(self, ticks: int) -> list[ActionPost]:
         return self.propagate() + self.poll(ticks)

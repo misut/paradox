@@ -9,7 +9,7 @@ from paradox.domain import Sprite, SpriteRepository, SpriteTag
 
 
 class SpriteFile(BaseModel):
-    tag_name: str
+    tag: str
     path: Path
     size: tuple[int, int]
 
@@ -44,18 +44,21 @@ class FileSpriteRepository(SpriteRepository):
             surfaces.append(surface)
 
         return Sprite(
-            pos=(0, 0), size=sprite_file.size, tag=SpriteTag[sprite_file.tag_name], surfaces=surfaces
+            pos=(0, 0), size=sprite_file.size, tag=sprite_file.tag, surfaces=surfaces
         )
 
     def load_sprites(self) -> None:
+        self.sprites[SpriteTag.NONE] = Sprite(
+            pos=(0, 0), size=(0, 0), tag=SpriteTag.NONE, surfaces=[Surface((0, 0))]
+        )
+        
         json_path = self.sprites_path.joinpath("sprites.json")
         with json_path.open(mode="rt", encoding="utf-8") as stream:
             sprite_file_dicts = json.load(stream)
 
         for sprite_file_dict in sprite_file_dicts:
             sprite_file = SpriteFile.parse_obj(sprite_file_dict)
-            sprite_tag = SpriteTag[sprite_file.tag_name]
-            self.sprites[sprite_tag] = self.from_file(sprite_file)
+            self.sprites[sprite_file.tag] = self.from_file(sprite_file)
 
     def get(self, tag: SpriteTag) -> Sprite | None:
         return self.sprites.get(tag, None)

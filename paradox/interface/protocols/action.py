@@ -1,7 +1,7 @@
 from loguru import logger
 from postoffice import Postman
 
-from paradox.domain import ActionPost, Post
+from paradox.domain import ActionPost
 
 action_postman = Postman()
 
