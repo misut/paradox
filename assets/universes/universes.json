@@ -8,31 +8,124 @@
         "tiles": [
             {
                 "coo": [0, 0],
+                "roo": [0, 0],
                 "lwall": "lwall:test",
                 "rwall": "rwall:test",
                 "slate": "slate:test"
             },
             {
-                "coo": [-1, -2],
+                "coo": [0, -1],
+                "roo": [0, -1],
                 "lwall": "lwall:test",
                 "rwall": "rwall:test",
                 "slate": "slate:test"
             },
             {
-                "coo": [1, 0],
+                "coo": [-1, -1],
+                "roo": [-1, -1],
+                "slate": "slate:test"
+            },
+            {
+                "coo": [-2, -1],
+                "roo": [-1, 0],
+                "lwall": "lwall:test",
+                "rwall": "rwall:test"
+            },
+            {
+                "coo": [-3, -2],
+                "roo": [-1, 0],
                 "lwall": "lwall:test",
                 "rwall": "rwall:test",
                 "slate": "slate:test"
             },
             {
-                "coo": [2, 0],
+                "coo": [1, -4],
+                "roo": [0, -5],
+                "lwall": "lwall:test",
+                "rwall": "rwall:test"
+            },
+            {
+                "coo": [2, -3],
+                "roo": [0, -5],
+                "lwall": "lwall:test",
+                "rwall": "rwall:test"
+            },
+            {
+                "coo": [3, -2],
+                "roo": [5, 0],
+                "lwall": "lwall:test",
+                "rwall": "rwall:test"
+            },
+            {
+                "coo": [4, -1],
+                "roo": [5, 0],
+                "lwall": "lwall:test",
+                "rwall": "rwall:test"
+            },
+            {
+                "coo": [0, -5],
+                "roo": [0, -5],
+                "lwall": "lwall:test",
+                "slate": "slate:test"
+            },
+            {
+                "coo": [1, -5],
+                "roo": [1, -5],
+                "lwall": "lwall:test",
+                "slate": "slate:test"
+            },
+            {
+                "coo": [2, -5],
+                "roo": [2, -5],
+                "lwall": "lwall:test",
+                "slate": "slate:test"
+            },
+            {
+                "coo": [3, -5],
+                "roo": [3, -5],
+                "lwall": "lwall:test",
+                "slate": "slate:test"
+            },
+            {
+                "coo": [4, -5],
+                "roo": [4, -5],
+                "lwall": "lwall:test",
+                "slate": "slate:test"
+            },
+            {
+                "coo": [5, 0],
+                "roo": [5, 0],
                 "lwall": "lwall:test",
                 "rwall": "rwall:test",
                 "slate": "slate:test"
             },
             {
-                "coo": [3, 0],
-                "lwall": "lwall:test",
+                "coo": [5, -1],
+                "roo": [5, -1],
+                "rwall": "rwall:test",
+                "slate": "slate:test"
+            },
+            {
+                "coo": [5, -2],
+                "roo": [5, -2],
+                "rwall": "rwall:test",
+                "slate": "slate:test"
+            },
+            {
+                "coo": [5, -3],
+                "roo": [5, -3],
+                "rwall": "rwall:test",
+                "slate": "slate:test"
+            },
+            {
+                "coo": [5, -4],
+                "roo": [5, -4],
+                "rwall": "rwall:test",
+                "slate": "slate:test"
+            },
+            {
+                "coo": [5, -5],
+                "roo": [5, -5],
                 "rwall": "rwall:test",
                 "slate": "slate:test"
             }

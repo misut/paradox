@@ -13,7 +13,7 @@ def playing_scene(ui_manager: UIManager, universe_simulator: UniverseSimulator) 
 
     test_apparition = Apparition(
         name="test_apparition",
-        coo=(0.5, 0.5),
+        coo=(-0.5, -0.5),
         dim=(1.0, 1.0),
         sprite=SpriteTag.APPARITION_TEST,
         tag=ApparitionTag.PLAYER,

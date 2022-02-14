@@ -13,7 +13,7 @@ class Camera(Entity):
 
     attached: Apparition | None
 
-    sight: int = Field(default=10)
+    sight: int = Field(default=12)
     zoom: float = Field(default=1.0)
 
     @validator("sight")

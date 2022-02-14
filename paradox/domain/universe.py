@@ -1,6 +1,4 @@
 from abc import ABC
-from array import array
-from collections.abc import MutableSequence
 
 from pydantic import Field
 
@@ -14,6 +12,7 @@ EMPTY_ARRAY = [0 for _ in range(128)]
 
 class Tile(ValueObject):
     coo: tuple[int, int]
+    roo: tuple[int, int]
 
     lwall: SpriteTag | None
     rwall: SpriteTag | None
@@ -27,7 +26,7 @@ class Universe(Entity):
 
     def at(self, coo: tuple[float, float]) -> Tile:
         x, y = map(int, coo)
-        return self.mapping.get((x, y), Tile(coo=(x, y)))
+        return self.mapping.get((x, y), Tile(coo=(x, y), roo=(x, y)))
 
     def place(self, apprition: Apparition) -> None:
         self.apparitions.append(apprition)
