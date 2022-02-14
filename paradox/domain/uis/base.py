@@ -8,7 +8,7 @@ import pygame
 from pydantic import Field
 from pygame import Rect, Surface
 
-from paradox.domain.base import Entity, ID, Renderable, Updatable
+from paradox.domain.base import ID, Entity, Renderable, Updatable
 from paradox.domain.errors import UIAllocateError
 from paradox.domain.posts import Post
 

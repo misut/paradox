@@ -1,7 +1,7 @@
 from pydantic import Field, validator
 
 from paradox.domain.apparition import Apparition
-from paradox.domain.base import Entity, Direction, Updatable
+from paradox.domain.base import Direction, Entity, Updatable
 from paradox.domain.constants import *
 
 MAX_SIGHT = 100

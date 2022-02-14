@@ -27,5 +27,8 @@ class ActionInfo(ValueObject):
     duration: int
 
 
+ActionInfoTable = dict[Action, ActionInfo]
+
+
 class ActionPost(Post):
-    infos: dict[Action, ActionInfo]
+    infos: ActionInfoTable

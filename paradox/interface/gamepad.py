@@ -136,7 +136,7 @@ class Gamepad(BaseModel):
                 type=ActionType.RELEASED,
                 duration=self.scanning[action],
             )
-            action_infos[action] = (action_info)
+            action_infos[action] = action_info
             self.scanning[action] = 0
 
         if not action_infos:

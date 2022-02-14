@@ -3,7 +3,14 @@ from pathlib import Path
 
 from pydantic import Field
 
-from paradox.domain import Camera, SpriteTag, Tile, Universe, UniverseRepository, ValueObject
+from paradox.domain import (
+    Camera,
+    SpriteTag,
+    Tile,
+    Universe,
+    UniverseRepository,
+    ValueObject,
+)
 
 
 class UniverseFile(ValueObject):

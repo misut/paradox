@@ -34,5 +34,5 @@ class Apparition(Entity, Updatable):
 
     def update(self, ticks: int) -> None:
         super().update(ticks)
-        
+
         self.move(ticks)

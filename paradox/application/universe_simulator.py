@@ -5,7 +5,14 @@ import pygame
 from pydantic import BaseModel, Field
 from pygame import Surface
 
-from paradox.domain import Action, ActionInfo, Apparition, Direction, SpriteRepository, Universe
+from paradox.domain import (
+    Action,
+    ActionInfo,
+    Apparition,
+    Direction,
+    SpriteRepository,
+    Universe,
+)
 from paradox.domain.constants import *
 
 
@@ -19,7 +26,11 @@ class UniverseSimulator(BaseModel):
         arbitrary_types_allowed = True
 
     def act(self, action_infos: dict[Action, ActionInfo]) -> None:
-        actor = self.universe.camera.attached if self.universe.camera.attached else self.universe.camera
+        actor = (
+            self.universe.camera.attached
+            if self.universe.camera.attached
+            else self.universe.camera
+        )
 
         if not action_infos:
             actor.velocity = 0.0
@@ -41,7 +52,7 @@ class UniverseSimulator(BaseModel):
             actor.direction = Direction.WEST
         elif Action.RIGHT in action_infos:
             actor.direction = Direction.EAST
-        
+
         actor.velocity = 7.0
 
     def look_at(self, coo: tuple[float, float, float], zoom: float = 1.0) -> None:
@@ -69,12 +80,17 @@ class UniverseSimulator(BaseModel):
         for apparition in self.universe.apparitions:
             apparition_sprite = self.sprites.get(apparition.sprite)
             pixel = self.universe.camera.pixel(apparition.coo)
-            apparition_pixel = (pixel[0] - apparition_sprite.width // 2, pixel[1] - apparition_sprite.height)
+            apparition_pixel = (
+                pixel[0] - apparition_sprite.width // 2,
+                pixel[1] - apparition_sprite.height,
+            )
 
             roo = tuple(map(floor, apparition.coo))
             if roo not in apparition_blit_sequences:
                 apparition_blit_sequences[roo] = []
-            apparition_blit_sequences[roo].append((apparition_sprite.surface, apparition_pixel, None, special_flags))
+            apparition_blit_sequences[roo].append(
+                (apparition_sprite.surface, apparition_pixel, None, special_flags)
+            )
 
         cur = self.universe.camera.at
         sight = self.universe.camera.sight
@@ -82,9 +98,9 @@ class UniverseSimulator(BaseModel):
             range(cur[0] - sight, cur[0] + sight + 1),
             range(cur[1] - sight, cur[1] + sight + 1),
         ):
-            #if not (-sight <= x + y <= sight and -sight <= x - y <= sight):
-                #continue
-            
+            # if not (-sight <= x + y <= sight and -sight <= x - y <= sight):
+            # continue
+
             tile = self.universe.at((x, y))
             pixel = self.universe.camera.pixel((x, y))
 

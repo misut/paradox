@@ -51,7 +51,7 @@ class FileSpriteRepository(SpriteRepository):
         self.sprites[SpriteTag.NONE] = Sprite(
             pos=(0, 0), size=(0, 0), tag=SpriteTag.NONE, surfaces=[Surface((0, 0))]
         )
-        
+
         json_path = self.sprites_path.joinpath("sprites.json")
         with json_path.open(mode="rt", encoding="utf-8") as stream:
             sprite_file_dicts = json.load(stream)

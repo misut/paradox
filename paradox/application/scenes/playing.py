@@ -7,7 +7,9 @@ playing_director = FilmDirector()
 
 
 @playing_director.take(SceneNo.PLAYING)
-def playing_scene(ui_manager: UIManager, universe_simulator: UniverseSimulator) -> list[Post]:
+def playing_scene(
+    ui_manager: UIManager, universe_simulator: UniverseSimulator
+) -> list[Post]:
     ui_manager.clear()
     universe_simulator.resume()
 
@@ -18,5 +20,5 @@ def playing_scene(ui_manager: UIManager, universe_simulator: UniverseSimulator) 
         sprite=SpriteTag.APPARITION_TEST,
         tag=ApparitionTag.PLAYER,
     )
-    #universe_simulator.place(test_apparition)
-    #universe_simulator.universe.camera.attached = test_apparition
+    # universe_simulator.place(test_apparition)
+    # universe_simulator.universe.camera.attached = test_apparition

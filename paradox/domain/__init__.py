@@ -1,11 +1,8 @@
-from paradox.domain.apparition import (
-    Apparition,
-    ApparitionTag,
-)
+from paradox.domain.apparition import Apparition, ApparitionTag
 from paradox.domain.base import (
+    ID,
     Direction,
     Entity,
-    ID,
     Renderable,
     Updatable,
     ValueObject,
