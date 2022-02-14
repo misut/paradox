@@ -13,7 +13,7 @@ class Camera(Entity, Updatable):
 
     attached: Apparition | None
 
-    sight: int = Field(default=12)
+    sight: int = Field(default=15)
     zoom: float = Field(default=1.0)
 
     direction: Direction = Field(default=Direction.NORTH)
@@ -46,7 +46,7 @@ class Camera(Entity, Updatable):
     def pixel(self, coo: tuple[float, float]) -> tuple[int, int]:
         diff = (coo[0] - self.coo[0], coo[1] - self.coo[1])
         return (
-            self.viewport[0] // 2 + WALL_WIDTH * (diff[0] - diff[1]),
+            self.viewport[0] // 2 + (TILE_WIDTH // 2) * (diff[0] - diff[1]),
             self.viewport[1] // 2 + (SLATE_HEIGHT // 2) * (diff[0] + diff[1]),
         )
 

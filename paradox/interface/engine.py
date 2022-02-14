@@ -112,13 +112,14 @@ class Engine:
 
     def update_posts(self, postbus: Postbus) -> None:
         tick_post = TickPost(
+            actions=self.gamepad.poll(self.clock.get_time()),
             fps=self.clock.get_fps(),
             ticks=self.clock.get_time(),
         )
         self.postoffice.request(tick_post)
 
-        for action_post in self.gamepad.update(self.clock.get_time()):
-            self.postoffice.request(action_post)
+        for post in self.gamepad.propagate():
+            self.postoffice.request(post)
 
         self.postoffice.transport(postbus)
 

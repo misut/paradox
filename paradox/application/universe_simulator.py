@@ -53,7 +53,7 @@ class UniverseSimulator(BaseModel):
         elif Action.RIGHT in action_infos:
             actor.direction = Direction.EAST
 
-        actor.velocity = 7.0
+        actor.velocity = 10.0
 
     def look_at(self, coo: tuple[float, float, float], zoom: float = 1.0) -> None:
         self.universe.camera.look_at(coo, zoom)
@@ -98,8 +98,8 @@ class UniverseSimulator(BaseModel):
             range(cur[0] - sight, cur[0] + sight + 1),
             range(cur[1] - sight, cur[1] + sight + 1),
         ):
-            # if not (-sight <= x + y <= sight and -sight <= x - y <= sight):
-            # continue
+            if not (-sight <= x + y - cur[0] - cur[1] <= sight and -sight <= x - y - cur[0] + cur[1] <= sight):
+                continue
 
             tile = self.universe.at((x, y))
             pixel = self.universe.camera.pixel((x, y))
@@ -111,7 +111,7 @@ class UniverseSimulator(BaseModel):
                 blit_sequences[(x, y)].extend(apparition_blit_sequences[x, y])
 
             lwall_pixel = (
-                pixel[0] - WALL_WIDTH,
+                pixel[0] - WALL_WIDTH + 1,
                 pixel[1] + (TILE_HEIGHT - WALL_HEIGHT),
             )
             lwall_sprite = self.sprites.get(tile.lwall)
@@ -125,7 +125,7 @@ class UniverseSimulator(BaseModel):
                 blit_sequence = (rwall_sprite.surface, rwall_pixel, None, special_flags)
                 blit_sequences[tile.roo].insert(0, blit_sequence)
 
-            slate_pixel = (pixel[0] - WALL_WIDTH, pixel[1])
+            slate_pixel = (pixel[0] - WALL_WIDTH + 1, pixel[1])
             slate_sprite = self.sprites.get(tile.slate)
             if slate_sprite:
                 blit_sequence = (slate_sprite.surface, slate_pixel, None, special_flags)

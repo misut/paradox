@@ -28,6 +28,8 @@ def deliver_tick_post(
     universe_simulator: UniverseSimulator = Provide[Container.universe_simulator],
 ) -> None:
     logger.debug(f"{post}")
+    
+    universe_simulator.act(post.actions)
 
     universe_simulator.update(post.ticks)
     ui_manager.update(post.ticks)

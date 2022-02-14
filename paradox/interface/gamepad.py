@@ -3,14 +3,15 @@ from loguru import logger
 from pydantic import BaseModel, Field
 from pygame.event import Event as PygameEvent
 
-from paradox.domain.posts import (
+from paradox.domain import (
     Action,
     ActionInfo,
-    ActionPost,
+    ActionInfoTable,
     ActionType,
     EventType,
     MouseEventPost,
     MouseMotionPost,
+    Post,
     QuitPost,
 )
 from paradox.interface.settings import GamepadSettings, GraphicSettings
@@ -64,7 +65,7 @@ class Gamepad(BaseModel):
             ),
         )
 
-    def _propagate(self, event: PygameEvent) -> ActionPost | None:
+    def _propagate(self, event: PygameEvent) -> Post | None:
         match event.type:
             case pygame.MOUSEBUTTONDOWN:
                 post = MouseEventPost(
@@ -91,7 +92,7 @@ class Gamepad(BaseModel):
 
         return post
 
-    def propagate(self) -> list[ActionPost]:
+    def propagate(self) -> list[Post]:
         event_posts = []
 
         for event in pygame.event.get():
@@ -103,7 +104,7 @@ class Gamepad(BaseModel):
 
         return event_posts
 
-    def poll(self, ticks: int) -> list[ActionPost]:
+    def poll(self, ticks: int) -> ActionInfoTable:
         action_infos = {}
 
         scancodes = list(pygame.key.get_pressed())
@@ -139,9 +140,4 @@ class Gamepad(BaseModel):
             action_infos[action] = action_info
             self.scanning[action] = 0
 
-        if not action_infos:
-            return [ActionPost(infos={})]
-        return [ActionPost(infos=action_infos)]
-
-    def update(self, ticks: int) -> list[ActionPost]:
-        return self.propagate() + self.poll(ticks)
+        return action_infos

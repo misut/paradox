@@ -1,4 +1,3 @@
-from paradox.domain.posts.action import Action, ActionInfo, ActionPost, ActionType
 from paradox.domain.posts.base import Post, QuitPost, TickPost
 from paradox.domain.posts.event import (
     EventPost,
@@ -11,10 +10,6 @@ from paradox.domain.posts.event import (
 from paradox.domain.posts.scene import SceneNo, ShootScenePost
 
 __all__ = [
-    "Action",
-    "ActionInfo",
-    "ActionPost",
-    "ActionType",
     "Post",
     "QuitPost",
     "TickPost",

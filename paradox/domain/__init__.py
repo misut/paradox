@@ -1,3 +1,4 @@
+from paradox.domain.action import Action, ActionInfo, ActionInfoTable, ActionType
 from paradox.domain.apparition import Apparition, ApparitionTag
 from paradox.domain.base import (
     ID,
@@ -12,10 +13,6 @@ from paradox.domain.camera import Camera
 from paradox.domain.constants import *
 from paradox.domain.errors import ParadoxError, UIAllocateError, UIError
 from paradox.domain.posts import (
-    Action,
-    ActionInfo,
-    ActionPost,
-    ActionType,
     EventPost,
     EventType,
     KeyEventPost,
@@ -34,6 +31,10 @@ from paradox.domain.uis import UI, LayoutUI, TextUI
 from paradox.domain.universe import Tile, Universe, UniverseRepository
 
 __all__ = [
+    "Action",
+    "ActionInfo",
+    "ActionInfoTable",
+    "ActionType",
     "Apparition",
     "ApparitionTag",
     "Direction",
