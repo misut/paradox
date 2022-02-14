@@ -13,7 +13,7 @@ class Camera(Entity, Updatable):
 
     attached: Apparition | None
 
-    sight: int = Field(default=15)
+    sight: int = Field(default=14)
     zoom: float = Field(default=1.0)
 
     direction: Direction = Field(default=Direction.NORTH)
