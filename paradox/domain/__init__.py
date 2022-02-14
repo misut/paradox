@@ -3,6 +3,7 @@ from paradox.domain.apparition import (
     ApparitionTag,
 )
 from paradox.domain.base import (
+    Direction,
     Entity,
     ID,
     Renderable,
@@ -38,6 +39,7 @@ from paradox.domain.universe import Tile, Universe, UniverseRepository
 __all__ = [
     "Apparition",
     "ApparitionTag",
+    "Direction",
     "Entity",
     "ID",
     "Renderable",

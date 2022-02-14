@@ -5,7 +5,7 @@ import pygame
 from pydantic import BaseModel, Field
 from pygame import Surface
 
-from paradox.domain import Apparition, SpriteRepository, Universe
+from paradox.domain import Action, ActionInfo, Apparition, Direction, SpriteRepository, Universe
 from paradox.domain.constants import *
 
 
@@ -17,6 +17,32 @@ class UniverseSimulator(BaseModel):
 
     class Config:
         arbitrary_types_allowed = True
+
+    def act(self, action_infos: dict[Action, ActionInfo]) -> None:
+        actor = self.universe.camera.attached if self.universe.camera.attached else self.universe.camera
+
+        if not action_infos:
+            actor.velocity = 0.0
+            return
+
+        if Action.UP in action_infos and Action.LEFT in action_infos:
+            actor.direction = Direction.NORTHWEST
+        elif Action.UP in action_infos and Action.RIGHT in action_infos:
+            actor.direction = Direction.NORTHEAST
+        elif Action.DOWN in action_infos and Action.LEFT in action_infos:
+            actor.direction = Direction.SOUTHWEST
+        elif Action.DOWN in action_infos and Action.RIGHT in action_infos:
+            actor.direction = Direction.SOUTHEAST
+        elif Action.UP in action_infos:
+            actor.direction = Direction.NORTH
+        elif Action.DOWN in action_infos:
+            actor.direction = Direction.SOUTH
+        elif Action.LEFT in action_infos:
+            actor.direction = Direction.WEST
+        elif Action.RIGHT in action_infos:
+            actor.direction = Direction.EAST
+        
+        actor.velocity = 7.0
 
     def look_at(self, coo: tuple[float, float, float], zoom: float = 1.0) -> None:
         self.universe.camera.look_at(coo, zoom)
@@ -34,7 +60,7 @@ class UniverseSimulator(BaseModel):
         render_size = render_screen.get_size()
 
         background = Surface(render_size, pygame.SRCALPHA)
-        background.fill((0, 100, 200, 255))
+        background.fill((110, 190, 230, 255))
         render_screen.blit(background, (0, 0), None, special_flags)
 
     def render_universe(self, render_screen: Surface, special_flags: int = 0) -> None:
@@ -56,8 +82,8 @@ class UniverseSimulator(BaseModel):
             range(cur[0] - sight, cur[0] + sight + 1),
             range(cur[1] - sight, cur[1] + sight + 1),
         ):
-            if not (-sight <= x + y <= sight and -sight <= x - y <= sight):
-                continue
+            #if not (-sight <= x + y <= sight and -sight <= x - y <= sight):
+                #continue
             
             tile = self.universe.at((x, y))
             pixel = self.universe.camera.pixel((x, y))
@@ -104,3 +130,7 @@ class UniverseSimulator(BaseModel):
             return
 
         self.sprites.update(ticks)
+        if self.universe.camera.attached:
+            self.universe.camera.attached.update(ticks)
+        else:
+            self.universe.camera.update(ticks)

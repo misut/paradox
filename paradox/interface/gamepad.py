@@ -140,7 +140,7 @@ class Gamepad(BaseModel):
             self.scanning[action] = 0
 
         if not action_infos:
-            return []
+            return [ActionPost(infos={})]
         return [ActionPost(infos=action_infos)]
 
     def update(self, ticks: int) -> list[ActionPost]:

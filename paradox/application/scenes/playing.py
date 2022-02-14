@@ -18,4 +18,5 @@ def playing_scene(ui_manager: UIManager, universe_simulator: UniverseSimulator) 
         sprite=SpriteTag.APPARITION_TEST,
         tag=ApparitionTag.PLAYER,
     )
-    universe_simulator.place(test_apparition)
+    #universe_simulator.place(test_apparition)
+    #universe_simulator.universe.camera.attached = test_apparition

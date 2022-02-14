@@ -7,127 +7,186 @@
         },
         "tiles": [
             {
-                "coo": [0, 0],
-                "roo": [0, 0],
-                "lwall": "lwall:test",
-                "rwall": "rwall:test",
-                "slate": "slate:test"
+                "coo": [-3, 0],
+                "roo": [-5, -2],
+                "lwall": "lwall:grass",
+                "rwall": "rwall:grass"
+            },
+            {
+                "coo": [-4, -1],
+                "roo": [-5, -2],
+                "lwall": "lwall:grass",
+                "rwall": "rwall:grass"
+            },
+            {
+                "coo": [-5, -2],
+                "roo": [-5, -2],
+                "lwall": "lwall:grass",
+                "slate": "slate:grass"
+            },
+            {
+                "coo": [-4, -2],
+                "roo": [-4, -2],
+                "lwall": "lwall:grass",
+                "slate": "slate:grass"
+            },
+            {
+                "coo": [-3, -2],
+                "roo": [-3, -2],
+                "lwall": "lwall:grass",
+                "slate": "slate:grass"
+            },
+            {
+                "coo": [-2, -2],
+                "roo": [-2, -2],
+                "lwall": "lwall:grass",
+                "slate": "slate:grass"
+            },
+            {
+                "coo": [-1, -2],
+                "roo": [-1, -2],
+                "lwall": "lwall:grass",
+                "slate": "slate:grass"
+            },
+            {
+                "coo": [0, -2],
+                "roo": [0, -2],
+                "rwall": "rwall:grass",
+                "slate": "slate:grass"
             },
             {
                 "coo": [0, -1],
                 "roo": [0, -1],
-                "lwall": "lwall:test",
-                "rwall": "rwall:test",
-                "slate": "slate:test"
+                "rwall": "rwall:grass",
+                "slate": "slate:grass"
             },
             {
-                "coo": [-1, -1],
-                "roo": [-1, -1],
-                "slate": "slate:test"
+                "coo": [0, 0],
+                "roo": [0, 0],
+                "rwall": "rwall:grass",
+                "slate": "slate:grass"
             },
             {
-                "coo": [-2, -1],
-                "roo": [-1, 0],
-                "lwall": "lwall:test",
-                "rwall": "rwall:test"
+                "coo": [0, 1],
+                "roo": [0, 1],
+                "rwall": "rwall:grass",
+                "slate": "slate:grass"
             },
             {
-                "coo": [-3, -2],
-                "roo": [-1, 0],
-                "lwall": "lwall:test",
-                "rwall": "rwall:test",
-                "slate": "slate:test"
+                "coo": [0, 2],
+                "roo": [0, 2],
+                "rwall": "rwall:grass",
+                "slate": "slate:grass"
             },
             {
-                "coo": [1, -4],
-                "roo": [0, -5],
-                "lwall": "lwall:test",
-                "rwall": "rwall:test"
+                "coo": [0, 3],
+                "roo": [0, 3],
+                "lwall": "lwall:grass",
+                "rwall": "rwall:grass",
+                "slate": "slate:grass"
             },
             {
-                "coo": [2, -3],
-                "roo": [0, -5],
-                "lwall": "lwall:test",
-                "rwall": "rwall:test"
+                "coo": [-1, 2],
+                "roo": [0, 3],
+                "lwall": "lwall:grass",
+                "rwall": "rwall:grass"
             },
             {
-                "coo": [3, -2],
-                "roo": [5, 0],
-                "lwall": "lwall:test",
-                "rwall": "rwall:test"
+                "coo": [-2, 1],
+                "roo": [0, 3],
+                "lwall": "lwall:grass",
+                "rwall": "rwall:grass"
             },
             {
-                "coo": [4, -1],
-                "roo": [5, 0],
-                "lwall": "lwall:test",
-                "rwall": "rwall:test"
+                "coo": [7, 10],
+                "roo": [5, 8],
+                "lwall": "lwall:grass",
+                "rwall": "rwall:grass"
             },
             {
-                "coo": [0, -5],
-                "roo": [0, -5],
-                "lwall": "lwall:test",
-                "slate": "slate:test"
+                "coo": [6, 9],
+                "roo": [5, 8],
+                "lwall": "lwall:grass",
+                "rwall": "rwall:grass"
             },
             {
-                "coo": [1, -5],
-                "roo": [1, -5],
-                "lwall": "lwall:test",
-                "slate": "slate:test"
+                "coo": [5, 8],
+                "roo": [5, 8],
+                "lwall": "lwall:grass",
+                "slate": "slate:grass"
             },
             {
-                "coo": [2, -5],
-                "roo": [2, -5],
-                "lwall": "lwall:test",
-                "slate": "slate:test"
+                "coo": [6, 8],
+                "roo": [6, 8],
+                "lwall": "lwall:grass",
+                "slate": "slate:grass"
             },
             {
-                "coo": [3, -5],
-                "roo": [3, -5],
-                "lwall": "lwall:test",
-                "slate": "slate:test"
+                "coo": [7, 8],
+                "roo": [7, 8],
+                "lwall": "lwall:grass",
+                "slate": "slate:grass"
             },
             {
-                "coo": [4, -5],
-                "roo": [4, -5],
-                "lwall": "lwall:test",
-                "slate": "slate:test"
+                "coo": [8, 8],
+                "roo": [8, 8],
+                "lwall": "lwall:grass",
+                "slate": "slate:grass"
             },
             {
-                "coo": [5, 0],
-                "roo": [5, 0],
-                "lwall": "lwall:test",
-                "rwall": "rwall:test",
-                "slate": "slate:test"
+                "coo": [9, 8],
+                "roo": [9, 8],
+                "lwall": "lwall:grass",
+                "slate": "slate:grass"
             },
             {
-                "coo": [5, -1],
-                "roo": [5, -1],
-                "rwall": "rwall:test",
-                "slate": "slate:test"
+                "coo": [10, 8],
+                "roo": [10, 8],
+                "rwall": "rwall:grass",
+                "slate": "slate:grass"
             },
             {
-                "coo": [5, -2],
-                "roo": [5, -2],
-                "rwall": "rwall:test",
-                "slate": "slate:test"
+                "coo": [10, 9],
+                "roo": [10, 9],
+                "rwall": "rwall:grass",
+                "slate": "slate:grass"
             },
             {
-                "coo": [5, -3],
-                "roo": [5, -3],
-                "rwall": "rwall:test",
-                "slate": "slate:test"
+                "coo": [10, 10],
+                "roo": [10, 10],
+                "rwall": "rwall:grass",
+                "slate": "slate:grass"
             },
             {
-                "coo": [5, -4],
-                "roo": [5, -4],
-                "rwall": "rwall:test",
-                "slate": "slate:test"
+                "coo": [10, 11],
+                "roo": [10, 11],
+                "rwall": "rwall:grass",
+                "slate": "slate:grass"
             },
             {
-                "coo": [5, -5],
-                "roo": [5, -5],
-                "rwall": "rwall:test",
-                "slate": "slate:test"
+                "coo": [10, 12],
+                "roo": [10, 12],
+                "rwall": "rwall:grass",
+                "slate": "slate:grass"
+            },
+            {
+                "coo": [10, 13],
+                "roo": [10, 13],
+                "lwall": "lwall:grass",
+                "rwall": "rwall:grass",
+                "slate": "slate:grass"
+            },
+            {
+                "coo": [9, 12],
+                "roo": [10, 13],
+                "lwall": "lwall:grass",
+                "rwall": "rwall:grass"
+            },
+            {
+                "coo": [8, 11],
+                "roo": [10, 13],
+                "lwall": "lwall:grass",
+                "rwall": "rwall:grass"
             }
         ]
     }

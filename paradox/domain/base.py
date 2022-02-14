@@ -20,6 +20,7 @@ def dist(pos1: Sequence[Number], pos2: Sequence[Number]) -> float:
 
 @unique
 class Direction(tuple[float, float], Enum):
+    NONE: tuple[float, float] = (0.0, 0.0)
     NORTH: tuple[float, float] = (-(1 / 2) ** (1 / 2), -(1 / 2) ** (1 / 2))
     SOUTH: tuple[float, float] = ((1 / 2) ** (1 / 2), (1 / 2) ** (1 / 2))
     EAST: tuple[float, float] = ((1 / 2) ** (1 / 2), -(1 / 2) ** (1 / 2))

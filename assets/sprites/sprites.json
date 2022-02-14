@@ -10,13 +10,28 @@
         "size": [29, 49]
     },
     {
+        "tag": "lwall:grass",
+        "path": "lwall_grass.png",
+        "size": [29, 49]
+    },
+    {
         "tag": "rwall:test",
         "path": "rwall_test.png",
         "size": [29, 49]
     },
     {
+        "tag": "rwall:grass",
+        "path": "rwall_grass.png",
+        "size": [29, 49]
+    },
+    {
         "tag": "slate:test",
         "path": "slate_test.png",
+        "size": [57, 33]
+    },
+    {
+        "tag": "slate:grass",
+        "path": "slate_grass.png",
         "size": [57, 33]
     }
 ]

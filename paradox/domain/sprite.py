@@ -11,10 +11,17 @@ from paradox.domain.errors import SpriteLoadError
 @unique
 class SpriteTag(str, Enum):
     NONE: str = "none"
+
     APPARITION_TEST: str = "apparition:test"
+
     LWALL_TEST: str = "lwall:test"
+    LWALL_GRASS: str = "lwall:grass"
+
     RWALL_TEST: str = "rwall:test"
+    RWALL_GRASS: str = "rwall:grass"
+
     SLATE_TEST: str = "slate:test"
+    SLATE_GRASS: str = "slate:grass"
 
 
 class Sprite(Renderable, Updatable):
