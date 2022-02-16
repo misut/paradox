@@ -21,8 +21,10 @@ class Tile(ValueObject):
 
 class Universe(Entity):
     apparitions: list[Apparition] = Field(default=[])
-    camera: Camera = Field(default=Camera(coo=(0.0, 0.0), viewport=(640, 360)))
+    camera: Camera = Field(default=Camera(coo=(0.0, 0.0), roo=(0.0, 0.0), viewport=(640, 360)))
     mapping: dict[tuple[int, int], Tile] = Field(default={})
+
+    size: tuple[int, int] = Field(default=(0, 0))
 
     def at(self, coo: tuple[float, float]) -> Tile:
         x, y = map(int, coo)

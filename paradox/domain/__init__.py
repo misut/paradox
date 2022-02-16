@@ -4,6 +4,7 @@ from paradox.domain.base import (
     ID,
     Direction,
     Entity,
+    Placeable,
     Renderable,
     Updatable,
     ValueObject,
