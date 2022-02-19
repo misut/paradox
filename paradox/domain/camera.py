@@ -52,7 +52,7 @@ class Camera(Entity, Placeable, Updatable):
         if self.attached:
             self.look_at(self.attached.coo)
             return
-        
+
         secs = ticks / 1000
         self.accelerate(secs)
         self.move(secs)

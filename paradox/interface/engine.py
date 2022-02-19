@@ -83,7 +83,7 @@ class Engine:
         self.clock = Clock()
         self.screen = pygame.display.set_mode(
             size=self.graphic_settings.SCREEN_SIZE,
-            #flags=pygame.FULLSCREEN,
+            # flags=pygame.FULLSCREEN,
         )
 
         self.initialize_ui()

@@ -295,4 +295,3 @@ class UI(Entity, Renderable, Updatable):
         if self.debug:
             self.debug_info.update(debug_info)
         super().update(ticks)
-        

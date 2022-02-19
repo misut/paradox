@@ -1,9 +1,9 @@
 from itertools import product
 from math import floor
 from tkinter import LEFT
-from loguru import logger
 
 import pygame
+from loguru import logger
 from pydantic import BaseModel, Field
 from pygame import Surface
 
@@ -41,7 +41,7 @@ class UniverseSimulator(BaseModel):
         actor_direction = Direction.NONE
         actor_velocity = 0.0
         actor_gravity = 98.0
-        
+
         for action, action_info in action_infos.items():
             if action_info.type == ActionType.RELEASED:
                 continue
@@ -62,10 +62,10 @@ class UniverseSimulator(BaseModel):
                     actor_direction += Direction.EAST
                 case _:
                     continue
-            
+
             actor_acceleration = actor.move_power
             actor_velocity = actor.velocity
-            
+
         actor.acceleration = actor_acceleration
         if actor_direction != Direction.NONE:
             actor.direction = actor_direction
@@ -108,10 +108,13 @@ class UniverseSimulator(BaseModel):
         blit_sequences = {}
 
         coords = [
-            (x, y) for (x, y) in product(
+            (x, y)
+            for (x, y) in product(
                 range(cur[0] - sight - RENDER_OFFSET, cur[0] + sight - RENDER_OFFSET),
                 range(cur[1] - sight - RENDER_OFFSET, cur[1] + sight - RENDER_OFFSET),
-            ) if -sight <= x + y - cur[0] - cur[1] <= sight and -sight <= x - y - cur[0] + cur[1] <= sight
+            )
+            if -sight <= x + y - cur[0] - cur[1] <= sight
+            and -sight <= x - y - cur[0] + cur[1] <= sight
         ]
         coords.sort(key=lambda coo: coo[0] + coo[1])
 
@@ -124,21 +127,31 @@ class UniverseSimulator(BaseModel):
                         pixel[0] - apparition_sprite.width // 2,
                         pixel[1] - apparition_sprite.height,
                     )
-                    apparition_blit_sequence = (apparition_sprite.surface, apparition_pixel, None, special_flags)
+                    apparition_blit_sequence = (
+                        apparition_sprite.surface,
+                        apparition_pixel,
+                        None,
+                        special_flags,
+                    )
 
                     if apparition.render_roo not in blit_sequences:
                         blit_sequences[apparition.render_roo] = []
-                    blit_sequences[apparition.render_roo].insert(0, apparition_blit_sequence)
+                    blit_sequences[apparition.render_roo].insert(
+                        0, apparition_blit_sequence
+                    )
 
             tile = self.universe.at((x, y))
             if tile == None:
                 continue
-        
+
             if tile.roo not in blit_sequences:
                 blit_sequences[tile.roo] = []
 
             diff = (x - stt[0], y - stt[1])
-            pixel = (pxl[0] + (diff[0] - diff[1]) * (TILE_WIDTH // 2), pxl[1] + (diff[0] + diff[1]) * (SLATE_HEIGHT // 2))
+            pixel = (
+                pxl[0] + (diff[0] - diff[1]) * (TILE_WIDTH // 2),
+                pxl[1] + (diff[0] + diff[1]) * (SLATE_HEIGHT // 2),
+            )
 
             lwall_pixel = (
                 pixel[0] - (TILE_WIDTH // 2),

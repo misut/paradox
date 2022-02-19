@@ -23,12 +23,14 @@ class Tile(ValueObject):
     slate: SpriteTag | None
 
     @validator("roo")
-    def validate_roo(cls, roo: tuple[int, int], values: dict[str, Any]) -> tuple[int, int]:
+    def validate_roo(
+        cls, roo: tuple[int, int], values: dict[str, Any]
+    ) -> tuple[int, int]:
         coo = values.get("coo")
         if roo[0] - coo[0] == roo[1] - coo[1]:
             return roo
         raise ValueError("roo should have same z-index with coo.")
-    
+
     @property
     def zidx(self) -> int:
         return self.roo[0] - self.coo[0]
@@ -36,7 +38,9 @@ class Tile(ValueObject):
 
 class Universe(Entity, Updatable):
     apparitions: list[Apparition] = Field(default=[])
-    camera: Camera = Field(default=Camera(coo=(0.0, 0.0), roo=(0.0, 0.0), viewport=(640, 360)))
+    camera: Camera = Field(
+        default=Camera(coo=(0.0, 0.0), roo=(0.0, 0.0), viewport=(640, 360))
+    )
     mapping: dict[tuple[int, int], Tile] = Field(default={})
 
     size: tuple[int, int] = Field(default=(0, 0))
@@ -47,16 +51,16 @@ class Universe(Entity, Updatable):
 
     def along(self, src: tuple[float, float], dst: tuple[float, float]) -> list[Tile]:
         dx, dy = dst[0] - src[0], dst[1] - src[1]
-        
+
         params = []
         if dx > 0.0:
             for sol in range(floor(src[0]), ceil(dst[0]) + 1):
                 params.append((sol - floor(src[0])) / dx)
-        
+
         if dy > 0.0:
             for sol in range(floor(src[1]), ceil(dst[1]) + 1):
                 params.append((sol - floor(src[1])) / dy)
-        
+
         params.sort()
         tiles = []
         for param in params:
@@ -65,9 +69,8 @@ class Universe(Entity, Updatable):
                 continue
             if tile not in tiles:
                 tiles.append(tile)
-        
+
         return tiles
-        
 
     def place(self, apprition: Apparition) -> None:
         self.apparitions.append(apprition)
@@ -107,55 +110,77 @@ class Universe(Entity, Updatable):
             coll_front = False
 
             tiles_up = [
-                tile for tile in map(self.at, [uc, ul, ur, ub, uf])
+                tile
+                for tile in map(self.at, [uc, ul, ur, ub, uf])
                 if tile != None and tile.zidx < apparition.zidx
             ]
             if tiles_up:
-                #logger.info("Collide up!")
+                # logger.info("Collide up!")
                 coll_up = True
 
             tiles_down = [
-                tile for tile in map(self.at, [dc, dl, dr, db, df])
+                tile
+                for tile in map(self.at, [dc, dl, dr, db, df])
                 if tile != None and apparition.zidx <= tile.zidx < apparition.zidx + 0.1
             ]
             if len(tiles_down) > 2 and not apparition.jumping:
-                #logger.info("Collide down!")
+                # logger.info("Collide down!")
                 coll_down = True
 
-            tiles_left = [
-                tile for tile in self.along(ul, dl) 
-                if tile.roo == roo_left and tile.zidx > apparition.zidx
-            ] if roo_left != roo_center else []
+            tiles_left = (
+                [
+                    tile
+                    for tile in self.along(ul, dl)
+                    if tile.roo == roo_left and tile.zidx > apparition.zidx
+                ]
+                if roo_left != roo_center
+                else []
+            )
             left_directions = [Direction.NORTHWEST, Direction.NORTH, Direction.WEST]
             if tiles_left and apparition.direction in left_directions:
-                #logger.info("Collide left!")
+                # logger.info("Collide left!")
                 coll_left = True
 
-            tiles_right = [
-                tile for tile in self.along(ur, dr) 
-                if tile.roo == roo_right and tile.zidx > apparition.zidx
-            ] if roo_right != roo_center else []
+            tiles_right = (
+                [
+                    tile
+                    for tile in self.along(ur, dr)
+                    if tile.roo == roo_right and tile.zidx > apparition.zidx
+                ]
+                if roo_right != roo_center
+                else []
+            )
             right_directions = [Direction.SOUTHEAST, Direction.SOUTH, Direction.EAST]
             if tiles_right and apparition.direction in right_directions:
-                #logger.info("Collide right!")
+                # logger.info("Collide right!")
                 coll_right = True
 
-            tiles_back = [
-                tile for tile in self.along(ub, db) 
-                if tile.roo == roo_back and tile.zidx > apparition.zidx
-            ] if roo_back != roo_center else []
+            tiles_back = (
+                [
+                    tile
+                    for tile in self.along(ub, db)
+                    if tile.roo == roo_back and tile.zidx > apparition.zidx
+                ]
+                if roo_back != roo_center
+                else []
+            )
             back_directions = [Direction.NORTHEAST, Direction.NORTH, Direction.EAST]
             if tiles_back and apparition.direction in back_directions:
-                #logger.info("Collide back")
+                # logger.info("Collide back")
                 coll_back = True
-            
-            tiles_front = [
-                tile for tile in self.along(uf, df) 
-                if tile.roo == roo_front and tile.zidx > apparition.zidx
-            ] if roo_front != roo_center else []
+
+            tiles_front = (
+                [
+                    tile
+                    for tile in self.along(uf, df)
+                    if tile.roo == roo_front and tile.zidx > apparition.zidx
+                ]
+                if roo_front != roo_center
+                else []
+            )
             front_directions = [Direction.SOUTHWEST, Direction.SOUTH, Direction.WEST]
             if tiles_front and apparition.direction in front_directions:
-                #logger.info("Collide front")
+                # logger.info("Collide front")
                 coll_front = True
 
             can_fall = True
@@ -181,7 +206,10 @@ class Universe(Entity, Updatable):
                     for tile in tiles_down:
                         if apparition.zidx + 1 > tile.zidx >= apparition.zidx:
                             break
-                    apparition.roo = (apparition.coo[0] + tile.zidx, apparition.coo[1] + tile.zidx)
+                    apparition.roo = (
+                        apparition.coo[0] + tile.zidx,
+                        apparition.coo[1] + tile.zidx,
+                    )
                     apparition.acceleration = 0.0
                     apparition.velocity = 0.0
                     apparition.gravity = 0.0
@@ -203,7 +231,6 @@ class Universe(Entity, Updatable):
         secs = ticks / 1000
         self.simulate(secs)
         self.camera.update(ticks)
-        
 
 
 class UniverseRepository(ABC):

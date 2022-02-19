@@ -15,7 +15,7 @@ class Stuntman(Entity, Updatable):
         def decorator(stunt: Stunt) -> Stunt:
             self.stunts[action] = stunt
             return stunt
-        
+
         return decorator
 
     def stunt(self, action_infos: ActionInfoTable) -> None:
@@ -24,5 +24,3 @@ class Stuntman(Entity, Updatable):
 
     def update(self, ticks: int) -> None:
         super().update(ticks)
-
-        

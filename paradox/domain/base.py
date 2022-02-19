@@ -43,8 +43,6 @@ class Direction(tuple[int, int], Enum):
 
     def __sub__(self, other: Direction) -> Direction:
         return Direction((self[0] - other[0], self[1] - other[1]))
-            
-
 
 
 class ValueObject(BaseModel):
@@ -128,7 +126,9 @@ class Placeable(BaseModel):
         return sum(self.roo) < sum(other.roo)
 
     @validator("roo")
-    def validate_roo(cls, roo: tuple[float, float], values: dict[str, Any]) -> tuple[float, float]:
+    def validate_roo(
+        cls, roo: tuple[float, float], values: dict[str, Any]
+    ) -> tuple[float, float]:
         coo = values.get("coo")
         if roo[0] - coo[0] == roo[1] - coo[1]:
             return roo

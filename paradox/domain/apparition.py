@@ -21,7 +21,6 @@ class Apparition(Entity, Placeable, Updatable):
     jump_count: int = Field(default=0)
     jump_count_limit: int = Field(default=0)
     jump_velocity: float = Field(default=20.0)
-    
 
     @property
     def jumping(self) -> bool:
@@ -38,7 +37,7 @@ class Apparition(Entity, Placeable, Updatable):
 
         self.jump_count += 1
         self.fall_velocity = -self.jump_velocity
-    
+
     def load(self) -> None:
         super().load()
 
