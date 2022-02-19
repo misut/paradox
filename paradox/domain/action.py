@@ -9,6 +9,7 @@ class Action(str, Enum):
     DOWN: str = "down"
     LEFT: str = "left"
     RIGHT: str = "right"
+    JUMP: str = "jump"
 
 
 @unique

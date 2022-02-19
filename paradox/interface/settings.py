@@ -18,6 +18,7 @@ class GamepadSettings(PydanticBaseSettings):
     RIGHT: int
     UP: int
     DOWN: int
+    JUMP: int
 
     class Config:
         env_file = ".env"

@@ -1,19 +1,21 @@
 from pydantic import Field, validator
 
 from paradox.domain.apparition import Apparition
-from paradox.domain.base import Entity, Placeable
+from paradox.domain.base import Entity, Placeable, Updatable
 from paradox.domain.constants import *
 
 MAX_SIGHT = 100
 
 
-class Camera(Entity, Placeable):
+class Camera(Entity, Placeable, Updatable):
     viewport: tuple[int, int]
 
     attached: Apparition | None
 
-    sight: int = Field(default=14)
+    sight: int = Field(default=15)
     zoom: float = Field(default=1.0)
+
+    move_power: float = Field(default=100.0)
 
     @validator("sight")
     def validate_sight(cls, sight: int) -> int:
@@ -35,7 +37,7 @@ class Camera(Entity, Placeable):
     def at(self) -> tuple[int, int]:
         return (int(self.coo[0]), int(self.coo[1]))
 
-    def look_at(self, coo: tuple[float, float, float], zoom: float = 1.0) -> None:
+    def look_at(self, coo: tuple[float, float], zoom: float = 1.0) -> None:
         self.coo = coo
         self.zoom = zoom
 
@@ -47,7 +49,10 @@ class Camera(Entity, Placeable):
         )
 
     def update(self, ticks: int) -> None:
-        super().update(ticks)
-
         if self.attached:
-            self.coo = self.attached.coo
+            self.look_at(self.attached.coo)
+            return
+        
+        secs = ticks / 1000
+        self.accelerate(secs)
+        self.move(secs)

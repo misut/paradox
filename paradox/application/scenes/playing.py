@@ -15,11 +15,13 @@ def playing_scene(
 
     test_apparition = Apparition(
         name="test_apparition",
-        coo=(-0.5, -0.5),
-        roo=(-0.5, -0.5),
-        dim=(1.0, 1.0),
+        coo=(0.5, 0.5),
+        roo=(0.5, 0.5),
+        dim=(0.3, 1.0),
         sprite=SpriteTag.APPARITION_TEST,
         tag=ApparitionTag.PLAYER,
+        velocity_limit=5.0,
+        jump_count_limit=2,
     )
     universe_simulator.place(test_apparition)
     universe_simulator.universe.camera.attached = test_apparition

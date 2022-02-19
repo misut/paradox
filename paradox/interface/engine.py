@@ -133,4 +133,4 @@ class Engine:
         while True:
             self.render()
             self.update()
-            self.clock.tick(60)
+            self.clock.tick()

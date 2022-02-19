@@ -50,6 +50,29 @@
                 "slate": "slate:grass"
             },
             {
+                "coo": [-2, -5],
+                "roo": [0, -3],
+                "lwall": "lwall:grass",
+                "rwall": "rwall:grass",
+                "slate": "slate:grass"
+            },
+            {
+                "coo": [-1, -4],
+                "roo": [0, -3],
+                "lwall": "lwall:grass",
+                "rwall": "rwall:grass"
+            },
+            {
+                "coo": [0, -3],
+                "roo": [0, -3],
+                "rwall": "rwall:grass"
+            },
+            {
+                "coo": [0, -3],
+                "roo": [0, -3],
+                "rwall": "rwall:grass"
+            },
+            {
                 "coo": [0, -2],
                 "roo": [0, -2],
                 "rwall": "rwall:grass",
@@ -188,6 +211,20 @@
                 "roo": [10, 13],
                 "lwall": "lwall:grass",
                 "rwall": "rwall:grass"
+            },
+            {
+                "coo": [2, 1],
+                "roo": [1, 0],
+                "lwall": "lwall:grass",
+                "rwall": "rwall:grass",
+                "slate": "slate:grass"
+            },
+            {
+                "coo": [4, 2],
+                "roo": [2, 0],
+                "lwall": "lwall:grass",
+                "rwall": "rwall:grass",
+                "slate": "slate:grass"
             }
         ]
     }
