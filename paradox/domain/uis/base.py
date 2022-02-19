@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from enum import Enum, unique
-from typing import ParamSpec
+from typing import Any
 
 import pygame
 from pydantic import Field
@@ -12,7 +12,6 @@ from paradox.domain.base import ID, Entity, Renderable, Updatable
 from paradox.domain.errors import UIAllocateError
 from paradox.domain.posts import Post
 
-Params = ParamSpec("Params")
 Actor = Callable[["UI"], list[Post]]
 
 
@@ -124,6 +123,9 @@ class UI(Entity, Renderable, Updatable):
     cycle_action: Actor = Field(default=lambda _: [])
     hover_on_action: Actor = Field(default=lambda _: [])
     hover_off_action: Actor = Field(default=lambda _: [])
+
+    debug: bool = Field(default=False)
+    debug_info: dict[str, Any] = Field(default={})
 
     class Config:
         arbitrary_types_allowed = True
@@ -243,7 +245,7 @@ class UI(Entity, Renderable, Updatable):
 
         return decorator
 
-    def on_cycle(self) -> Callable[[Actor], Actor]:
+    def on_cycle(self, debug: bool = False) -> Callable[[Actor], Actor]:
         def decorator(listener: Actor) -> Actor:
             self.cycle_action = listener
             return listener
@@ -287,7 +289,10 @@ class UI(Entity, Renderable, Updatable):
         for child in self.childs:
             child.render(render_screen, special_flags)
 
-    def update(self, ticks: int) -> None:
+    def update(self, ticks: int, **debug_info) -> None:
         for child in self.childs:
-            child.update(ticks)
+            child.update(ticks, **debug_info)
+        if self.debug:
+            self.debug_info.update(debug_info)
         super().update(ticks)
+        

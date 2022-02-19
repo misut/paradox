@@ -56,21 +56,6 @@ class Engine:
         film_director.invite(paradox_director)
         film_director.shoot(SceneNo.INTRO, ui_manager, universe_simulator)
 
-        fps_count = TextUI(
-            name="fps_count",
-            pos=(0, 0),
-            size=(30, 20),
-            cycletime=100,
-            background_color=(0, 0, 0, 0),
-            font_size=23,
-        )
-
-        @fps_count.on_cycle()
-        def cycle_fps_count(self_ui: TextUI) -> None:
-            self_ui.text = str(int(self.clock.get_fps()))
-
-        ui_manager.allocate(fps_count)
-
     def initialize_ui(self) -> None:
         pass
 

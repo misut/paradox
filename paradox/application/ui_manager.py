@@ -1,5 +1,5 @@
 from loguru import logger
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from pygame import Surface
 
 from paradox.domain import ID, UI, Post
@@ -10,6 +10,8 @@ class UIManager(BaseModel):
 
     clicking_ui: UI | None
     hovering_ui: UI | None
+
+    fps: float = Field(default=0.0)
 
     def __init__(self, pos: tuple[int, int], size: tuple[int, int]) -> None:
         super().__init__(root_ui=UI(pos=pos, size=size))
@@ -70,5 +72,5 @@ class UIManager(BaseModel):
     def render(self, render_screen: Surface, special_flags: int = 0) -> None:
         self.root_ui.render(render_screen, special_flags)
 
-    def update(self, ticks: int) -> None:
-        self.root_ui.update(ticks)
+    def update(self, ticks: int, **debug_info) -> None:
+        self.root_ui.update(ticks, **debug_info)

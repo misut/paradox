@@ -32,7 +32,7 @@ def deliver_tick_post(
     universe_simulator.act(post.actions)
 
     universe_simulator.update(post.ticks)
-    ui_manager.update(post.ticks)
+    ui_manager.update(post.ticks, fps=post.fps)
 
     universe_simulator.render(render_screen, post.special_flags)
     ui_manager.render(render_screen, post.special_flags)

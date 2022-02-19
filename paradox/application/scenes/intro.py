@@ -85,6 +85,22 @@ def intro_scene(
     intro_ui.allocate(setting_button)
     intro_ui.allocate(quit_button)
 
+    fps_count = TextUI(
+        name="fps_count",
+        pos=(0, 0),
+        size=(30, 20),
+        cycletime=100,
+        background_color=(0, 0, 0, 0),
+        font_size=23,
+        debug=True,
+    )
+
+    @fps_count.on_cycle()
+    def cycle_fps_count(self_ui: TextUI) -> None:
+        self_ui.text = str(int(self_ui.debug_info["fps"]))
+
+    ui_manager.allocate(fps_count)
+
     ui_manager.allocate(intro_ui)
 
     return []

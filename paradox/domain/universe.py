@@ -111,7 +111,7 @@ class Universe(Entity, Updatable):
                 if tile != None and tile.zidx < apparition.zidx
             ]
             if tiles_up:
-                logger.info("Collide up!")
+                #logger.info("Collide up!")
                 coll_up = True
 
             tiles_down = [
@@ -119,7 +119,7 @@ class Universe(Entity, Updatable):
                 if tile != None and apparition.zidx <= tile.zidx < apparition.zidx + 0.1
             ]
             if len(tiles_down) > 2 and not apparition.jumping:
-                logger.info("Collide down!")
+                #logger.info("Collide down!")
                 coll_down = True
 
             tiles_left = [
@@ -128,7 +128,7 @@ class Universe(Entity, Updatable):
             ] if roo_left != roo_center else []
             left_directions = [Direction.NORTHWEST, Direction.NORTH, Direction.WEST]
             if tiles_left and apparition.direction in left_directions:
-                logger.info("Collide left!")
+                #logger.info("Collide left!")
                 coll_left = True
 
             tiles_right = [
@@ -137,7 +137,7 @@ class Universe(Entity, Updatable):
             ] if roo_right != roo_center else []
             right_directions = [Direction.SOUTHEAST, Direction.SOUTH, Direction.EAST]
             if tiles_right and apparition.direction in right_directions:
-                logger.info("Collide right!")
+                #logger.info("Collide right!")
                 coll_right = True
 
             tiles_back = [
@@ -146,7 +146,7 @@ class Universe(Entity, Updatable):
             ] if roo_back != roo_center else []
             back_directions = [Direction.NORTHEAST, Direction.NORTH, Direction.EAST]
             if tiles_back and apparition.direction in back_directions:
-                logger.info("Collide back")
+                #logger.info("Collide back")
                 coll_back = True
             
             tiles_front = [
@@ -155,7 +155,7 @@ class Universe(Entity, Updatable):
             ] if roo_front != roo_center else []
             front_directions = [Direction.SOUTHWEST, Direction.SOUTH, Direction.WEST]
             if tiles_front and apparition.direction in front_directions:
-                logger.info("Collide front")
+                #logger.info("Collide front")
                 coll_front = True
 
             can_fall = True
