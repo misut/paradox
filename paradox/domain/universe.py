@@ -73,7 +73,7 @@ class Universe(Entity, Updatable):
         self.apparitions.append(apprition)
         self.apparitions.sort(reverse=True)
 
-    def __simulate(self, secs: float) -> None:
+    def simulate(self, secs: float) -> None:
         # UL, UR, UB, UF, DL, DR, DB, DF
         for apparition in self.apparitions:
             futures = apparition.simulate(secs)
@@ -199,104 +199,9 @@ class Universe(Entity, Updatable):
                 apparition.acceleration = 0.0
                 apparition.velocity = 0.0
 
-    def _simulate(self, secs: float) -> None:
-        for apparition in self.apparitions:
-            before_coo, before_roo, before_zidx = apparition.coo, apparition.roo, apparition.zidx
-            apparition.simulate(secs)
-            after_coo, after_roo, after_zidx = apparition.coo, apparition.roo, apparition.zidx
-
-            tiles = self.along(before_coo, after_coo)
-            stt_tile, dst_tile = self.at(before_coo), self.at(after_coo)
-
-            # Apparition was falling and no tiles
-            if apparition.falling and (stt_tile == None or stt_tile.zidx != before_zidx):
-                for tile in tiles:
-                    if before_zidx <= tile.zidx <= after_zidx or after_zidx <= tile.zidx <= before_zidx:
-                        apparition.roo = (apparition.coo[0] + tile.zidx, apparition.coo[1] + tile.zidx)
-                        apparition.foo = None
-                        apparition.fall_velocity = 0.0
-                        apparition.jump_count = 0
-                        logger.info(f"{apparition.coo} {apparition.roo}")
-                        return 
-                else:
-                    apparition.fall_velocity += apparition.gravity * secs
-                    if apparition.zidx <= -Z_LIMIT:
-                        apparition.coo = apparition.foo
-                        apparition.roo = (apparition.foo[0] + apparition.fidx, apparition.foo[1] + apparition.fidx)
-                        apparition.fall_velocity = 0.0
-                        apparition.jump_count = 0
-                    return
-
-            # Apparition is about to fall
-            if len(tiles) == 0:
-                apparition.fall_velocity += apparition.gravity * secs
-                apparition.jump_count += 1
-                return
-            
-            # Apparition is not falling
-            for tile in tiles:
-                height = ceil(apparition.dim[1])
-                zidx = floor(before_zidx)
-                for h in range(1, height + 1):
-                    upper_coo = (tile.coo[0] - h, tile.coo[1] - h)
-                    upper_tile = self.at(upper_coo)
-                    if upper_tile != None and zidx < upper_tile.zidx:
-                        logger.info("hey")
-                        apparition.coo = before_coo
-                        apparition.roo = before_roo
-                        return
-                else:
-                    break
-            
-            apparition.foo = (stt_tile.coo[0] + 0.5, stt_tile.coo[1] + 0.5)
-            apparition.fidx = apparition.zidx
-
-    def simulate(self, secs: float) -> None:
-        for apparition in self.apparitions:
-            before_coo, before_roo, before_zidx = apparition.coo, apparition.roo, apparition.zidx
-            apparition.simulate(secs)
-
-            after_coo, after_zidx = apparition.coo, apparition.zidx
-            upper_coo = (after_coo[0] - 1, after_coo[1] - 1)
-            upper_tile = self.at(upper_coo)
-            if upper_tile != None:
-                if after_zidx == upper_tile.zidx - 1:  # This value 1 must be related to dim
-                    apparition.coo = before_coo
-                    apparition.roo = before_roo
-                    continue
-
-            tile = self.at(after_coo)
-            if tile != None:
-                if after_zidx == tile.zidx - 1:
-                    apparition.coo = before_coo
-                    apparition.roo = before_roo
-                    continue
-                if tile.zidx - 1.0 <= after_zidx <= tile.zidx:
-                    apparition.roo = (apparition.coo[0] + tile.zidx, apparition.coo[1] + tile.zidx)
-                    apparition.foo = None
-                    apparition.fall_velocity = 0.0
-                    apparition.jump_count = 0
-                    continue
-
-            apparition.fall_velocity += apparition.gravity * secs
-
-            if apparition.foo == None:
-                foo = tuple(map(floor, before_coo))
-                center = (foo[0] + 0.5, foo[1] + 0.5)
-                apparition.foo = center
-                apparition.fidx = before_zidx
-
-            if after_zidx < -Z_LIMIT:
-                apparition.coo = apparition.foo
-                apparition.roo = (apparition.foo[0] + apparition.fidx, apparition.foo[1] + apparition.fidx)
-                apparition.foo = None
-                apparition.fall_velocity = 0.0
-                apparition.jump_count = 0
-                continue
-
     def update(self, ticks: int) -> None:
         secs = ticks / 1000
-        self.__simulate(secs)
+        self.simulate(secs)
         self.camera.update(ticks)
         
 
