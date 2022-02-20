@@ -1,13 +1,12 @@
 from pydantic import Field, validator
 
 from paradox.domain.apparition import Apparition
-from paradox.domain.base import Direction, Entity, Updatable
+from paradox.domain.base import Direction, Updatable
 from paradox.domain.constants import *
 
 
-class Camera(Entity, Updatable):
+class Camera(Updatable):
     coo: tuple[int, int]
-    viewport: tuple[int, int]
 
     attached: Apparition | None
 
@@ -60,11 +59,11 @@ class Camera(Entity, Updatable):
         self.coo = coo
         self.zoom = zoom
 
-    def pixel(self, coo: tuple[float, float]) -> tuple[int, int]:
+    def pixel(self, coo: tuple[float, float], viewport: tuple[int, int] = (640, 360)) -> tuple[int, int]:
         diff = (coo[0] - self.coo[0], coo[1] - self.coo[1])
         return (
-            self.viewport[0] // 2 + (TILE_WIDTH // 2) * (diff[0] - diff[1]),
-            self.viewport[1] // 2 + (SLATE_HEIGHT // 2) * (diff[0] + diff[1]),
+            viewport[0] // 2 + (TILE_WIDTH // 2) * (diff[0] - diff[1]),
+            viewport[1] // 2 + (SLATE_HEIGHT // 2) * (diff[0] + diff[1]),
         )
 
     def update(self, ticks: int) -> None:

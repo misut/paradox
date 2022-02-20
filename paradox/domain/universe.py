@@ -38,7 +38,7 @@ class Tile(ValueObject):
 
 class Universe(Entity, Updatable):
     apparitions: list[Apparition] = Field(default=[])
-    camera: Camera = Field(default=Camera(coo=(0.0, 0.0), viewport=(640, 360)))
+    camera: Camera = Field(default=Camera(coo=(0.0, 0.0)))
     mapping: dict[tuple[int, int], Tile] = Field(default={})
 
     size: tuple[int, int] = Field(default=(0, 0))

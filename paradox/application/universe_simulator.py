@@ -1,6 +1,5 @@
 from itertools import product
 from math import floor
-from tkinter import LEFT
 
 import pygame
 from loguru import logger
@@ -93,6 +92,8 @@ class UniverseSimulator(BaseModel):
         render_screen.blit(background, (0, 0), None, special_flags)
 
     def render_universe(self, render_screen: Surface, special_flags: int = 0) -> None:
+        render_size = render_screen.get_size()
+
         sorted_apparitions: dict[tuple[int, int], list[Apparition]] = {}
         for apparition in self.universe.apparitions:
             coo = tuple(map(floor, apparition.coo))
@@ -104,7 +105,7 @@ class UniverseSimulator(BaseModel):
         sight = self.universe.camera.sight
 
         stt = (cur[0] - sight, cur[1] - sight)
-        pxl = self.universe.camera.pixel(stt)
+        pxl = self.universe.camera.pixel(stt, render_size)
         blit_sequences = {}
 
         coords = [
@@ -121,7 +122,7 @@ class UniverseSimulator(BaseModel):
         for (x, y) in coords:
             if (x, y) in sorted_apparitions:
                 for apparition in sorted_apparitions[(x, y)]:
-                    pixel = self.universe.camera.pixel(apparition.coo)
+                    pixel = self.universe.camera.pixel(apparition.coo, render_size)
                     apparition_pixel = (
                         pixel[0] - apparition.sprite.width // 2,
                         pixel[1] - apparition.sprite.height,

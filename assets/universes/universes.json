@@ -2,9 +2,7 @@
     {
         "name": "Hello, world!",
         "camera": {
-            "coo": [0, 0],
-            "roo": [0, 0],
-            "viewport": [640, 360]
+            "coo": [0, 0]
         },
         "tiles": [
             {
