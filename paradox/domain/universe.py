@@ -38,9 +38,7 @@ class Tile(ValueObject):
 
 class Universe(Entity, Updatable):
     apparitions: list[Apparition] = Field(default=[])
-    camera: Camera = Field(
-        default=Camera(coo=(0.0, 0.0), roo=(0.0, 0.0), viewport=(640, 360))
-    )
+    camera: Camera = Field(default=Camera(coo=(0.0, 0.0), viewport=(640, 360)))
     mapping: dict[tuple[int, int], Tile] = Field(default={})
 
     size: tuple[int, int] = Field(default=(0, 0))
@@ -76,7 +74,7 @@ class Universe(Entity, Updatable):
         self.apparitions.append(apprition)
         self.apparitions.sort(reverse=True)
 
-    def simulate(self, secs: float) -> None:
+    def simulate_collisions(self, secs: float) -> None:
         # UL, UR, UB, UF, DL, DR, DB, DF
         for apparition in self.apparitions:
             futures = apparition.simulate(secs)
@@ -229,7 +227,7 @@ class Universe(Entity, Updatable):
 
     def update(self, ticks: int) -> None:
         secs = ticks / 1000
-        self.simulate(secs)
+        self.simulate_collisions(secs)
         self.camera.update(ticks)
 
 

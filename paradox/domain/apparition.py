@@ -3,7 +3,7 @@ from enum import Enum, unique
 from pydantic import Field
 
 from paradox.domain.base import Entity, Placeable, Updatable
-from paradox.domain.sprite import SpriteTag
+from paradox.domain.sprite import Sprite
 
 
 @unique
@@ -12,7 +12,7 @@ class ApparitionTag(str, Enum):
 
 
 class Apparition(Entity, Placeable, Updatable):
-    sprite: SpriteTag
+    sprite: Sprite
     tag: ApparitionTag
 
     fall_power: float = Field(default=98.0)

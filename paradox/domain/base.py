@@ -217,8 +217,11 @@ class Placeable(BaseModel):
 
     def simulate(self, secs: float) -> Placeable:
         future_placeable = self.copy()
+
         future_placeable.accelerate(secs)
         future_placeable.move(secs)
+
         future_placeable.gravitate(secs)
         future_placeable.fall(secs)
+
         return future_placeable

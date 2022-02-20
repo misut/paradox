@@ -46,7 +46,7 @@ def playing_scene(
         coo=(0.5, 0.5),
         roo=(0.5, 0.5),
         dim=(0.3, 1.0),
-        sprite=SpriteTag.APPARITION_TEST,
+        sprite=universe_simulator.sprites.copy(SpriteTag.APPARITION_TEST),
         tag=ApparitionTag.PLAYER,
         velocity_limit=5.0,
         jump_count_limit=2,

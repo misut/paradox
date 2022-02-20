@@ -1,13 +1,12 @@
 from pydantic import Field, validator
 
 from paradox.domain.apparition import Apparition
-from paradox.domain.base import Entity, Placeable, Updatable
+from paradox.domain.base import Direction, Entity, Updatable
 from paradox.domain.constants import *
 
-MAX_SIGHT = 100
 
-
-class Camera(Entity, Placeable, Updatable):
+class Camera(Entity, Updatable):
+    coo: tuple[int, int]
     viewport: tuple[int, int]
 
     attached: Apparition | None
@@ -15,13 +14,17 @@ class Camera(Entity, Placeable, Updatable):
     sight: int = Field(default=15)
     zoom: float = Field(default=1.0)
 
+    direction: Direction = Field(default=Direction.SOUTH)
+    velocity: float = Field(default=0.0)
+    velocity_limit: float = Field(default=11.0)
+    acceleration: float = Field(default=0.0)
     move_power: float = Field(default=100.0)
 
     @validator("sight")
     def validate_sight(cls, sight: int) -> int:
         if sight <= 0:
             raise Exception()
-        if sight > MAX_SIGHT:
+        if sight > SIGHT_LIMIT:
             raise Exception()
         return sight
 
@@ -36,6 +39,22 @@ class Camera(Entity, Placeable, Updatable):
     @property
     def at(self) -> tuple[int, int]:
         return (int(self.coo[0]), int(self.coo[1]))
+
+    def accelerate(self, secs: float) -> None:
+        if self.acceleration == 0.0:
+            return
+
+        self.velocity += self.acceleration * secs
+        self.velocity = min(self.velocity, self.velocity_limit)
+
+    def move(self, secs: float) -> None:
+        if self.velocity == 0.0:
+            return
+
+        x, y = self.coo
+        x += self.direction.vector[0] * self.velocity * secs
+        y += self.direction.vector[1] * self.velocity * secs
+        self.coo = (x, y)
 
     def look_at(self, coo: tuple[float, float], zoom: float = 1.0) -> None:
         self.coo = coo

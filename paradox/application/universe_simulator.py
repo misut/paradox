@@ -121,14 +121,13 @@ class UniverseSimulator(BaseModel):
         for (x, y) in coords:
             if (x, y) in sorted_apparitions:
                 for apparition in sorted_apparitions[(x, y)]:
-                    apparition_sprite = self.sprites.get(apparition.sprite)
                     pixel = self.universe.camera.pixel(apparition.coo)
                     apparition_pixel = (
-                        pixel[0] - apparition_sprite.width // 2,
-                        pixel[1] - apparition_sprite.height,
+                        pixel[0] - apparition.sprite.width // 2,
+                        pixel[1] - apparition.sprite.height,
                     )
                     apparition_blit_sequence = (
-                        apparition_sprite.surface,
+                        apparition.sprite.surface,
                         apparition_pixel,
                         None,
                         special_flags,
@@ -187,5 +186,5 @@ class UniverseSimulator(BaseModel):
         if self.paused:
             return
 
-        self.sprites.update(ticks)
         self.universe.update(ticks)
+        self.sprites.update(ticks)

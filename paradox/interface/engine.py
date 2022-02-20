@@ -9,7 +9,7 @@ from pygame.transform import scale
 
 import paradox
 from paradox.application import paradox_director
-from paradox.domain import SceneNo, TextUI, TickPost
+from paradox.domain import SceneNo, TickPost
 from paradox.interface import protocols
 from paradox.interface.container import Container
 from paradox.interface.gamepad import Gamepad

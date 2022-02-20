@@ -5,7 +5,13 @@ import pygame
 from pydantic import BaseModel
 from pygame import Rect, Surface
 
-from paradox.domain import Sprite, SpriteRepository, SpriteTag
+from paradox.domain import (
+    Sprite,
+    SpriteAsset,
+    SpriteRepository,
+    SpriteTag,
+    sprite_assets,
+)
 
 
 class SpriteFile(BaseModel):
@@ -43,15 +49,17 @@ class FileSpriteRepository(SpriteRepository):
             surface.blit(bulk_surface, (0, 0), rect, pygame.BLEND_ALPHA_SDL2)
             surfaces.append(surface)
 
+        sprite_assets[sprite_file.tag] = SpriteAsset(
+            tag=sprite_file.tag, surfaces=surfaces
+        )
         return Sprite(
-            pos=(0, 0), size=sprite_file.size, tag=sprite_file.tag, surfaces=surfaces
+            pos=(0, 0),
+            size=sprite_file.size,
+            tag=sprite_file.tag,
+            surface_limit=len(surfaces),
         )
 
     def load_sprites(self) -> None:
-        self.sprites[SpriteTag.NONE] = Sprite(
-            pos=(0, 0), size=(0, 0), tag=SpriteTag.NONE, surfaces=[Surface((0, 0))]
-        )
-
         json_path = self.sprites_path.joinpath("sprites.json")
         with json_path.open(mode="rt", encoding="utf-8") as stream:
             sprite_file_dicts = json.load(stream)
@@ -59,6 +67,13 @@ class FileSpriteRepository(SpriteRepository):
         for sprite_file_dict in sprite_file_dicts:
             sprite_file = SpriteFile.parse_obj(sprite_file_dict)
             self.sprites[sprite_file.tag] = self.from_file(sprite_file)
+
+    def copy(self, tag: SpriteTag) -> Sprite | None:
+        original_sprite = self.sprites.get(tag, None)
+        if original_sprite == None:
+            return None
+
+        return original_sprite.copy()
 
     def get(self, tag: SpriteTag) -> Sprite | None:
         return self.sprites.get(tag, None)

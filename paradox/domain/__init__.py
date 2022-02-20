@@ -27,7 +27,13 @@ from paradox.domain.posts import (
     TickPost,
 )
 from paradox.domain.posts import __all__ as all_posts
-from paradox.domain.sprite import Sprite, SpriteRepository, SpriteTag
+from paradox.domain.sprite import (
+    Sprite,
+    SpriteAsset,
+    SpriteRepository,
+    SpriteTag,
+    sprite_assets,
+)
 from paradox.domain.uis import UI, LayoutUI, TextUI
 from paradox.domain.universe import Tile, Universe, UniverseRepository
 
@@ -50,8 +56,10 @@ __all__ = [
     "UIAllocateError",
     "UIError",
     "Sprite",
+    "SpriteAsset",
     "SpriteTag",
     "SpriteRepository",
+    "sprite_assets",
     "LayoutUI",
     "TextUI",
     "UI",

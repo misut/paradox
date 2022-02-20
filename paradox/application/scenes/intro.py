@@ -99,7 +99,7 @@ def intro_scene(
     def cycle_fps_count(self_ui: TextUI) -> None:
         self_ui.text = str(int(self_ui.debug_info["fps"]))
 
-    ui_manager.allocate(fps_count)
+    intro_ui.allocate(fps_count)
 
     ui_manager.allocate(intro_ui)
 
