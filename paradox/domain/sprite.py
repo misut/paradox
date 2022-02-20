@@ -27,6 +27,7 @@ class SpriteTag(str, Enum):
         self.label = splitted[1]
 
     APPARITION_TEST: str = "apparition:test"
+    APPARITION_SHRIMP_S: str = "apparition:shrimp_s"
 
     LWALL_TEST: str = "lwall:test"
     LWALL_GRASS: str = "lwall:grass"

@@ -11,8 +11,6 @@ from paradox.domain.camera import Camera
 from paradox.domain.constants import Z_LIMIT
 from paradox.domain.sprite import SpriteTag
 
-EMPTY_ARRAY = [0 for _ in range(128)]
-
 
 class Tile(ValueObject):
     coo: tuple[int, int]

@@ -17,7 +17,6 @@ from paradox.domain import (
     Universe,
 )
 from paradox.domain.constants import *
-from paradox.domain.constants import RENDER_OFFSET
 
 
 class UniverseSimulator(BaseModel):

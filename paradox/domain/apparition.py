@@ -2,7 +2,7 @@ from enum import Enum, unique
 
 from pydantic import Field
 
-from paradox.domain.base import Entity, Placeable, Updatable
+from paradox.domain.base import Direction, Entity, Placeable, Updatable
 from paradox.domain.sprite import Sprite
 
 
@@ -12,7 +12,7 @@ class ApparitionTag(str, Enum):
 
 
 class Apparition(Entity, Placeable, Updatable):
-    sprite: Sprite
+    sprites: dict[Direction, Sprite]
     tag: ApparitionTag
 
     fall_power: float = Field(default=98.0)
@@ -21,6 +21,10 @@ class Apparition(Entity, Placeable, Updatable):
     jump_count: int = Field(default=0)
     jump_count_limit: int = Field(default=0)
     jump_velocity: float = Field(default=20.0)
+
+    @property
+    def sprite(self) -> Sprite:
+        return self.sprites[self.direction]
 
     @property
     def jumping(self) -> bool:

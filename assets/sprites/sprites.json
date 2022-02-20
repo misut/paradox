@@ -5,6 +5,11 @@
         "size": [32, 32]
     },
     {
+        "tag": "apparition:shrimp_s",
+        "path": "apparition_shrimp_s.png",
+        "size": [32, 64]
+    },
+    {
         "tag": "lwall:test",
         "path": "lwall_test.png",
         "size": [29, 49]
