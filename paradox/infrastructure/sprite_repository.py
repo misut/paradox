@@ -49,15 +49,11 @@ class FileSpriteRepository(SpriteRepository):
             surface.blit(bulk_surface, (0, 0), rect, pygame.BLEND_ALPHA_SDL2)
             surfaces.append(surface)
 
-        sprite_assets[sprite_file.tag] = SpriteAsset(
-            tag=sprite_file.tag, surfaces=surfaces
+        sprite_asset = SpriteAsset(
+            tag=sprite_file.tag, size=sprite_file.size, surfaces=surfaces
         )
-        return Sprite(
-            pos=(0, 0),
-            size=sprite_file.size,
-            tag=sprite_file.tag,
-            surface_limit=len(surfaces),
-        )
+        sprite_assets[sprite_file.tag] = sprite_asset
+        return sprite_asset.sprite()
 
     def load_sprites(self) -> None:
         json_path = self.sprites_path.joinpath("sprites.json")

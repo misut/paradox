@@ -1,0 +1,37 @@
+{
+    "tag": "player",
+    "sprites": {
+        "running": {
+            "north": "",
+            "northeast": "",
+            "northwest": "",
+            "south": "",
+            "southeast": "",
+            "southwest": "",
+            "east": "",
+            "west": ""
+        },
+        "standing": {
+            "north": "",
+            "northeast": "",
+            "northwest": "",
+            "south": "",
+            "southeast": "",
+            "southwest": "",
+            "east": "",
+            "west": ""
+        },
+        "stoppped": {
+            "north": "",
+            "northeast": "",
+            "northwest": "",
+            "south": "",
+            "southeast": "",
+            "southwest": "",
+            "east": "",
+            "west": ""
+        }
+    },
+    "stats": {
+    }
+}

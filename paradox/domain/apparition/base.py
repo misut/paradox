@@ -1,115 +1,68 @@
 from __future__ import annotations
 
-from collections.abc import Sequence
 from enum import Enum, unique
 from math import floor
-from numbers import Number
 from typing import Any
-from uuid import UUID, uuid4
 
-from pydantic import BaseModel, Field, validator
+from pydantic import Field, validator
 from pygame import Surface
 
-ID = UUID
-generate_id = uuid4
-
-
-def _norm(*ns: Number) -> Sequence[Number]:
-    dist = sum(n ** 2.0 for n in ns) ** (1 / 2)
-    if dist == 0.0:
-        return tuple(0.0 for _ in ns)
-    return tuple(map(lambda n: n / dist, ns))
+from paradox.domain.base import Direction, Entity, Updatable, ValueObject
+from paradox.domain.sprite import Sprite, SpriteTag
 
 
 @unique
-class Direction(tuple[int, int], Enum):
-    def __init__(self, dir: tuple[int, int]) -> None:
-        self.vector = _norm(*dir)
+class ApparitionStatus(str, Enum):
+    ATTACKING: str = "attacking"
+    RUNNING: str = "running"
+    FLOATING: str = "floating"
+    STANDING: str = "standing"
 
-    NONE: tuple[int, int] = (0, 0)
-    NORTH: tuple[int, int] = (-1, -1)
-    SOUTH: tuple[int, int] = (1, 1)
-    EAST: tuple[int, int] = (1, -1)
-    WEST: tuple[int, int] = (-1, 1)
-    NORTHEAST: tuple[int, int] = (0, -2)
-    NORTHWEST: tuple[int, int] = (-2, 0)
-    SOUTHEAST: tuple[int, int] = (2, 0)
-    SOUTHWEST: tuple[int, int] = (0, 2)
-
-    def __add__(self, other: Direction) -> Direction:
-        if self == other:
-            return self
-        return Direction((self[0] + other[0], self[1] + other[1]))
-
-    def __sub__(self, other: Direction) -> Direction:
-        return Direction((self[0] - other[0], self[1] - other[1]))
+    ATTACKED: str = "attacked"
+    STOPPED: str = "stopped"
 
 
-class ValueObject(BaseModel):
-    class Config:
-        allow_mutation = False
+ApparitionSpriteTags = dict[ApparitionStatus, dict[Direction, SpriteTag]]
+ApparitionSprite = dict[ApparitionStatus, dict[Direction, Sprite]]
+_DEFAULT_SPRITE = {
+    status: {
+        direction: SpriteTag.APPARITION_TEST
+        for direction in Direction
+    } for status in ApparitionStatus
+}
 
 
-class Entity(BaseModel):
-    id: ID = Field(default_factory=generate_id)
-    name: str = Field(default="")
+@unique
+class ApparitionTag(str, Enum):
+    def __init__(self, tag: str) -> None:
+        splitted = tag.split(":")
+        if len(splitted) != 2:
+            raise ValueError("Apparition tag should be in a form of 'type:label'")
+        
+        self.type = splitted[0]
+        self.label = splitted[1]
+    
+    PLAYER: str = "character:player"
 
 
-class Renderable(BaseModel):
-    pos: tuple[int, int] = Field(default=(0, 0))
-    size: tuple[int, int]
-
-    @property
-    def left(self) -> int:
-        return self.pos[0]
-
-    @property
-    def right(self) -> int:
-        return self.pos[0] + self.size[0] - 1
-
-    @property
-    def top(self) -> int:
-        return self.pos[1]
-
-    @property
-    def bottom(self) -> int:
-        return self.pos[1] + self.size[1] - 1
-
-    @property
-    def width(self) -> int:
-        return self.size[0]
-
-    @property
-    def height(self) -> int:
-        return self.size[1]
-
-    def render(self, render_screen: Surface, special_flags: int = 0) -> None:
-        pass
+class ApparitionStats(ValueObject):
+    ...
 
 
-class Updatable(BaseModel):
-    cycletime: int = Field(default=0)  # in millisecond
-    hourglass: int = Field(default=0)  # in millisecond
-
-    def cycle(self) -> None:
-        pass
-
-    def update(self, ticks: int) -> None:
-        if self.cycletime == 0:
-            return
-
-        self.hourglass += ticks
-        if self.hourglass < self.cycletime:
-            return
-
-        self.hourglass -= self.cycletime
-        self.cycle()
+class ApparitionAsset(ValueObject):
+    tag: ApparitionTag
+    sprites: ApparitionSpriteTags
+    stats: ApparitionStats
 
 
-class Placeable(BaseModel):
+class Apparition(Entity, Updatable):
+    tag: ApparitionTag
     coo: tuple[float, float]
     roo: tuple[float, float]
-    dim: tuple[float, float] = Field(default=(0.0, 0.0))
+    dim: tuple[float, float]
+
+    sprites: ApparitionSprite = Field(default=_DEFAULT_SPRITE)
+    status: ApparitionStatus = Field(default=ApparitionStatus.STANDING)
 
     direction: Direction = Field(default=Direction.SOUTH)
     move_power: float = Field(default=30.0)
@@ -124,7 +77,7 @@ class Placeable(BaseModel):
     fall_velocity_limit: float = Field(default=100.0)
     gravity: float = Field(default=0.0)
 
-    def __lt__(self, other: Placeable) -> bool:
+    def __lt__(self, other: Apparition) -> bool:
         return sum(self.roo) < sum(other.roo)
 
     @validator("roo")
@@ -157,6 +110,14 @@ class Placeable(BaseModel):
         elif right > 0.9:
             return tuple(map(floor, (self.roo[0] + self.dim[0], self.roo[1])))
         return tuple(map(floor, (self.roo[0], self.roo[1])))
+
+    @property
+    def sprite(self) -> Sprite:
+        return self.sprites[self.status][self.direction]        
+
+    @property
+    def surface(self) -> Surface:
+        return self.sprite.surface
 
     @property
     def zidx(self) -> float:
@@ -208,16 +169,16 @@ class Placeable(BaseModel):
 
         self.coo = self.foo
         self.roo = (self.foo[0] + self.fidx, self.foo[1] + self.fidx)
-        self.acceleration = 0.0
         self.direction = Direction.SOUTH
         self.velocity = 0.0
-        self.gravity = 0.0
-        self.fall_velocity = 0.0
+        self.acceleration = 0.0
 
         self.foo = None
         self.fidx = None
+        self.fall_velocity = 0.0
+        self.gravity = 0.0
 
-    def simulate(self, secs: float) -> Placeable:
+    def simulate(self, secs: float) -> Apparition:
         future_placeable = self.copy()
 
         future_placeable.accelerate(secs)
@@ -227,3 +188,7 @@ class Placeable(BaseModel):
         future_placeable.fall(secs)
 
         return future_placeable
+
+
+apparition_assets: dict[ApparitionTag, ApparitionAsset] = {}
+

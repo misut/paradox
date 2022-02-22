@@ -18,7 +18,6 @@ class FileUniverseRepository(UniverseRepository):
 
     def __init__(self, universes_path: Path) -> None:
         self.universes_path = universes_path
-
         self.load_universes()
 
     def from_file(self, universe_file: UniverseFile) -> Universe:

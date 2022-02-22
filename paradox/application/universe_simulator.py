@@ -46,7 +46,7 @@ class UniverseSimulator(BaseModel):
 
             if action_info.type == ActionType.PRESSED:
                 if isinstance(actor, Apparition) and action == Action.JUMP:
-                    if actor.jump_count < actor.jump_count_limit:
+                    if actor.jump_count < actor.jump_limit:
                         actor.jump()
 
             match action:
@@ -123,11 +123,11 @@ class UniverseSimulator(BaseModel):
                 for apparition in sorted_apparitions[(x, y)]:
                     pixel = self.universe.camera.pixel(apparition.coo, render_size)
                     apparition_pixel = (
-                        pixel[0] - apparition.sprite.width // 2,
+                        pixel[0] - apparition.sprite.width,
                         pixel[1] - apparition.sprite.height,
                     )
                     apparition_blit_sequence = (
-                        apparition.sprite.surface,
+                        apparition.surface,
                         apparition_pixel,
                         None,
                         special_flags,

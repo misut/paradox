@@ -1,5 +1,15 @@
 from paradox.domain.action import Action, ActionInfo, ActionInfoTable, ActionType
-from paradox.domain.apparition import Apparition, ApparitionTag
+from paradox.domain.apparition import (
+    Apparition,
+    ApparitionAsset,
+    ApparitionSprite,
+    ApparitionSpriteTags,
+    ApparitionStats,
+    ApparitionStatus,
+    ApparitionTag,
+    Character,
+    apparition_assets,
+)
 from paradox.domain.base import (
     ID,
     Direction,

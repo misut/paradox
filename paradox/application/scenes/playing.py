@@ -2,8 +2,9 @@ from paradox.application.film_director import FilmDirector
 from paradox.application.ui_manager import UIManager
 from paradox.application.universe_simulator import UniverseSimulator
 from paradox.domain import (
-    Apparition,
+    ApparitionStatus,
     ApparitionTag,
+    Character,
     Direction,
     LayoutUI,
     Post,
@@ -45,24 +46,26 @@ def playing_scene(
     shrimp_sprite = universe_simulator.sprites.copy(SpriteTag.APPARITION_SHRIMP_S)
     test_sprite = universe_simulator.sprites.copy(SpriteTag.APPARITION_TEST)
 
-    test_apparition = Apparition(
-        name="test_apparition",
+    test_apparition = Character(
+        name="test_character",
+        tag=ApparitionTag.PLAYER,
         coo=(0.5, 0.5),
         roo=(0.5, 0.5),
-        dim=(0.25, 1.0),
+        dim=(0.3, 1.0),
         sprites={
-            Direction.NORTH: test_sprite,
-            Direction.NORTHEAST: test_sprite,
-            Direction.NORTHWEST: test_sprite,
-            Direction.EAST: shrimp_sprite,
-            Direction.WEST: shrimp_sprite,
-            Direction.SOUTH: shrimp_sprite,
-            Direction.SOUTHEAST: shrimp_sprite,
-            Direction.SOUTHWEST: shrimp_sprite,
+            status: {
+                Direction.NORTH: test_sprite,
+                Direction.NORTHEAST: test_sprite,
+                Direction.NORTHWEST: test_sprite,
+                Direction.EAST: shrimp_sprite,
+                Direction.WEST: shrimp_sprite,
+                Direction.SOUTH: shrimp_sprite,
+                Direction.SOUTHEAST: shrimp_sprite,
+                Direction.SOUTHWEST: shrimp_sprite,
+            } for status in ApparitionStatus
         },
-        tag=ApparitionTag.PLAYER,
         velocity_limit=5.0,
-        jump_count_limit=2,
+        jump_limit=2,
     )
     universe_simulator.place(test_apparition)
     universe_simulator.universe.camera.attached = test_apparition

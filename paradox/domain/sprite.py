@@ -41,6 +41,7 @@ class SpriteTag(str, Enum):
 
 class SpriteAsset(ValueObject):
     tag: SpriteTag
+    size: tuple[int, int]
     surfaces: list[Surface]
 
     class Config:
@@ -57,6 +58,15 @@ class SpriteAsset(ValueObject):
 
     def __len__(self) -> int:
         return len(self.surfaces)
+
+    def sprite(self, cycletime: int = 100) -> "Sprite":
+        return Sprite(
+            tag=self.tag,
+            size=self.size,
+            cycletime=cycletime,
+            surface_index=0,
+            surface_limit=len(self),
+        )
 
 
 class Sprite(Updatable):
