@@ -123,7 +123,7 @@ class UniverseSimulator(BaseModel):
                 for apparition in sorted_apparitions[(x, y)]:
                     pixel = self.universe.camera.pixel(apparition.coo, render_size)
                     apparition_pixel = (
-                        pixel[0] - apparition.sprite.width,
+                        pixel[0] - apparition.sprite.width // 2,
                         pixel[1] - apparition.sprite.height,
                     )
                     apparition_blit_sequence = (

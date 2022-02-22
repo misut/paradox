@@ -43,7 +43,6 @@ def playing_scene(
 
     ui_manager.allocate(playing_ui)
 
-    shrimp_sprite = universe_simulator.sprites.copy(SpriteTag.APPARITION_SHRIMP_S)
     test_sprite = universe_simulator.sprites.copy(SpriteTag.APPARITION_TEST)
 
     test_apparition = Character(
@@ -57,11 +56,11 @@ def playing_scene(
                 Direction.NORTH: test_sprite,
                 Direction.NORTHEAST: test_sprite,
                 Direction.NORTHWEST: test_sprite,
-                Direction.EAST: shrimp_sprite,
-                Direction.WEST: shrimp_sprite,
-                Direction.SOUTH: shrimp_sprite,
-                Direction.SOUTHEAST: shrimp_sprite,
-                Direction.SOUTHWEST: shrimp_sprite,
+                Direction.EAST: test_sprite,
+                Direction.WEST: test_sprite,
+                Direction.SOUTH: test_sprite,
+                Direction.SOUTHEAST: test_sprite,
+                Direction.SOUTHWEST: test_sprite,
             } for status in ApparitionStatus
         },
         velocity_limit=5.0,

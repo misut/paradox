@@ -6,7 +6,8 @@ from paradox.domain.constants import *
 
 
 class Camera(Updatable):
-    coo: tuple[int, int]
+    coo: tuple[float, float]
+    dst: tuple[float, float] = Field(default=(0.0, 0.0))
 
     attached: Apparition | None
 
@@ -55,8 +56,8 @@ class Camera(Updatable):
         y += self.direction.vector[1] * self.velocity * secs
         self.coo = (x, y)
 
-    def look_at(self, coo: tuple[float, float], zoom: float = 1.0) -> None:
-        self.coo = coo
+    def look_at(self, dst: tuple[float, float], zoom: float = 1.0) -> None:
+        self.dst = dst
         self.zoom = zoom
 
     def pixel(self, coo: tuple[float, float], viewport: tuple[int, int] = (640, 360)) -> tuple[int, int]:
@@ -69,8 +70,12 @@ class Camera(Updatable):
     def update(self, ticks: int) -> None:
         if self.attached:
             self.look_at(self.attached.coo)
-            return
 
-        secs = ticks / 1000
-        self.accelerate(secs)
-        self.move(secs)
+        if self.coo == self.dst:
+            return
+        
+        x, y = self.coo
+        x += (self.dst[0] - self.coo[0]) * 0.01 * ticks
+        y += (self.dst[1] - self.coo[1]) * 0.01 * ticks
+        self.coo = (x, y)
+
