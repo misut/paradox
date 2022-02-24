@@ -65,7 +65,7 @@ class Engine:
 
         universes = self.container.universes()
         universe_simulator = self.container.universe_simulator(
-            universe=universes.get("Hello, world!")
+            universe=universes.get("Paradox")
         )
 
     def initialize(self) -> None:

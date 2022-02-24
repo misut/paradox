@@ -11,7 +11,6 @@ from paradox.domain import (
     ActionInfo,
     ActionType,
     Apparition,
-    Camera,
     Direction,
     SpriteRepository,
     Universe,
@@ -29,11 +28,10 @@ class UniverseSimulator(BaseModel):
         arbitrary_types_allowed = True
 
     def act(self, action_infos: dict[Action, ActionInfo]) -> None:
-        actor: Apparition | Camera = (
-            self.universe.camera.attached
-            if self.universe.camera.attached
-            else self.universe.camera
-        )
+        if not self.universe.camera.attached:
+            return 
+        
+        actor = self.universe.camera.attached
 
         actor_acceleration = 0.0
         actor_direction = Direction.NONE
@@ -45,7 +43,7 @@ class UniverseSimulator(BaseModel):
                 continue
 
             if action_info.type == ActionType.PRESSED:
-                if isinstance(actor, Apparition) and action == Action.JUMP:
+                if action == Action.JUMP:
                     if actor.jump_count < actor.jump_limit:
                         actor.jump()
 
@@ -68,8 +66,7 @@ class UniverseSimulator(BaseModel):
         if actor_direction != Direction.NONE:
             actor.direction = actor_direction
         actor.velocity = actor_velocity
-        if isinstance(actor, Apparition):
-            actor.gravity = actor_gravity
+        actor.gravity = actor_gravity
 
     def look_at(self, coo: tuple[float, float, float], zoom: float = 1.0) -> None:
         self.universe.camera.look_at(coo, zoom)
@@ -116,7 +113,7 @@ class UniverseSimulator(BaseModel):
             if -sight <= x + y - cur[0] - cur[1] <= sight
             and -sight <= x - y - cur[0] + cur[1] <= sight
         ]
-        coords.sort(key=lambda coo: coo[0] + coo[1])
+        coords.sort(key=lambda coo: sum(coo))
 
         for (x, y) in coords:
             if (x, y) in sorted_apparitions:
@@ -173,10 +170,8 @@ class UniverseSimulator(BaseModel):
                 blit_sequence = (slate_sprite.surface, slate_pixel, None, special_flags)
                 blit_sequences[tile.roo].insert(0, blit_sequence)
 
-        for (x, y) in coords:
-            if (x, y) not in blit_sequences:
-                continue
-            render_screen.blits(blit_sequences[(x, y)], doreturn=False)
+        for coo, blit_sequence in sorted(blit_sequences.items(), key=lambda tpl: sum(tpl[0])):
+            render_screen.blits(blit_sequence, doreturn=False)
 
     def render(self, render_screen: Surface, special_flags: int = 0) -> None:
         self.render_background(render_screen, special_flags)

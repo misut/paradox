@@ -9,6 +9,7 @@ class UIManager(BaseModel):
     root_ui: UI
 
     clicking_ui: UI | None
+    focusing_ui: UI | None
     hovering_ui: UI | None
 
     fps: float = Field(default=0.0)

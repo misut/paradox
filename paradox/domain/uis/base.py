@@ -108,6 +108,8 @@ class VerticalAlignment(str, Enum):
 class UI(Entity, Renderable, Updatable):
     childs: list[UI] = Field(default=[])
     parent: UI | None
+
+    focused: bool = Field(default=False)
     priority: int = Field(default=0)
 
     background_color: tuple[int, int, int, int] = Field(default=(0, 0, 0, 0))

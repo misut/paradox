@@ -43,7 +43,7 @@ def playing_scene(
 
     ui_manager.allocate(playing_ui)
 
-    test_sprite = universe_simulator.sprites.copy(SpriteTag.APPARITION_TEST)
+    test_sprite = universe_simulator.sprites.copy(SpriteTag.APPARITION_SLIME)
 
     test_apparition = Character(
         name="test_character",

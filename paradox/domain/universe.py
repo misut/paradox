@@ -227,6 +227,8 @@ class Universe(Entity, Updatable):
         secs = ticks / 1000
         self.simulate_collisions(secs)
         self.camera.update(ticks)
+        for apparition in self.apparitions:
+            apparition.sprite.update(ticks)
 
 
 class UniverseRepository(ABC):

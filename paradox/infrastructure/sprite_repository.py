@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 import pygame
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from pygame import Rect, Surface
 
 from paradox.domain import (
@@ -14,10 +14,12 @@ from paradox.domain import (
 )
 
 
-class SpriteFile(BaseModel):
+class SpriteInfo(BaseModel):
     tag: str
     path: Path
     size: tuple[int, int]
+
+    cycletime: int = Field(default=100)
 
     @property
     def width(self) -> int:
@@ -36,33 +38,33 @@ class FileSpriteRepository(SpriteRepository):
         self.sprites_path = sprites_path
         self.load_sprites()
 
-    def from_file(self, sprite_file: SpriteFile) -> Sprite:
-        file_path = self.sprites_path.joinpath(sprite_file.path)
+    def from_info(self, sprite_info: SpriteInfo) -> Sprite:
+        file_path = self.sprites_path.joinpath(sprite_info.path)
         bulk_surface = pygame.image.load(file_path)
 
         surfaces = []
-        for coef in range(bulk_surface.get_width() // sprite_file.width):
-            surface = Surface(sprite_file.size, pygame.SRCALPHA)
+        for coef in range(bulk_surface.get_width() // sprite_info.width):
+            surface = Surface(sprite_info.size, pygame.SRCALPHA)
             rect = Rect(
-                sprite_file.width * coef, 0, sprite_file.width, sprite_file.height
+                sprite_info.width * coef, 0, sprite_info.width, sprite_info.height
             )
             surface.blit(bulk_surface, (0, 0), rect, pygame.BLEND_ALPHA_SDL2)
             surfaces.append(surface)
 
         sprite_asset = SpriteAsset(
-            tag=sprite_file.tag, size=sprite_file.size, surfaces=surfaces
+            tag=sprite_info.tag, size=sprite_info.size, surfaces=surfaces
         )
-        sprite_assets[sprite_file.tag] = sprite_asset
-        return sprite_asset.sprite()
+        sprite_assets[sprite_info.tag] = sprite_asset
+        return sprite_asset.sprite(sprite_info.cycletime)
 
     def load_sprites(self) -> None:
         json_path = self.sprites_path.joinpath("sprites.json")
         with json_path.open(mode="rt", encoding="utf-8") as stream:
-            sprite_file_dicts = json.load(stream)
+            sprite_info_dicts = json.load(stream)
 
-        for sprite_file_dict in sprite_file_dicts:
-            sprite_file = SpriteFile.parse_obj(sprite_file_dict)
-            self.sprites[sprite_file.tag] = self.from_file(sprite_file)
+        for sprite_info_dict in sprite_info_dicts:
+            sprite_info = SpriteInfo.parse_obj(sprite_info_dict)
+            self.sprites[sprite_info.tag] = self.from_info(sprite_info)
 
     def copy(self, tag: SpriteTag) -> Sprite | None:
         original_sprite = self.sprites.get(tag, None)

@@ -1,7 +1,8 @@
+from math import floor
 from pydantic import Field, validator
 
 from paradox.domain.apparition import Apparition
-from paradox.domain.base import Direction, Updatable
+from paradox.domain.base import Updatable
 from paradox.domain.constants import *
 
 
@@ -12,13 +13,8 @@ class Camera(Updatable):
     attached: Apparition | None
 
     sight: int = Field(default=15)
+    smooth: float = Field(default=200.0)
     zoom: float = Field(default=1.0)
-
-    direction: Direction = Field(default=Direction.SOUTH)
-    velocity: float = Field(default=0.0)
-    velocity_limit: float = Field(default=11.0)
-    acceleration: float = Field(default=0.0)
-    move_power: float = Field(default=100.0)
 
     @validator("sight")
     def validate_sight(cls, sight: int) -> int:
@@ -38,23 +34,13 @@ class Camera(Updatable):
 
     @property
     def at(self) -> tuple[int, int]:
-        return (int(self.coo[0]), int(self.coo[1]))
+        return (floor(self.coo[0]), floor(self.coo[1]))
 
-    def accelerate(self, secs: float) -> None:
-        if self.acceleration == 0.0:
-            return
-
-        self.velocity += self.acceleration * secs
-        self.velocity = min(self.velocity, self.velocity_limit)
-
-    def move(self, secs: float) -> None:
-        if self.velocity == 0.0:
-            return
-
-        x, y = self.coo
-        x += self.direction.vector[0] * self.velocity * secs
-        y += self.direction.vector[1] * self.velocity * secs
-        self.coo = (x, y)
+    def move(self, delta: tuple[float, float]) -> None:
+        x, y = self.dst
+        x += delta[0]
+        y += delta[1]
+        self.dst = (x, y)
 
     def look_at(self, dst: tuple[float, float], zoom: float = 1.0) -> None:
         self.dst = dst
@@ -75,7 +61,6 @@ class Camera(Updatable):
             return
         
         x, y = self.coo
-        x += (self.dst[0] - self.coo[0]) * 0.01 * ticks
-        y += (self.dst[1] - self.coo[1]) * 0.01 * ticks
+        x += (self.dst[0] - self.coo[0]) * ticks / self.smooth
+        y += (self.dst[1] - self.coo[1]) * ticks / self.smooth
         self.coo = (x, y)
-

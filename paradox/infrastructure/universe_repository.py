@@ -7,9 +7,14 @@ from paradox.domain import Camera, Tile, Universe, UniverseRepository, ValueObje
 
 
 class UniverseFile(ValueObject):
-    name: str = Field(default="New world")
+    name: str
     camera: Camera
     tiles: list[Tile]
+
+
+class UniverseInfo(ValueObject):
+    name: str = Field(default="New world")
+    path: Path
 
 
 class FileUniverseRepository(UniverseRepository):
@@ -20,7 +25,11 @@ class FileUniverseRepository(UniverseRepository):
         self.universes_path = universes_path
         self.load_universes()
 
-    def from_file(self, universe_file: UniverseFile) -> Universe:
+    def from_info(self, universe_info: UniverseInfo) -> Universe:
+        json_path = self.universes_path.joinpath(universe_info.path)
+        with json_path.open(mode="rt", encoding="utf-8") as stream:
+            universe_file = UniverseFile.parse_obj(json.load(stream))
+        
         mapping = {}
         for tile in universe_file.tiles:
             mapping[tile.coo] = tile
@@ -32,11 +41,11 @@ class FileUniverseRepository(UniverseRepository):
     def load_universes(self) -> None:
         json_path = self.universes_path.joinpath("universes.json")
         with json_path.open(mode="rt", encoding="utf-8") as stream:
-            universe_file_dicts = json.load(stream)
+            universe_info_dicts = json.load(stream)
 
-        for universe_file_dict in universe_file_dicts:
-            universe_file = UniverseFile.parse_obj(universe_file_dict)
-            self.universes[universe_file.name] = self.from_file(universe_file)
+        for universe_info_dict in universe_info_dicts:
+            universe_info = UniverseInfo.parse_obj(universe_info_dict)
+            self.universes[universe_info.name] = self.from_info(universe_info)
 
     def get(self, name: str) -> Universe | None:
         return self.universes.get(name, None)

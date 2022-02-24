@@ -10,6 +10,12 @@
         "size": [32, 64]
     },
     {
+        "tag": "apparition:slime",
+        "path": "apparition_slime.png",
+        "size": [32, 32],
+        "cycletime": 200
+    },
+    {
         "tag": "lwall:test",
         "path": "lwall_test.png",
         "size": [29, 49]

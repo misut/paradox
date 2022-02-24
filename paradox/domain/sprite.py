@@ -28,6 +28,7 @@ class SpriteTag(str, Enum):
 
     APPARITION_TEST: str = "apparition:test"
     APPARITION_SHRIMP_S: str = "apparition:shrimp_s"
+    APPARITION_SLIME: str = "apparition:slime"
 
     LWALL_TEST: str = "lwall:test"
     LWALL_GRASS: str = "lwall:grass"
