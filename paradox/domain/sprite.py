@@ -169,7 +169,7 @@ class FileSpriteAssetManager(SpriteAssetManager):
         )
         self.sprite_assets[sprite_info.tag] = sprite_asset
         return sprite_asset.sprite(sprite_info.cycletime)
-        
+
     def load_sprites(self) -> None:
         json_path = self.sprites_path.joinpath("sprites.json")
         with json_path.open(mode="rt", encoding="utf-8") as stream:

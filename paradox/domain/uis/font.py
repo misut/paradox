@@ -25,7 +25,12 @@ class FontWeight(str, Enum):
 
 class FontAssetManager(ABC, BaseModel):
     @abstractmethod
-    def get(self, font_face: FontFace, font_size: int, font_weight: FontWeight = FontWeight.REGULAR) -> Font:
+    def get(
+        self,
+        font_face: FontFace,
+        font_size: int,
+        font_weight: FontWeight = FontWeight.REGULAR,
+    ) -> Font:
         ...
 
 
@@ -39,18 +44,21 @@ class FileFontAssetManager(FontAssetManager):
     def initialize(self, fonts_path: Path = Path("assets/fonts")) -> None:
         self.fonts_path = fonts_path
 
-    def get(self, font_face: FontFace, font_size: int, font_weight: FontWeight = FontWeight.REGULAR) -> Font:
+    def get(
+        self,
+        font_face: FontFace,
+        font_size: int,
+        font_weight: FontWeight = FontWeight.REGULAR,
+    ) -> Font:
         if font_face not in self.font_assets:
-            self.font_assets[font_face] = {
-                weight: {} for weight in FontWeight
-            }
-        
+            self.font_assets[font_face] = {weight: {} for weight in FontWeight}
+
         if font_size not in self.font_assets[font_face][font_weight]:
             font_path = font_face.value.format(font_weight=font_weight.value)
             self.font_assets[font_face][font_weight][font_size] = Font(
                 self.fonts_path.joinpath(font_path), font_size
             )
-        
+
         return self.font_assets[font_face][font_weight][font_size]
 
 

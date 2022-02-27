@@ -1,6 +1,6 @@
 from __future__ import annotations
-from abc import ABC
 
+from abc import ABC
 from enum import Enum, unique
 from math import floor
 from typing import Any
@@ -26,10 +26,8 @@ class ApparitionStatus(str, Enum):
 ApparitionSpriteTags = dict[ApparitionStatus, dict[Direction, SpriteTag]]
 ApparitionSprite = dict[ApparitionStatus, dict[Direction, Sprite]]
 _DEFAULT_SPRITE = {
-    status: {
-        direction: SpriteTag.APPARITION_TEST
-        for direction in Direction
-    } for status in ApparitionStatus
+    status: {direction: SpriteTag.APPARITION_TEST for direction in Direction}
+    for status in ApparitionStatus
 }
 
 
@@ -39,10 +37,10 @@ class ApparitionTag(str, Enum):
         splitted = tag.split(":")
         if len(splitted) != 2:
             raise ValueError("Apparition tag should be in a form of 'type:label'")
-        
+
         self.type = splitted[0]
         self.label = splitted[1]
-    
+
     PLAYER: str = "character:player"
 
 
@@ -114,7 +112,7 @@ class Apparition(Entity, Updatable):
 
     @property
     def sprite(self) -> Sprite:
-        return self.sprites[self.status][self.direction]        
+        return self.sprites[self.status][self.direction]
 
     @property
     def surface(self) -> Surface:
@@ -196,4 +194,3 @@ class ApparitionAssetManager(ABC, BaseModel):
 
 
 apparition_assets: dict[ApparitionTag, ApparitionAsset] = {}
-

@@ -44,8 +44,14 @@ from paradox.domain.sprite import (
     SpriteTag,
     sprite_assets,
 )
-from paradox.domain.uis import FontFace, FontWeight, UI, LayoutUI, TextUI, font_assets
-from paradox.domain.universe import FileUniverseAssetManager, Tile, Universe, UniverseAssetManager, universe_assets
+from paradox.domain.uis import UI, FontFace, FontWeight, LayoutUI, TextUI, font_assets
+from paradox.domain.universe import (
+    FileUniverseAssetManager,
+    Tile,
+    Universe,
+    UniverseAssetManager,
+    universe_assets,
+)
 
 __all__ = [
     "Action",

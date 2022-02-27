@@ -11,7 +11,7 @@ from paradox.domain import (
     SceneNo,
     SpriteTag,
     TextUI,
-    sprite_assets
+    sprite_assets,
 )
 
 playing_director = FilmDirector()
@@ -62,7 +62,8 @@ def playing_scene(
                 Direction.SOUTH: test_sprite,
                 Direction.SOUTHEAST: test_sprite,
                 Direction.SOUTHWEST: test_sprite,
-            } for status in ApparitionStatus
+            }
+            for status in ApparitionStatus
         },
         velocity_limit=5.0,
         jump_limit=2,

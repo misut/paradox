@@ -3,7 +3,15 @@ from loguru import logger
 from paradox.application.film_director import FilmDirector
 from paradox.application.ui_manager import UIManager
 from paradox.application.universe_simulator import UniverseSimulator
-from paradox.domain import FontWeight, LayoutUI, Post, QuitPost, SceneNo, ShootScenePost, TextUI
+from paradox.domain import (
+    FontWeight,
+    LayoutUI,
+    Post,
+    QuitPost,
+    SceneNo,
+    ShootScenePost,
+    TextUI,
+)
 
 intro_director = FilmDirector()
 

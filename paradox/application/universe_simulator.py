@@ -28,8 +28,8 @@ class UniverseSimulator(BaseModel):
 
     def act(self, action_infos: dict[Action, ActionInfo]) -> None:
         if not self.universe.camera.attached:
-            return 
-        
+            return
+
         actor = self.universe.camera.attached
 
         actor_acceleration = 0.0
@@ -169,7 +169,9 @@ class UniverseSimulator(BaseModel):
                 blit_sequence = (slate_sprite.surface, slate_pixel, None, special_flags)
                 blit_sequences[tile.roo].insert(0, blit_sequence)
 
-        for coo, blit_sequence in sorted(blit_sequences.items(), key=lambda tpl: sum(tpl[0])):
+        for coo, blit_sequence in sorted(
+            blit_sequences.items(), key=lambda tpl: sum(tpl[0])
+        ):
             render_screen.blits(blit_sequence, doreturn=False)
 
     def render(self, render_screen: Surface, special_flags: int = 0) -> None:

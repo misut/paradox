@@ -1,4 +1,5 @@
 from math import floor
+
 from pydantic import Field, validator
 
 from paradox.domain.apparition import Apparition
@@ -46,7 +47,9 @@ class Camera(Updatable):
         self.dst = dst
         self.zoom = zoom
 
-    def pixel(self, coo: tuple[float, float], viewport: tuple[int, int] = (640, 360)) -> tuple[int, int]:
+    def pixel(
+        self, coo: tuple[float, float], viewport: tuple[int, int] = (640, 360)
+    ) -> tuple[int, int]:
         diff = (coo[0] - self.coo[0], coo[1] - self.coo[1])
         return (
             viewport[0] // 2 + (TILE_WIDTH // 2) * (diff[0] - diff[1]),
@@ -59,7 +62,7 @@ class Camera(Updatable):
 
         if self.coo == self.dst:
             return
-        
+
         x, y = self.coo
         x += (self.dst[0] - self.coo[0]) * ticks / self.smooth
         y += (self.dst[1] - self.coo[1]) * ticks / self.smooth

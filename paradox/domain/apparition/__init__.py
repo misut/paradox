@@ -6,6 +6,6 @@ from paradox.domain.apparition.base import (
     ApparitionStats,
     ApparitionStatus,
     ApparitionTag,
-    apparition_assets
+    apparition_assets,
 )
 from paradox.domain.apparition.character import Character

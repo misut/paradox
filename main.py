@@ -1,4 +1,5 @@
 import sys
+
 from paradox.interface import BaseSettings, Engine, GamepadSettings, GraphicSettings
 
 if __name__ == "__main__":

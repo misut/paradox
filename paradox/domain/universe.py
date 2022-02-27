@@ -262,7 +262,7 @@ class FileUniverseAssetManager(UniverseAssetManager):
         json_path = self.universes_path.joinpath(universe_info.path)
         with json_path.open(mode="rt", encoding="utf-8") as stream:
             universe_file = UniverseFile.parse_obj(json.load(stream))
-        
+
         mapping = {}
         for tile in universe_file.tiles:
             mapping[tile.coo] = tile
