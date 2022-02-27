@@ -3,7 +3,7 @@ from loguru import logger
 from paradox.application.film_director import FilmDirector
 from paradox.application.ui_manager import UIManager
 from paradox.application.universe_simulator import UniverseSimulator
-from paradox.domain import LayoutUI, Post, QuitPost, SceneNo, ShootScenePost, TextUI
+from paradox.domain import FontWeight, LayoutUI, Post, QuitPost, SceneNo, ShootScenePost, TextUI
 
 intro_director = FilmDirector()
 
@@ -22,7 +22,8 @@ def intro_scene(
         pos=(270, 160),
         size=(100, 40),
         background_color=(255, 255, 255, 0),
-        font_size=31,
+        font_size=23,
+        font_weight=FontWeight.MEDIUM,
         text="Start",
     )
 
@@ -31,7 +32,8 @@ def intro_scene(
         pos=(270, 220),
         size=(100, 40),
         background_color=(255, 255, 255, 0),
-        font_size=31,
+        font_size=23,
+        font_weight=FontWeight.MEDIUM,
         text="Setting",
     )
 
@@ -40,7 +42,8 @@ def intro_scene(
         pos=(270, 280),
         size=(100, 40),
         background_color=(255, 255, 255, 0),
-        font_size=31,
+        font_size=23,
+        font_weight=FontWeight.MEDIUM,
         text="Quit",
     )
 
@@ -88,10 +91,10 @@ def intro_scene(
     fps_count = TextUI(
         name="fps_count",
         pos=(0, 0),
-        size=(30, 20),
+        size=(20, 10),
         cycletime=100,
         background_color=(0, 0, 0, 0),
-        font_size=23,
+        font_size=11,
         debug=True,
     )
 

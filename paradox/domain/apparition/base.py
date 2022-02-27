@@ -1,10 +1,11 @@
 from __future__ import annotations
+from abc import ABC
 
 from enum import Enum, unique
 from math import floor
 from typing import Any
 
-from pydantic import Field, validator
+from pydantic import BaseModel, Field, validator
 from pygame import Surface
 
 from paradox.domain.base import Direction, Entity, Updatable, ValueObject
@@ -188,6 +189,10 @@ class Apparition(Entity, Updatable):
         future_placeable.fall(secs)
 
         return future_placeable
+
+
+class ApparitionAssetManager(ABC, BaseModel):
+    ...
 
 
 apparition_assets: dict[ApparitionTag, ApparitionAsset] = {}

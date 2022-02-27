@@ -1,5 +1,5 @@
 {
-    "tag": "player",
+    "tag": "character:player",
     "sprites": {
         "running": {
             "north": "",

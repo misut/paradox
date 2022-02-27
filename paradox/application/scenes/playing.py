@@ -11,6 +11,7 @@ from paradox.domain import (
     SceneNo,
     SpriteTag,
     TextUI,
+    sprite_assets
 )
 
 playing_director = FilmDirector()
@@ -28,10 +29,10 @@ def playing_scene(
     fps_count = TextUI(
         name="fps_count",
         pos=(0, 0),
-        size=(30, 20),
+        size=(20, 10),
         cycletime=100,
         background_color=(0, 0, 0, 0),
-        font_size=23,
+        font_size=11,
         debug=True,
     )
 
@@ -43,7 +44,7 @@ def playing_scene(
 
     ui_manager.allocate(playing_ui)
 
-    test_sprite = universe_simulator.sprites.copy(SpriteTag.APPARITION_SLIME)
+    test_sprite = sprite_assets.copy(SpriteTag.APPARITION_SLIME)
 
     test_apparition = Character(
         name="test_character",

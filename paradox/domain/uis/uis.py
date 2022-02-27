@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pydantic import Field
 from pygame import Surface
-from pygame.font import Font, SysFont
+from pygame.font import Font
 
 from paradox.domain.uis.base import (
     UI,
@@ -11,6 +11,7 @@ from paradox.domain.uis.base import (
     fit_pos,
     fit_rect,
 )
+from paradox.domain.uis.font import FontFace, FontWeight, font_assets
 
 
 class LayoutUI(UI):
@@ -28,19 +29,18 @@ class TextUI(UI):
     text_vertical_alignment: VerticalAlignment = Field(default="middle")
 
     font_color: tuple[int, int, int, int] = Field(default=(0, 0, 0, 255))
-    font_face: str = Field(default="")
+    font_face: FontFace = Field(default=FontFace.NotoSans)
     font_size: int = Field(default=40)
-    bold: bool = Field(default=False)
-    italic: bool = Field(default=False)
+    font_weight: FontWeight = Field(default=FontWeight.REGULAR)
 
     @property
     def font(self) -> Font:
-        return SysFont(self.font_face, self.font_size, self.bold, self.italic)
+        return font_assets.get(self.font_face, self.font_size, self.font_weight)
 
     def render(self, render_screen: Surface, special_flags: int = 0) -> None:
         super().render(render_screen, special_flags)
 
-        text_surface = self.font.render(self.text, False, self.font_color)
+        text_surface = self.font.render(self.text, True, self.font_color)
         text_size = text_surface.get_size()
 
         dest = fit_pos(

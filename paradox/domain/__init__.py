@@ -37,14 +37,15 @@ from paradox.domain.posts import (
 )
 from paradox.domain.posts import __all__ as all_posts
 from paradox.domain.sprite import (
+    FileSpriteAssetManager,
     Sprite,
     SpriteAsset,
-    SpriteRepository,
+    SpriteAssetManager,
     SpriteTag,
     sprite_assets,
 )
-from paradox.domain.uis import UI, LayoutUI, TextUI
-from paradox.domain.universe import Tile, Universe, UniverseRepository
+from paradox.domain.uis import FontFace, FontWeight, UI, LayoutUI, TextUI, font_assets
+from paradox.domain.universe import FileUniverseAssetManager, Tile, Universe, UniverseAssetManager, universe_assets
 
 __all__ = [
     "Action",
@@ -64,17 +65,25 @@ __all__ = [
     "ParadoxError",
     "UIAllocateError",
     "UIError",
+    "FileSpriteAssetManager",
     "Sprite",
     "SpriteAsset",
+    "SpriteAssetManager",
     "SpriteTag",
     "SpriteRepository",
     "sprite_assets",
+    "FontFace",
+    "FontWeight",
     "LayoutUI",
     "TextUI",
     "UI",
+    "font_assets",
     "Tile",
+    "FileUniverseAssetManager",
     "Universe",
+    "UniverseAssetManager",
     "UniverseRepository",
+    "universe_assets",
 ]
 
 __all__.extend(all_posts)

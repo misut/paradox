@@ -1,10 +1,17 @@
+from pathlib import Path
+
 import pygame
 from dependency_injector import containers, providers
 from postoffice import InMemoryPostbus
 from pygame import Surface
 
 from paradox.application import FilmDirector, UIManager, UniverseSimulator
-from paradox.infrastructure import FileSpriteRepository, FileUniverseRepository
+from paradox.domain import sprite_assets, universe_assets
+
+
+def initialize_resources(sprites_path: Path, universes_path: Path) -> None:
+    sprite_assets.initialize(sprites_path)
+    universe_assets.initialize(universes_path)
 
 
 class Container(containers.DeclarativeContainer):
@@ -19,14 +26,6 @@ class Container(containers.DeclarativeContainer):
         size=graphic_config.RENDER_SIZE,
         flags=pygame.SRCALPHA,
     )
-    sprites = providers.Singleton(
-        FileSpriteRepository,
-        base_config.SPRITES_PATH,
-    )
-    universes = providers.Singleton(
-        FileUniverseRepository,
-        base_config.UNIVERSES_PATH,
-    )
 
     film_director = providers.Singleton(FilmDirector)
     ui_manager = providers.Singleton(
@@ -36,5 +35,10 @@ class Container(containers.DeclarativeContainer):
     )
     universe_simulator = providers.Singleton(
         UniverseSimulator,
-        sprites=sprites.provided,
+    )
+
+    initialize = providers.Resource(
+        initialize_resources,
+        sprites_path=base_config.SPRITES_PATH,
+        universes_path=base_config.UNIVERSES_PATH,
     )

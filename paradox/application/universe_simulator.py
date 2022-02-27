@@ -12,14 +12,13 @@ from paradox.domain import (
     ActionType,
     Apparition,
     Direction,
-    SpriteRepository,
     Universe,
+    sprite_assets,
 )
 from paradox.domain.constants import *
 
 
 class UniverseSimulator(BaseModel):
-    sprites: SpriteRepository
     universe: Universe
 
     paused: bool = Field(default=False)
@@ -153,19 +152,19 @@ class UniverseSimulator(BaseModel):
                 pixel[0] - (TILE_WIDTH // 2),
                 pixel[1] + (SLATE_HEIGHT // 2),
             )
-            lwall_sprite = self.sprites.get(tile.lwall)
+            lwall_sprite = sprite_assets.get(tile.lwall)
             if lwall_sprite:
                 blit_sequence = (lwall_sprite.surface, lwall_pixel, None, special_flags)
                 blit_sequences[tile.roo].insert(0, blit_sequence)
 
             rwall_pixel = (pixel[0], pixel[1] + (SLATE_HEIGHT // 2))
-            rwall_sprite = self.sprites.get(tile.rwall)
+            rwall_sprite = sprite_assets.get(tile.rwall)
             if rwall_sprite:
                 blit_sequence = (rwall_sprite.surface, rwall_pixel, None, special_flags)
                 blit_sequences[tile.roo].insert(0, blit_sequence)
 
             slate_pixel = (pixel[0] - (TILE_WIDTH // 2), pixel[1])
-            slate_sprite = self.sprites.get(tile.slate)
+            slate_sprite = sprite_assets.get(tile.slate)
             if slate_sprite:
                 blit_sequence = (slate_sprite.surface, slate_pixel, None, special_flags)
                 blit_sequences[tile.roo].insert(0, blit_sequence)
@@ -182,4 +181,4 @@ class UniverseSimulator(BaseModel):
             return
 
         self.universe.update(ticks)
-        self.sprites.update(ticks)
+        sprite_assets.update(ticks)

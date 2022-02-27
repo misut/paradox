@@ -9,7 +9,7 @@ from pygame.transform import scale
 
 import paradox
 from paradox.application import paradox_director
-from paradox.domain import SceneNo, TickPost
+from paradox.domain import SceneNo, TickPost, universe_assets
 from paradox.interface import protocols
 from paradox.interface.container import Container
 from paradox.interface.gamepad import Gamepad
@@ -43,6 +43,7 @@ class Engine:
         self.container.gamepad_config.from_pydantic(gamepad_settings)
         self.container.graphic_config.from_pydantic(graphic_settings)
         self.container.wire(packages=[paradox])
+        self.container.initialize()
 
         self.initialize()
 
@@ -60,12 +61,10 @@ class Engine:
         pass
 
     def initialize_universe(self) -> None:
-        self.container.universes.reset()
         self.container.universe_simulator.reset()
 
-        universes = self.container.universes()
         universe_simulator = self.container.universe_simulator(
-            universe=universes.get("Paradox")
+            universe=universe_assets.get("Paradox")
         )
 
     def initialize(self) -> None:
