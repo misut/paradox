@@ -2,11 +2,13 @@ from paradox.domain.action import Action, ActionInfo, ActionInfoTable, ActionTyp
 from paradox.domain.apparition import (
     Apparition,
     ApparitionAsset,
+    ApparitionAssetManager,
     ApparitionSprite,
     ApparitionSpriteTags,
     ApparitionStats,
     ApparitionStatus,
     ApparitionTag,
+    FileApparitionAssetManager,
     Character,
     apparition_assets,
 )

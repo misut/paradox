@@ -1,15 +1,17 @@
 from __future__ import annotations
 
-from abc import ABC
+import json
+from abc import ABC, abstractmethod
 from enum import Enum, unique
 from math import floor
+from pathlib import Path
 from typing import Any
 
 from pydantic import BaseModel, Field, validator
 from pygame import Surface
 
 from paradox.domain.base import Direction, Entity, Updatable, ValueObject
-from paradox.domain.sprite import Sprite, SpriteTag
+from paradox.domain.sprite import Sprite, SpriteTag, sprite_assets
 
 
 @unique
@@ -31,6 +33,15 @@ _DEFAULT_SPRITE = {
 }
 
 
+def create_apparition_sprite(apparition_sprite_tags: ApparitionSpriteTags) -> ApparitionSprite:
+    return {
+        status: {
+            direction: sprite_assets.copy(apparition_sprite_tags.get(status, {}).get(direction, SpriteTag.APPARITION_TEST)) 
+            for direction in Direction
+        } for status in ApparitionStatus
+    }
+
+
 @unique
 class ApparitionTag(str, Enum):
     def __init__(self, tag: str) -> None:
@@ -42,16 +53,6 @@ class ApparitionTag(str, Enum):
         self.label = splitted[1]
 
     PLAYER: str = "character:player"
-
-
-class ApparitionStats(ValueObject):
-    ...
-
-
-class ApparitionAsset(ValueObject):
-    tag: ApparitionTag
-    sprites: ApparitionSpriteTags
-    stats: ApparitionStats
 
 
 class Apparition(Entity, Updatable):
@@ -187,10 +188,3 @@ class Apparition(Entity, Updatable):
         future_placeable.fall(secs)
 
         return future_placeable
-
-
-class ApparitionAssetManager(ABC, BaseModel):
-    ...
-
-
-apparition_assets: dict[ApparitionTag, ApparitionAsset] = {}

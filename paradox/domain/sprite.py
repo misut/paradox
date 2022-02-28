@@ -124,8 +124,8 @@ class SpriteAssetManager(ABC, BaseModel):
         ...
 
 
-class SpriteInfo(BaseModel):
-    tag: str
+class SpriteInfo(ValueObject):
+    tag: SpriteTag
     path: Path
     size: tuple[int, int]
 

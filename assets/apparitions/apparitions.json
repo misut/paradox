@@ -1,6 +1,6 @@
 [
     {
-        "tag": "player",
+        "tag": "character:player",
         "path": "player.json"
     }
 ]

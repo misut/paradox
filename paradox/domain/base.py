@@ -20,27 +20,60 @@ def _norm(*ns: Number) -> Sequence[Number]:
 
 
 @unique
-class Direction(tuple[int, int], Enum):
-    def __init__(self, dir: tuple[int, int]) -> None:
-        self.vector = _norm(*dir)
+class Direction(str, Enum):
+    def __init__(self, dir: str) -> None:
+        match dir:
+            case "none":
+                self.direction = (0, 0)
+            case "north":
+                self.direction = (-1, -1)
+            case "south":
+                self.direction = (1, 1)
+            case "east":
+                self.direction = (1, -1)
+            case "west":
+                self.direction = (-1, 1)
+            case "northeast":
+                self.direction = (0, -2)
+            case "northwest":
+                self.direction = (-2, 0)
+            case "southeast":
+                self.direction = (2, 0)
+            case "southwest":
+                self.direction = (0, 2)
+            case _:
+                raise ValueError(f"Not allowed direction name: {dir}")
 
-    NONE: tuple[int, int] = (0, 0)
-    NORTH: tuple[int, int] = (-1, -1)
-    SOUTH: tuple[int, int] = (1, 1)
-    EAST: tuple[int, int] = (1, -1)
-    WEST: tuple[int, int] = (-1, 1)
-    NORTHEAST: tuple[int, int] = (0, -2)
-    NORTHWEST: tuple[int, int] = (-2, 0)
-    SOUTHEAST: tuple[int, int] = (2, 0)
-    SOUTHWEST: tuple[int, int] = (0, 2)
+    NONE: str = "none"
+    NORTH: str = "north"
+    SOUTH: str = "south"
+    EAST: str = "east"
+    WEST: str = "west"
+    NORTHEAST: str = "northeast"
+    NORTHWEST: str = "northwest"
+    SOUTHEAST: str = "southeast"
+    SOUTHWEST: str = "southwest"
+
+    @property
+    def vector(self) -> tuple[float, float]:
+        return _norm(*self.direction)
+
+    @classmethod
+    def from_direction(cls, direction: tuple[int, int]) -> Direction:
+        for d in cls:
+            if d.direction == direction:
+                return d
+        
+        raise ValueError(f"Not allowed direction: {direction}")
 
     def __add__(self, other: Direction) -> Direction:
         if self == other:
             return self
-        return Direction((self[0] + other[0], self[1] + other[1]))
+
+        return self.from_direction((self.direction[0] + other.direction[0], self.direction[1] + other.direction[1]))
 
     def __sub__(self, other: Direction) -> Direction:
-        return Direction((self[0] - other[0], self[1] - other[1]))
+        return self.from_direction((self.direction[0] - other.direction[0], self.direction[1] - other.direction[1]))
 
 
 class ValueObject(BaseModel):

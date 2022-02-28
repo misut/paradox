@@ -5,6 +5,7 @@ from pydantic import BaseSettings as PydanticBaseSettings
 
 class BaseSettings(PydanticBaseSettings):
     ASSETS_PATH: Path
+    APPARITIONS_PATH: Path
     FONTS_PATH: Path
     SPRITES_PATH: Path
     UNIVERSES_PATH: Path

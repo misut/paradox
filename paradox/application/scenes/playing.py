@@ -11,6 +11,7 @@ from paradox.domain import (
     SceneNo,
     SpriteTag,
     TextUI,
+    apparition_assets,
     sprite_assets,
 )
 
@@ -44,29 +45,6 @@ def playing_scene(
 
     ui_manager.allocate(playing_ui)
 
-    test_sprite = sprite_assets.copy(SpriteTag.APPARITION_SLIME)
-
-    test_apparition = Character(
-        name="test_character",
-        tag=ApparitionTag.PLAYER,
-        coo=(0.5, 0.5),
-        roo=(0.5, 0.5),
-        dim=(0.3, 1.0),
-        sprites={
-            status: {
-                Direction.NORTH: test_sprite,
-                Direction.NORTHEAST: test_sprite,
-                Direction.NORTHWEST: test_sprite,
-                Direction.EAST: test_sprite,
-                Direction.WEST: test_sprite,
-                Direction.SOUTH: test_sprite,
-                Direction.SOUTHEAST: test_sprite,
-                Direction.SOUTHWEST: test_sprite,
-            }
-            for status in ApparitionStatus
-        },
-        velocity_limit=5.0,
-        jump_limit=2,
-    )
-    universe_simulator.place(test_apparition)
-    universe_simulator.universe.camera.attached = test_apparition
+    test_character = apparition_assets.copy(ApparitionTag.PLAYER)
+    universe_simulator.place(test_character)
+    universe_simulator.universe.camera.attached = test_character

@@ -2,34 +2,34 @@
     "tag": "character:player",
     "sprites": {
         "running": {
-            "north": "",
-            "northeast": "",
-            "northwest": "",
-            "south": "",
-            "southeast": "",
-            "southwest": "",
-            "east": "",
-            "west": ""
+            "north": "apparition:slime",
+            "northeast": "apparition:slime",
+            "northwest": "apparition:slime",
+            "south": "apparition:slime",
+            "southeast": "apparition:slime",
+            "southwest": "apparition:slime",
+            "east": "apparition:slime",
+            "west": "apparition:slime"
         },
         "standing": {
-            "north": "",
-            "northeast": "",
-            "northwest": "",
-            "south": "",
-            "southeast": "",
-            "southwest": "",
-            "east": "",
-            "west": ""
+            "north": "apparition:slime",
+            "northeast": "apparition:slime",
+            "northwest": "apparition:slime",
+            "south": "apparition:slime",
+            "southeast": "apparition:slime",
+            "southwest": "apparition:slime",
+            "east": "apparition:slime",
+            "west": "apparition:slime"
         },
-        "stoppped": {
-            "north": "",
-            "northeast": "",
-            "northwest": "",
-            "south": "",
-            "southeast": "",
-            "southwest": "",
-            "east": "",
-            "west": ""
+        "stopped": {
+            "north": "apparition:slime",
+            "northeast": "apparition:slime",
+            "northwest": "apparition:slime",
+            "south": "apparition:slime",
+            "southeast": "apparition:slime",
+            "southwest": "apparition:slime",
+            "east": "apparition:slime",
+            "west": "apparition:slime"
         }
     },
     "stats": {

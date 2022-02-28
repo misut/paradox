@@ -1,11 +1,15 @@
-from paradox.domain.apparition.base import (
-    Apparition,
+from paradox.domain.apparition.asset import (
     ApparitionAsset,
-    ApparitionSprite,
+    ApparitionAssetManager,
     ApparitionSpriteTags,
     ApparitionStats,
+    FileApparitionAssetManager,
+    apparition_assets,
+)
+from paradox.domain.apparition.base import (
+    Apparition,
+    ApparitionSprite,
     ApparitionStatus,
     ApparitionTag,
-    apparition_assets,
 )
 from paradox.domain.apparition.character import Character
