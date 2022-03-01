@@ -1,5 +1,4 @@
 import pygame
-from loguru import logger
 from pydantic import BaseModel, Field
 from pygame.event import Event as PygameEvent
 

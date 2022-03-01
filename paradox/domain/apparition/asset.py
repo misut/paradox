@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 
 from paradox.domain.apparition.base import Apparition, ApparitionSprite, ApparitionStatus, ApparitionTag
 from paradox.domain.apparition.character import Character
-#from paradox.domain.apparition.figure import Figure
 from paradox.domain.base import Direction, ValueObject
 from paradox.domain.sprite import SpriteTag, sprite_assets
 

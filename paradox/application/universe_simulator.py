@@ -2,7 +2,6 @@ from itertools import product
 from math import floor
 
 import pygame
-from loguru import logger
 from pydantic import BaseModel, Field
 from pygame import Surface
 

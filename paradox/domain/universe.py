@@ -4,7 +4,6 @@ from math import ceil, floor
 from pathlib import Path
 from typing import Any
 
-from loguru import logger
 from pydantic import BaseModel, Field, validator
 
 from paradox.domain.apparition import Apparition

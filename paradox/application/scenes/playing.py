@@ -2,17 +2,12 @@ from paradox.application.film_director import FilmDirector
 from paradox.application.ui_manager import UIManager
 from paradox.application.universe_simulator import UniverseSimulator
 from paradox.domain import (
-    ApparitionStatus,
     ApparitionTag,
-    Character,
-    Direction,
     LayoutUI,
     Post,
     SceneNo,
-    SpriteTag,
     TextUI,
     apparition_assets,
-    sprite_assets,
 )
 
 playing_director = FilmDirector()

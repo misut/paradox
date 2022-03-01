@@ -1,16 +1,13 @@
 from __future__ import annotations
 
-import json
-from abc import ABC, abstractmethod
 from enum import Enum, unique
 from math import floor
-from pathlib import Path
 from typing import Any
 
-from pydantic import BaseModel, Field, validator
+from pydantic import Field, validator
 from pygame import Surface
 
-from paradox.domain.base import Direction, Entity, Updatable, ValueObject
+from paradox.domain.base import Direction, Entity, Updatable
 from paradox.domain.sprite import Sprite, SpriteTag, sprite_assets
 
 
