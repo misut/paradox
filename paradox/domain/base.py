@@ -63,17 +63,27 @@ class Direction(str, Enum):
         for d in cls:
             if d.direction == direction:
                 return d
-        
+
         raise ValueError(f"Not allowed direction: {direction}")
 
     def __add__(self, other: Direction) -> Direction:
         if self == other:
             return self
 
-        return self.from_direction((self.direction[0] + other.direction[0], self.direction[1] + other.direction[1]))
+        return self.from_direction(
+            (
+                self.direction[0] + other.direction[0],
+                self.direction[1] + other.direction[1],
+            )
+        )
 
     def __sub__(self, other: Direction) -> Direction:
-        return self.from_direction((self.direction[0] - other.direction[0], self.direction[1] - other.direction[1]))
+        return self.from_direction(
+            (
+                self.direction[0] - other.direction[0],
+                self.direction[1] - other.direction[1],
+            )
+        )
 
 
 class ValueObject(BaseModel):

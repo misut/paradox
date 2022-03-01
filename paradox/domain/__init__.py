@@ -8,8 +8,8 @@ from paradox.domain.apparition import (
     ApparitionStats,
     ApparitionStatus,
     ApparitionTag,
-    FileApparitionAssetManager,
     Character,
+    FileApparitionAssetManager,
     apparition_assets,
 )
 from paradox.domain.base import (

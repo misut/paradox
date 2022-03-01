@@ -30,12 +30,19 @@ _DEFAULT_SPRITE = {
 }
 
 
-def create_apparition_sprite(apparition_sprite_tags: ApparitionSpriteTags) -> ApparitionSprite:
+def create_apparition_sprite(
+    apparition_sprite_tags: ApparitionSpriteTags,
+) -> ApparitionSprite:
     return {
         status: {
-            direction: sprite_assets.copy(apparition_sprite_tags.get(status, {}).get(direction, SpriteTag.APPARITION_TEST)) 
+            direction: sprite_assets.copy(
+                apparition_sprite_tags.get(status, {}).get(
+                    direction, SpriteTag.APPARITION_TEST
+                )
+            )
             for direction in Direction
-        } for status in ApparitionStatus
+        }
+        for status in ApparitionStatus
     }
 
 

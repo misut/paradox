@@ -4,7 +4,12 @@ from pathlib import Path
 
 from pydantic import BaseModel, Field
 
-from paradox.domain.apparition.base import Apparition, ApparitionSprite, ApparitionStatus, ApparitionTag
+from paradox.domain.apparition.base import (
+    Apparition,
+    ApparitionSprite,
+    ApparitionStatus,
+    ApparitionTag,
+)
 from paradox.domain.apparition.character import Character
 from paradox.domain.base import Direction, ValueObject
 from paradox.domain.sprite import SpriteTag, sprite_assets
@@ -12,12 +17,19 @@ from paradox.domain.sprite import SpriteTag, sprite_assets
 ApparitionSpriteTags = dict[ApparitionStatus, dict[Direction, SpriteTag]]
 
 
-def create_apparition_sprite(apparition_sprite_tags: ApparitionSpriteTags) -> ApparitionSprite:
+def create_apparition_sprite(
+    apparition_sprite_tags: ApparitionSpriteTags,
+) -> ApparitionSprite:
     return {
         status: {
-            direction: sprite_assets.copy(apparition_sprite_tags.get(status, {}).get(direction, SpriteTag.APPARITION_TEST)) 
+            direction: sprite_assets.copy(
+                apparition_sprite_tags.get(status, {}).get(
+                    direction, SpriteTag.APPARITION_TEST
+                )
+            )
             for direction in Direction
-        } for status in ApparitionStatus
+        }
+        for status in ApparitionStatus
     }
 
 
@@ -78,7 +90,7 @@ class FileApparitionAssetManager(ApparitionAssetManager):
 
         with file_path.open(mode="rt", encoding="utf-8") as stream:
             apparition_asset_dict = json.load(stream)
-        
+
         apparition_asset_dict["sprites"]
         return ApparitionAsset.parse_obj(apparition_asset_dict)
 
@@ -86,15 +98,17 @@ class FileApparitionAssetManager(ApparitionAssetManager):
         json_path = self.apparitions_path.joinpath("apparitions.json")
         with json_path.open(mode="rt", encoding="utf-8") as stream:
             apparition_info_dicts = json.load(stream)
-        
+
         for apparition_info_dict in apparition_info_dicts:
             apparition_info = ApparitionInfo.parse_obj(apparition_info_dict)
-            self.apparition_assets[apparition_info.tag] = self.from_info(apparition_info)
+            self.apparition_assets[apparition_info.tag] = self.from_info(
+                apparition_info
+            )
 
     def copy(self, tag: ApparitionTag) -> Apparition | Character | None:
         if tag not in self.apparition_assets:
             return None
-        
+
         return self.apparition_assets[tag].apparition()
 
 

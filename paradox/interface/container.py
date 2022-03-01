@@ -9,7 +9,9 @@ from paradox.application import FilmDirector, UIManager, UniverseSimulator
 from paradox.domain import apparition_assets, sprite_assets, universe_assets
 
 
-def initialize_resources(apparitions_path: Path, sprites_path: Path, universes_path: Path) -> None:
+def initialize_resources(
+    apparitions_path: Path, sprites_path: Path, universes_path: Path
+) -> None:
     apparition_assets.initialize(apparitions_path)
     sprite_assets.initialize(sprites_path)
     universe_assets.initialize(universes_path)
